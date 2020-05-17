@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "~/Plugins/Widgets.Employees/Views/Shared/_AdminPopup.cshtml";
+}
+@model EmployeeModel
+@using Nop.Plugin.Widgets.Employees.Models;
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-configuration.png")" alt="" />
+            @T("Admin.Common.AddNew")
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+        </div>
+    </div>
+    @Html.Partial("Nop.Plugin.Widgets.Employees.Views.Employees._CreateOrUpdate", Model)
+}

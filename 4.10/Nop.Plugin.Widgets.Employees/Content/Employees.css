@@ -1,0 +1,261 @@
+﻿.Employees {
+  background-color: #ffffff;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.Employees .title {
+  font-size: 1.4em;
+}
+.Employees .EmployeeInfoHeader .title,
+.Employees .EmployeeList .title {
+  font-size: 1.4em;
+}
+.EmployeeHeading,
+.EmployeeInfoHeading {
+  padding-bottom: 30px;
+  font-size: 1.6em;
+  font-weight: bold;
+}
+.Employee {
+  width: 100%;
+  margin-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: dashed 1px #3a3a3a;
+}
+.EmployeeDepartments {
+  padding-top: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 1.4em;
+  color: #525454;
+  text-transform: uppercase;
+  border-bottom: solid 2px #3a3a3a;
+}
+.EmployeeZoom {
+  clear: both;
+  padding-left: 10px;
+  width: 20px;
+  float: left;
+}
+.EmployeeName {
+  float: left;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #525454;
+  width: 250px;
+}
+.EmployeeName:hover {
+  background-color: #525454;
+  color: white;
+}
+.EmployeeTitle {
+  width: 200px;
+}
+.EmployeePhone,
+.EmployeeMobile {
+  width: 100px;
+}
+.EmployeeEMail {
+  width: 100px;
+}
+.EmployeeTitle,
+.EmployeePhone,
+.EmployeeMobile,
+.EmployeeEMail {
+  float: left;
+  font-size: 1em;
+  color: #808080;
+}
+.EmployeeEditButton,
+.EmployeeEditButton a:hover,
+.EmployeeAddButton {
+  float: right;
+  margin-bottom: 3px;
+  font-size: 10pt;
+  text-align: right;
+  height: 20px;
+  padding: 0 5px 0 5px;
+  width: auto;
+  overflow: visible;
+  text-decoration: none;
+}
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*EmployeesInfo~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+.EmployeeInfo {
+  height: 100%;
+  clear: both;
+  left: 0px;
+}
+.EmployeeInfoContact {
+  float: left;
+  width: 220px;
+  margin: 20px 0px 0px 0px;
+  padding-right: 20px;
+  border-right: solid 1px #A7A8A8;
+}
+.EmployeeInfoContact img {
+  width: 200px;
+}
+.EmployeeInfoOther {
+  float: left;
+  top: 30px;
+  width: 500px;
+  padding-left: 20px;
+}
+.EmployeeInfoImage {
+  margin: 0 0 0 0;
+}
+.EmployeeInfoName {
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 1.4em;
+}
+.EmployeeInfoTitle {
+  font-size: 1.2em;
+}
+.EmployeeInfoInfo {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: solid 1px #A7A8A8;
+}
+.EmployeeInfoStarted {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: solid 1px #A7A8A8;
+}
+.EmployeeInfoSpecialities,
+.EmployeeInfoInterests {
+  margin-top: 5px;
+}
+.EmployeeInfoPhone,
+.EmployeeInfoMobile,
+.EmployeeInfoEmail {
+  width: 100%;
+  float: right;
+  text-align: right;
+}
+.EmployeeInfoPhone {
+  margin-top: 50px;
+}
+.EmployeeInfoEmail {
+  margin-top: 20px;
+}
+.EmployeeInfoEmailLabel {
+  Visibility: hidden;
+}
+.EmployeeInfoEmailValue,
+.EmployeeInfoEmailValue,
+.EmployeeInfoBack a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #ff9933;
+}
+.EmployeeInfoEmailValue a:hover {
+  text-decoration: none;
+  background-color: red;
+}
+
+/* TABLES */
+td {
+    vertical-align: middle;
+}
+
+    td.fieldname {
+        font-size: 12px;
+    }
+
+.table-container {
+}
+
+    .table-container .row {
+    }
+
+        .table-container .row .item-name {
+            padding: 3px 10px 0 0;
+            display: block;
+            white-space: nowrap;
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+
+        .table-container .row .item-value {
+            padding: 3px 0 0;
+            vertical-align: middle;
+        }
+
+table.adminContent {
+    border-collapse: collapse;
+    color: #333;
+    font-size: 12px;
+    margin: 0;
+    width: 100%;
+    vertical-align: middle;
+    text-align: left;
+}
+
+    table.adminContent td.adminTitle {
+        padding: 4px;
+    }
+
+    table.adminContent td.adminData {
+        padding: 4px;
+    }
+
+td.adminTitle {
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 195px;
+}
+
+    td.adminTitle img {
+        vertical-align: bottom;
+        padding-right: 2px;
+    }
+
+td.adminData {
+    text-align: left;
+    vertical-align: middle;
+}
+
+    td.adminData .text-box.single-line {
+        border: 1px solid #A7BAC5;
+        width: 250px;
+        padding: 2px;
+    }
+
+.t-grid .text-box.single-line {
+    border: 1px solid #A7BAC5;
+    padding: 2px;
+}
+
+td.adminData textarea {
+    border: 1px solid #ACACAC;
+    width: 250px;
+    padding: 2px;
+}
+
+td.adminData .t-combobox {
+    width: 256px;
+}
+
+td.adminData .t-numerictextbox .t-input {
+    border: 1px solid #ACACAC;
+    width: 250px;
+    padding: 2px;
+}
+
+tr.adminSeparator hr {
+    background-color: #D3D3D3;
+    border: medium none;
+    color: #D3D3D3;
+    height: 1px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+span.nop-tooltip {
+    white-space: nowrap;
+}
+/*# sourceMappingURL=Employees.css.map */

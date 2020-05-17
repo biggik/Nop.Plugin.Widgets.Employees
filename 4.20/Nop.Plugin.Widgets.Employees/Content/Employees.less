@@ -1,0 +1,176 @@
+﻿#employees {
+    background: #eee !important;
+}
+
+section {
+    padding: 60px 0;
+
+    .section-title {
+        text-align: center;
+        color: #007b5e;
+        margin-bottom: 50px;
+        text-transform: uppercase;
+    }
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+    grid-gap: 10px;
+    /*align-items: flex-start;*/
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.3);
+
+    .image {
+        flex: 1;
+        img {
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            border-radius: 50%;
+        }
+    }
+
+    .content {
+        flex: 1 1 auto;
+        padding: 5px 0 10px 5px;
+        /*align-content: flex-start;*/
+
+        .employee-title {
+            font-size: smaller;
+            color: gray;
+        }
+
+        .employee-name {
+            font-weight: bold;
+        }
+    }
+
+    footer {
+        padding: 10px 0px 0px 0px;
+        align-content: flex-end;
+
+        > a {
+            background: gray;
+            border: 0;
+            color: white;
+            padding: 5px;
+            width: 100%;
+            align-self: stretch;
+        }
+    }
+}
+
+.employee-zoom {
+    background-color: darkgray;
+    border: none;
+    color: white;
+    padding: 7px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*EmployeesInfo~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+.EmployeeInfo {
+    height: 100%;
+    clear: both;
+    left: 0px;
+}
+
+.EmployeeInfoContact {
+    float: left;
+    width: 220px;
+    margin: 20px 0px 0px 0px;
+    padding-right: 20px;
+    //background-color: red;
+    border-right: solid 1px #A7A8A8;
+
+    img {
+        width: 200px;
+    }
+}
+
+.EmployeeInfoOther {
+    //margin-left: 200px;
+    float: left;
+    //position: relative;
+    //left: 240px;
+    top: 30px;
+    width: 500px;
+    //width:expression(document.body.clientWidth-200);
+    //background-color: yellow;
+    // color: white;
+    //margin: 20px 0px 0px 0px;
+    padding-left: 20px;
+}
+
+.EmployeeInfoImage {
+    margin: 0 0 0 0;
+}
+
+.EmployeeInfoName {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+.EmployeeInfoTitle {
+    font-size: 1.2em;
+}
+
+.EmployeeInfoInfo {
+    margin-top: 20px;
+    //margin-left: 200px;
+    padding-top: 20px;
+    //width: 100%;
+    //background-color: green;
+    border-top: solid 1px #A7A8A8;
+}
+
+.EmployeeInfoStarted {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: solid 1px #A7A8A8;
+}
+
+.EmployeeInfoSpecialities, .EmployeeInfoInterests {
+    margin-top: 5px;
+}
+
+.EmployeeInfoPhone, .EmployeeInfoMobile, .EmployeeInfoEmail {
+    width: 100%;
+    float: right;
+    text-align: right;
+}
+
+.EmployeeInfoPhone {
+    margin-top: 50px;
+}
+
+.EmployeeInfoEmail {
+    margin-top: 20px;
+}
+
+.EmployeeInfoEmailLabel {
+    Visibility: hidden;
+}
+
+.EmployeeInfoEmailValue, .EmployeeInfoEmailValue, .EmployeeInfoBack a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #ff9933;
+}
+
+.EmployeeInfoEmailValue {
+    a:hover {
+        text-decoration: none;
+        background-color: red;
+    }
+}

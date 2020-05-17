@@ -1,0 +1,7 @@
+**/[Bb]in/
+**/[Oo]bj/
+**/.vs/
+**/_build/
+**/packages/
+**/*.suo
+**/*.user

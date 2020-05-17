@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "~/Plugins/Widgets.Employees/Admin/Views/_Admin.cshtml";
+}
+@model DepartmentModel
+@using Nop.Plugin.Widgets.Employees.Models;
+@using Nop.Plugin.Widgets.Employees.Resources;
+@{
+    //page title
+    ViewBag.Title = T(AdminResources.AddDepartmentCaption).Text;
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "employee-form" }))
+{
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            @T(AdminResources.AddDepartmentCaption)
+            <small><i class="fa fa-arrow-circle-left"></i><a href="~/Employees/DepartmentList">(@T(DepartmentActionResources.BackToList))</a></small>
+        </h1>
+        <div class="pull-right">
+            <button type="submit" name="save" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.Save")
+            </button>
+            <button type="submit" name="save-continue" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.SaveContinue")
+            </button>
+        </div>
+    </div>
+    <partial name="~/Plugins/Widgets.Employees/Views/Employees/_CreateOrUpdateDepartment.cshtml" />
+}

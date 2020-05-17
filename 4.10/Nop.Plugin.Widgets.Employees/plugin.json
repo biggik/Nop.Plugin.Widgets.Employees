@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Employees",
+  "SystemName": "Widgets.Employees",
+  "Version": "1.2",
+  "SupportedVersions": [ "4.10" ],
+  "Author": "Status ehf",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.Employees.dll",
+  "Description": "This plugin supports listing your employees"
+}

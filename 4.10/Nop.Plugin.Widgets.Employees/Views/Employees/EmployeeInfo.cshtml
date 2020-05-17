@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "~/Plugins/Widgets.Employees/Views/Shared/_Shared.cshtml";
+}
+@model EmployeeInfoModel
+@using Nop.Plugin.Widgets.Employees.Models;
+
+<div class="master-wrapper-cph">
+    <div class="Employees">
+        <div class="employees-title">
+            @*<h1>@T("Employee.Employee")</h1>*@
+            <div class="title">
+                @if (Model.IsAdmin)
+                {
+                    <div class="options">
+                        <input type="button" id="backtolist" class="button-1" value="@T("Employee.Edit")"
+                               onclick="setLocation('~/Employees/EditEmployee/@(Model.Employee.Id)');" />
+                    </div>
+                }
+                <a href="~/Employees/List" class="EmployeeInfoBack">@T("Employee.BackToList")</a>
+        </div>
+        <div class="EmployeeInfo">
+            <div class="EmployeeInfoContact">
+                @if (Model.Employee.PhotoUrl != null)
+                { 
+                    <img style="border-width:0;" src="@(Model.Employee.PhotoUrl)" class="EmployeeInfoImage"><br />
+                }
+                <div class="EmployeeInfoPhone">
+                    @if (!string.IsNullOrEmpty(Model.Employee.PhoneNumber))
+                    {
+                        <span class="EmployeeInfoPhoneLabel">@T("Plugins.Widgets.Employees.Fields.PhoneNumber"): </span>
+                        <span class="EmployeeInfoPhoneValue">@Model.Employee.PhoneNumber</span><br />
+                    }
+                </div>
+                <div class="EmployeeInfoMobile">
+                    @if (!string.IsNullOrEmpty(Model.Employee.MobileNumber))
+                    {
+                        <span class="EmployeeInfoMobileLabel">@T("Plugins.Widgets.Employees.Fields.MobileNumber"): </span>
+                        <span class="EmployeeInfoMobileValue">@Model.Employee.MobileNumber</span><br />
+                    }
+                </div>
+                <div class="EmployeeInfoEmail">
+                    @if (!string.IsNullOrEmpty(Model.Employee.Email))
+                    {
+                        <span class="EmployeeInfoEmailLabel">@T("Plugins.Widgets.Employees.Fields.Email"): </span>
+                        <a class="EmployeeInfoEmailValue" href="mailto:@(Model.Employee.Email)">@Model.Employee.Email</a><br />
+                    }
+                </div>
+            </div>
+            <div class="EmployeeInfoOther">
+                <div class="EmployeeInfoName">
+                    <span class="EmployeeInfoNameValue">@Model.Employee.Name</span><br>
+                </div>
+                <div class="EmployeeInfoTitle">
+                    <span class="EmployeeInfoTitleValue">@Model.Employee.Title</span>
+                    <span class="EmployeeInfoTitleDepartmentSeparator">&nbsp;/&nbsp;</span>
+                    <span class="EmployeeInfoDepartmentValue">@Model.Employee.DepartmentName</span>
+                    <br>
+                </div>
+                <div class="EmployeeInfoStarted">
+                    <span class="EmployeeInfoStartedLabel">@T("Plugins.Widgets.Employees.Fields.WorkStarted"): </span>
+                    <span class="EmployeeInfoStartedValue">@Model.Employee.WorkStarted.ToString("dd.MM.yyyy")</span><br>
+                </div>
+                <div class="EmployeeInfoSpecialities">
+                    <span class="EmployeeInfoSpecialitiesLabel">@T("Plugins.Widgets.Employees.Fields.Specialties"): </span>
+                    <span class="EmployeeInfoSpecialitiesValue">@Html.Raw(Model.Employee.Specialties)</span><br>
+                </div>
+                <div class="EmployeeInfoInterests">
+                    <span class="EmployeeInfoInterestsLabel">@T("Plugins.Widgets.Employees.Fields.Interests"): </span>
+                    @Html.Raw(Model.Employee.Interests)
+                    <br>
+                </div>
+                <div class="EmployeeInfoInfo">
+                    @Html.Raw(Model.Employee.Info)<br />
+                </div>
+            </div>
+        </div>
+    </div>    
+    </div>
+</div>
