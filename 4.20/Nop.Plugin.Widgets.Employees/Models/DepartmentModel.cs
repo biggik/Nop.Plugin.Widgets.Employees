@@ -19,5 +19,7 @@ namespace Nop.Plugin.Widgets.Employees.Models
 
         [NopResourceDisplayName(GenericResources.Published)]
         public bool Published { get; set; }
+
+        public string PictureUrl { get; set; }
     }
 }

@@ -1,1 +1,9 @@
-﻿<li><a href="~/Employees/List">Starfsmenn</a></li>
+﻿@using Nop.Plugin.Widgets.Employees.Controllers;
+@using Nop.Plugin.Widgets.Employees.Resources;
+<li>
+    @Html.ActionLink(T(EmployeeResources.ListCaption).Text,
+    nameof(WidgetsEmployeesController.Index),
+    WidgetsEmployeesController.ControllerName,
+    null,
+    null)
+</li>

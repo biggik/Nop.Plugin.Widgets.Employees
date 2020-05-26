@@ -1,26 +1,26 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Nop.Plugin.Widgets.Employees.Models;
 using Nop.Plugin.Widgets.Employees.Services;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
-using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
-using Nop.Web.Framework.Mvc;
-using Nop.Web.Framework.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Services.Security;
 using Nop.Core;
 using Nop.Services.Media;
 using Nop.Web.Framework.Models.Extensions;
+using System;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using System.IO;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
-    //[Area(AreaNames.Admin)]
-    //[AuthorizeAdmin]
-    public class WidgetsEmployeesController : BasePluginController
+    public partial class WidgetsEmployeesController : BasePluginController
     {
+        internal const string UrlRouteName = "Employees";
+        public static string ControllerName = nameof(WidgetsEmployeesController).Replace("Controller", "");
+        const string Route = "~/Plugins/Widgets.Employees/Views/Employees/";
+
         private readonly EmployeesSettings _employeeSettings;
         private readonly IEmployeesService _employeeService;
         private readonly ISettingService _settingService;
@@ -31,11 +31,11 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         public WidgetsEmployeesController(
             EmployeesSettings employeeSettings,
-            IEmployeesService employeeService, 
+            IEmployeesService employeeService,
             ISettingService settingService,
-            ILocalizationService localizationService, 
-            IPermissionService permissionService, 
-            IWorkContext workContext, 
+            ILocalizationService localizationService,
+            IPermissionService permissionService,
+            IWorkContext workContext,
             IPictureService pictureService)
         {
             _employeeSettings = employeeSettings;
@@ -46,13 +46,8 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             _workContext = workContext;
             _pictureService = pictureService;
         }
-        
-        public IActionResult Index()
-        {
-            return RedirectToAction(nameof(List));
-        }
 
-        public IActionResult List(bool groupByDepartment = false)
+        public IActionResult Index(bool showUnpublished = false, bool groupByDepartment = true)
         {
             var model = new DepartmentEmployeeModel
             {
@@ -60,20 +55,34 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 GroupByDepartment = groupByDepartment
             };
 
-            foreach (var d in _employeeService.GetAllDepartments())
+            var employesModel = new EmployeesListModel { DepartmentName = "" };
+
+            foreach (var d in _employeeService.GetAllDepartments(showUnpublished))
             {
-                var employeesModel = new EmployeesListModel { DepartmentName = d.Name };
-                foreach (var employee in _employeeService.GetEmployeesByDepartmentId(d.Id))
+                if (groupByDepartment)
+                {
+                    employesModel = new EmployeesListModel { DepartmentName = d.Name };
+                }
+                foreach (var employee in _employeeService.GetEmployeesByDepartmentId(d.Id, showUnpublished))
                 {
                     var e = employee.ToModel();
                     e.PhotoUrl = GetPictureUrl(e.PictureId);
                     e.DepartmentName = d.Name;
-                    employeesModel.Employees.Add(e);
+                    employesModel.Employees.Add(e);
                 }
-                model.EmployeesList.Add(employeesModel);
+                if (groupByDepartment)
+                {
+                    // The Model is a list of departments each with a list of employees
+                    model.EmployeesList.Add(employesModel);
+                }
+            }
+            if (!groupByDepartment)
+            {
+                // The Model is a single-entry list (empty department) with a list of all employees
+                model.EmployeesList.Add(employesModel);
             }
 
-            return View("~/Plugins/Widgets.Employees/Views/Employees/List.cshtml", model);
+            return View($"{Route}List.cshtml", model);
         }
 
         private string GetPictureUrl(int pictureId, int targetSize = 200)
@@ -89,7 +98,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
                 return Content("Access denied");
 
-            var employees = _employeeService.GetAll(searchModel.Page - 1, searchModel.PageSize);
+            var employees = _employeeService.GetAll(showUnpublished:false, searchModel.Page - 1, searchModel.PageSize);
             var model = new EmployeeListModel().PrepareToGrid(searchModel, employees, () =>
             {
                 return employees.Select(employee =>
@@ -110,15 +119,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 IsAdmin = _permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel)
             };
 
-            Domain.Employee e;
-            if (int.TryParse(id, out int employeeId))
-            {
-                e = _employeeService.GetById(employeeId);
-            }
-            else
-            {
-                e = _employeeService.GetByEmailPrefix(id);
-            }
+            var e = GetEmployeeByIdOrEmailPrefix(id);
 
             model.Employee = e.ToModel();
             model.Employee.PhotoUrl = (e.PictureId > 0) ? _pictureService.GetPictureUrl(e.PictureId, 200) : null;
@@ -127,7 +128,16 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             {
                 model.Employee.DepartmentName = department.Name;
             }
-            return View("~/Plugins/Widgets.Employees/Views/Employees/EmployeeInfo.cshtml", model);
+            return View($"{Route}EmployeeInfo.cshtml", model);
+        }
+
+        private Domain.Employee GetEmployeeByIdOrEmailPrefix(string id)
+        {
+            if (int.TryParse(id, out int employeeId))
+            {
+                return _employeeService.GetById(employeeId);
+            }
+            return _employeeService.GetByEmailPrefix(id);
         }
     }
 }

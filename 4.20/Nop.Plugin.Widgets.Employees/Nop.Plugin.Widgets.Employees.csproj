@@ -51,40 +51,28 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="Areas\Admin\Views\Employees\AddPopup.cshtml">
+    <None Update="Views\Employees\Configure.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Areas\Admin\Views\Employees\Configure.cshtml">
+    <None Update="Views\Employees\CreateDepartment.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Areas\Admin\Views\Employees\CreateDepartment.cshtml">
+    <None Update="Views\Employees\CreateEmployee.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Areas\Admin\Views\Employees\CreateEmployee.cshtml">
+    <None Update="Views\Employees\DepartmentList.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Areas\Admin\Views\Employees\DepartmentList.cshtml">
+    <None Update="Views\Employees\EditDepartment.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Areas\Admin\Views\Employees\EditDepartment.cshtml">
+    <None Update="Views\Employees\EditEmployee.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Areas\Admin\Views\Employees\EditEmployee.cshtml">
+    <None Update="Views\Employees\_CreateOrUpdateDepartment.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Areas\Admin\Views\Employees\EditPopup.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Areas\Admin\Views\Employees\List.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Areas\Admin\Views\Employees\_CreateOrUpdateDepartment.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Areas\Admin\Views\Employees\_CreateOrUpdateEmployee.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Areas\Admin\Views\_ViewImports.cshtml">
+    <None Update="Views\Employees\_CreateOrUpdateEmployee.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\Employees.css">
@@ -99,9 +87,6 @@
     <None Update="Content\Employees.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Employees\DepartmentList.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Views\Employees\EmployeeInfo.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -111,10 +96,7 @@
     <None Update="Views\Employees\PublicInfo.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Areas\Admin\Views\_Admin.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Areas\Admin\Views\_AdminPopup.cshtml">
+    <None Update="Views\Shared\_AdminShared.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Views\Shared\_Shared.cshtml">

@@ -12,6 +12,7 @@ using Nop.Core;
 using Nop.Services.Plugins;
 using Nop.Plugin.Widgets.Employees.Resources;
 using Nop.Web.Framework.Menu;
+using Nop.Plugin.Widgets.Employees.Controllers;
 
 namespace Nop.Plugin.Widgets.Employees
 {
@@ -49,7 +50,7 @@ namespace Nop.Plugin.Widgets.Employees
         /// <returns>Widget zones</returns>
         public IList<string> GetWidgetZones()
         {
-            return new List<string> { "header_menu_after" };
+            return new string[] { };
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace Nop.Plugin.Widgets.Employees
         /// </summary>
         public override string GetConfigurationPageUrl()
         {
-            return $"{_webHelper.GetStoreLocation()}Admin/WidgetsEmployees/Configure";
+            return $"{_webHelper.GetStoreLocation()}{WidgetsEmployeesController.UrlRouteName}/Configure";
         }
 
         /// <summary>
@@ -141,7 +142,7 @@ namespace Nop.Plugin.Widgets.Employees
                         {
                             lsr = new LocaleStringResource
                             {
-                                Language = resourceLanguage.language,
+                                LanguageId = resourceLanguage.language.Id,
                                 ResourceName = resourceName,
                                 ResourceValue = resourceValue
                             };

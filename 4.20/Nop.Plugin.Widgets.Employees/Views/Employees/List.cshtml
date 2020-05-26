@@ -4,6 +4,7 @@
 @model DepartmentEmployeeModel
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
+@using Nop.Plugin.Widgets.Employees.Controllers;
 
 <div class="Employees">
     <div class="section">
@@ -13,62 +14,43 @@
         @if (Model.IsAdmin)
         {
             <div class="options">
-                <a href="~/Employees/CreateEmployee" class="EmployeeAddButton">@T(AdminResources.AddEmployeeButton)</a>
+                @Html.ActionLink(T(AdminResources.AddEmployeeButton).Text,
+                    nameof(WidgetsEmployeesController.CreateEmployee),
+                    WidgetsEmployeesController.ControllerName,
+                    null,
+                    null)
             </div>
         }
     </div>
     <div class="clear"></div>
-    @if (Model.GroupByDepartment)
+    @foreach (var departmentEmployees in Model.EmployeesList)
     {
-        <section id="employees" class="pb-5">
-            <div class="container">
-                @foreach (var department in Model.EmployeesList)
-                {
-                    <div class="EmployeeDepartments">
-                        @department.DepartmentName
-                    </div>
-
-                    <div class="row">
-                        @foreach (var employee in department.Employees.OrderBy(x => x.Name))
-                        {
-                            <div class="col-xs-12 col-sm-6 col-md-4">
-                                <div class="card">
-                                    <a href="~/Employees/EmployeeInfo/@employee.EmailPrefixOrId">
-                                        <div class="card-body text-center">
-                                            @if (employee.PhotoUrl != null)
-                                            {
-                                                <p><img class="img-fluid" src="@employee.PhotoUrl" alt="@employee.Name"></p>
-                                            }
-                                            <h4 class="card-title">@employee.Name</h4>
-                                            <p class="card-text">@employee.Title</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-            </div>
-        </section>
-    }
-    else
-    {
-        <main class="cards">
-            @foreach (var employee in Model.EmployeesList.SelectMany(x => x.Employees).OrderBy(x => x.Name))
+        <div class="employee-group">
+            @if (Model.GroupByDepartment)
             {
-            <article class="card">
-                <div class="content">
-                    <p class="employee-name">@employee.Name</p>
-                    <p class="employee-title"><span>@employee.Title</span>&nbsp;/&nbsp;<span>@employee.DepartmentName</span></p>
-                </div>
-                <div class="image">
-                    <img src="@employee.PhotoUrl" class="image" width="100" alt="@employee.Name">
-                </div>
-                <footer>
-                    <a class="employee-zoom" href="~/Employees/EmployeeInfo/@employee.EmailPrefixOrId">Nánar</a>
-                </footer>
-            </article>
+                <div class="department">@departmentEmployees.DepartmentName</div>
             }
-        </main>
+            <main class="cards">
+                @foreach (var employee in departmentEmployees.Employees.OrderBy(x => x.Name))
+                {
+                    <article class="card">
+                        <div class="content">
+                            <p class="employee-name">@employee.Name</p>
+                            <p class="employee-title"><span>@employee.Title</span>&nbsp;/&nbsp;<span>@employee.DepartmentName</span></p>
+                        </div>
+                        <div class="image">
+                            <img src="@employee.PhotoUrl" class="image" width="100" alt="@employee.Name">
+                        </div>
+                        <footer>
+                            @Html.ActionLink(T(EmployeeResources.Details).Text,
+                                nameof(WidgetsEmployeesController.EmployeeInfo),
+                                WidgetsEmployeesController.ControllerName,
+                                new { id = employee.EmailPrefixOrId },
+                                new { @class = "employee-zoom" })
+                        </footer>
+                    </article>
+                }
+            </main>
+        </div>
     }
 </div>

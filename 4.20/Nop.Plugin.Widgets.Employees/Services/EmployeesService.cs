@@ -25,7 +25,7 @@ namespace Nop.Plugin.Widgets.Employees.Services
         #region Ctor
         public EmployeesService(
             ICacheManager cacheManager,
-            IRepository<Employee> employeeRepository, 
+            IRepository<Employee> employeeRepository,
             IRepository<Department> departmentRespository)
         {
             _cacheManager = cacheManager;
@@ -45,18 +45,25 @@ namespace Nop.Plugin.Widgets.Employees.Services
             _cacheManager.RemoveByPrefix(EMPLOYEES_PATTERN_KEY);
         }
 
-        public virtual IPagedList<Employee> GetAll(int pageIndex = 0, int pageSize = int.MaxValue)
+        public virtual IPagedList<Employee> GetAll(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue)
         {
             string key = string.Format(EMPLOYEES_ALL_KEY, pageIndex, pageSize);
             return _cacheManager.Get(key, () =>
             {
-                var query = from employee in _employeeRepository.Table
-                            where employee.Deleted == false && employee.Published
-                            orderby employee.Id
-                            select employee;
-
-                var records = new PagedList<Employee>(query, pageIndex, pageSize);
-                return records;
+                return new PagedList<Employee>(
+                    from employee in _employeeRepository.Table
+                         where employee.Deleted == false
+                                 && (showUnpublished 
+                                     ||
+                                     (employee.Published
+                                      && (employee.WorkStarted.HasValue && employee.WorkStarted.Value < DateTime.Now.Date)
+                                      && (!employee.WorkEnded.HasValue || 
+                                              (employee.WorkEnded.Value.Year < 2000 || employee.WorkEnded.Value > DateTime.Now.Date)
+                                         )))
+                         orderby employee.Id
+                         select employee,
+                    pageIndex, 
+                    pageSize);
             });
         }
 
@@ -73,10 +80,13 @@ namespace Nop.Plugin.Widgets.Employees.Services
             if (string.IsNullOrWhiteSpace(emailPrefix))
                 return null;
 
-            return _employeeRepository
-                .Table
-                .Where(x => !string.IsNullOrWhiteSpace(x.Email) && x.Email.ToLower().StartsWith(emailPrefix + '@'))
-                .FirstOrDefault();
+            return (from employee in _employeeRepository.Table
+                    where employee.Deleted == false 
+                          && employee.Published
+                          && !string.IsNullOrWhiteSpace(employee.Email) 
+                          && employee.Email.ToLower().StartsWith(emailPrefix.ToLower() + '@')
+                    select employee
+                   ).FirstOrDefault();
         }
 
         public virtual void InsertEmployee(Employee employee)
@@ -131,13 +141,13 @@ namespace Nop.Plugin.Widgets.Employees.Services
             _cacheManager.RemoveByPrefix(DEPARTMENTS_ALL_KEY);
         }
 
-        public virtual IList<Department> GetAllDepartments(bool showHidden = false)
+        public virtual IList<Department> GetAllDepartments(bool showUnpublished = false)
         {
-            string key = string.Format(DEPARTMENTS_ALL_KEY,showHidden);
+            string key = string.Format(DEPARTMENTS_ALL_KEY, showUnpublished);
             return _cacheManager.Get(key, () =>
             {
                 var query = from department in _departmentRespository.Table
-                            where department.Published || showHidden
+                            where department.Published || showUnpublished
                             orderby department.DisplayOrder
                             select department;
 
@@ -146,26 +156,29 @@ namespace Nop.Plugin.Widgets.Employees.Services
             });
         }
 
-        public virtual IList<Employee> GetEmployeesByDepartmentId(int departId)
+        public virtual IList<Employee> GetEmployeesByDepartmentId(int departmentId, bool showUnpublished = false)
         {
-            var query = from employee in _employeeRepository.Table
-                        where employee.Published && employee.DepartmentId == departId && !employee.Deleted
-                        orderby employee.Name
-                        select employee;
-
-            var records = query.ToList();
-            return records;
+            return (from employee in _employeeRepository.Table
+                    where !employee.Deleted
+                          && employee.DepartmentId == departmentId
+                          && (showUnpublished
+                              ||
+                              (employee.Published
+                               && (employee.WorkStarted.HasValue && employee.WorkStarted.Value < DateTime.Now.Date)
+                               && (!employee.WorkEnded.HasValue ||
+                                       (employee.WorkEnded.Value.Year < 2000 || employee.WorkEnded.Value > DateTime.Now.Date)
+                                  )))
+                    orderby employee.Name
+                    select employee).ToList();
         }
 
         public virtual Department GetDepartmentById(int departId)
         {
-            var query = from sbw in _departmentRespository.Table
-                        where sbw.Id == departId
-                        orderby sbw.Name
-                        select sbw;
-
-            var record = query.FirstOrDefault();
-            return record;
+            return (from sbw in _departmentRespository.Table
+                    where sbw.Id == departId
+                    orderby sbw.Name
+                    select sbw)
+                    .FirstOrDefault();
         }
         #endregion
     }

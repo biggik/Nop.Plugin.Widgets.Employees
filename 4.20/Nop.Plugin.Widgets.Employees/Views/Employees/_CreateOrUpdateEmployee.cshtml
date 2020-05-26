@@ -2,6 +2,8 @@
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
 @using Nop.Web.Framework
+@using Nop.Plugin.Widgets.Employees.Controllers;
+
 @Html.ValidationSummary(false)
 @Html.HiddenFor(model => model.Id)
 
@@ -43,7 +45,11 @@
                         </div>
                         <div class="col-md-9">
                             <nop-select asp-for="DepartmentId" asp-items="Model.AvailableDepartments" />
-                            <a href="~/Employees/CreateDepartment">@T(AdminResources.AddDepartmentCaption)</a>
+                            @Html.ActionLink(T(AdminResources.AddDepartmentCaption).Text,
+                                nameof(WidgetsEmployeesController.CreateDepartment),
+                                WidgetsEmployeesController.ControllerName,
+                                null,
+                                null)
                             <span asp-validation-for="DepartmentId" />
                         </div>
                     </div>
@@ -55,15 +61,19 @@
                         <div class="col-md-9">
                             <nop-editor asp-for="PictureId" asp-required="true" />
                             <span asp-validation-for="PictureId" />
+                            @Html.ActionLink(T(EmployeeActionResources.ViewPicture).Text,
+                                              nameof(WidgetsEmployeesController.GetFullSizeEmployeePicture),
+                                              WidgetsEmployeesController.ControllerName,
+                                              new { id = Model.PictureId, area = "Admin" },
+                                              null)
                         </div>
-
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
                             <nop-label asp-for="Info" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="Info" asp-required="true" />
+                            <nop-editor asp-for="Info" asp-required="true" asp-template="RichEditor" />
                             <span asp-validation-for="Info" />
                         </div>
 
@@ -73,7 +83,7 @@
                             <nop-label asp-for="Specialties" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="Specialties" asp-required="true" />
+                            <nop-editor asp-for="Specialties" asp-required="true" asp-template="RichEditor" />
                             <span asp-validation-for="Specialties" />
                         </div>
 
@@ -83,7 +93,7 @@
                             <nop-label asp-for="Interests" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="Interests" asp-required="true" />
+                            <nop-editor asp-for="Interests" asp-required="true" asp-template="RichEditor" />
                             <span asp-validation-for="Interests" />
                         </div>
 

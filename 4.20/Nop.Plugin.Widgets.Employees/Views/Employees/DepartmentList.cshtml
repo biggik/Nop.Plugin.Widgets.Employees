@@ -1,8 +1,9 @@
 ﻿@{
-    Layout = "~/Plugins/Widgets.Employees/Views/Shared/_Admin.cshtml";
+    Layout = "~/Plugins/Widgets.Employees/Views/Shared/_AdminShared.cshtml";
 }
 @model List<Nop.Plugin.Widgets.Employees.Models.DepartmentModel>
 @using Nop.Plugin.Widgets.Employees.Resources;
+@using Nop.Plugin.Widgets.Employees.Controllers;
 @{
     //page title
     ViewBag.Title = T(AdminResources.DepartmentListCaption).Text;
@@ -12,10 +13,11 @@
         @T(AdminResources.DepartmentListCaption)
     </h1>
     <div class="pull-right">
-        <a class="btn bg-blue" href="~/Employees/CreateDepartment">
-            <i class="fa fa-plus-square"></i>
-            @T(AdminResources.AddDepartmentButton)
-        </a>
+        @Html.ActionLink(T(AdminResources.AddDepartmentButton).Text,
+            nameof(WidgetsEmployeesController.CreateDepartment),
+            WidgetsEmployeesController.ControllerName,
+            null,
+            new { @class = "btn bg-blue" })
     </div>
 </div>
 <div class="content">
@@ -80,7 +82,12 @@
                             field: "Id",
                             title: "@T(AdminResources.EditDepartmentCaption)",
                             width: 100,
-                            template: '<a href="EditDepartment/#=Id#">@T(AdminResources.EditDepartmentCaption)</a>'
+                            template: "@Html.ActionLink(T(AdminResources.EditDepartmentCaption).Text,
+                                        nameof(WidgetsEmployeesController.EditDepartment),
+                                        WidgetsEmployeesController.ControllerName,
+                                        null,
+                                        null)"
+                            // TODO: what about id? /#=Id#
                         }]
                     });
                 });

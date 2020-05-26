@@ -26,6 +26,10 @@ namespace Nop.Plugin.Widgets.Employees.Resources
     [LocaleStringProvider]
     public static class EmployeeResources
     {
+        [LocaleString(LocaleStringAttribute.EN, "Details")]
+        [LocaleString(LocaleStringAttribute.IS, "Nánar")]
+        public const string Details = "Status.EmployeeWidget.Employee.Details";
+
         [LocaleString(LocaleStringAttribute.EN, "Department", "The department the employee belongs to")]
         [LocaleString(LocaleStringAttribute.IS, "Deild", "Deildin sem starfsmaðurinn tilheyrir")]
         public const string Department = "Status.EmployeeWidget.Employee.Department";
@@ -92,6 +96,10 @@ namespace Nop.Plugin.Widgets.Employees.Resources
         [LocaleString(LocaleStringAttribute.EN, "Edit employee")]
         [LocaleString(LocaleStringAttribute.IS, "Breyta starfsmanni")]
         public const string Edit = "Status.EmployeeWidget.Action.Employee.Edit";
+
+        [LocaleString(LocaleStringAttribute.EN, "View picture")]
+        [LocaleString(LocaleStringAttribute.IS, "Skoða mynd")]
+        public const string ViewPicture = "Status.EmployeeWidget.Action.Employee.ViewPicture";
     }
 
     [LocaleStringProvider]
