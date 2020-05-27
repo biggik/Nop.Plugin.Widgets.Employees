@@ -106,26 +106,6 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 : _pictureService.GetDefaultPictureUrl(targetSize, Core.Domain.Media.PictureType.Avatar);
         }
 
-        [HttpPost]
-        public IActionResult EmployeeList(EmployeeSearchModel searchModel)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
-                return Content("Access denied");
-
-            var employees = _employeeService.GetAll(showUnpublished:false, searchModel.Page - 1, searchModel.PageSize);
-            var model = new EmployeeListModel().PrepareToGrid(searchModel, employees, () =>
-            {
-                return employees.Select(employee =>
-                {
-                    var e = employee.ToModel();
-                    e.PhotoUrl = GetPictureUrl(e.PictureId);
-                    return e;
-                });
-            });
-
-            return Json(model);
-        }
-
         public IActionResult EmployeeInfo(string id)
         {
             var model = new EmployeeInfoModel

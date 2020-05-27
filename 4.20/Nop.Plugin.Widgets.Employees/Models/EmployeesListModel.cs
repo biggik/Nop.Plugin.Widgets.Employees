@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Nop.Plugin.Widgets.Employees.Domain;
 using Nop.Web.Framework.Models;
+
 namespace Nop.Plugin.Widgets.Employees.Models
 {
     public class EmployeesListModel : BaseNopEntityModel
