@@ -9,7 +9,6 @@
 <div class="master-wrapper-cph">
     <div class="Employees">
         <div class="employees-title">
-            @*<h1>@T("Employee.Employee")</h1>*@
             <div class="title">
                 @if (Model.IsAdmin)
                 {
@@ -18,7 +17,7 @@
                             nameof(WidgetsEmployeesController.EditEmployee),
                             WidgetsEmployeesController.ControllerName,
                             new { id = Model.Employee.Id },
-                            new { @class = "btn btn-primary" })
+                            new { @class = "btn btn-dark" })
                     </div>
                 }
                 <div class="EmployeeInfoBack">
@@ -38,21 +37,21 @@
                     <div class="EmployeeInfoPhone">
                         @if (!string.IsNullOrEmpty(Model.Employee.PhoneNumber))
                         {
-                            <span class="EmployeeInfoPhoneLabel">@T("Plugins.Widgets.Employees.Fields.PhoneNumber"): </span>
+                            <span class="EmployeeInfoPhoneLabel">@T(EmployeeResources.PhoneNumber): </span>
                             <span class="EmployeeInfoPhoneValue">@Model.Employee.PhoneNumber</span><br />
                         }
                     </div>
                     <div class="EmployeeInfoMobile">
                         @if (!string.IsNullOrEmpty(Model.Employee.MobileNumber))
                         {
-                            <span class="EmployeeInfoMobileLabel">@T("Plugins.Widgets.Employees.Fields.MobileNumber"): </span>
+                            <span class="EmployeeInfoMobileLabel">@T(EmployeeResources.MobileNumber): </span>
                             <span class="EmployeeInfoMobileValue">@Model.Employee.MobileNumber</span><br />
                         }
                     </div>
                     <div class="EmployeeInfoEmail">
                         @if (!string.IsNullOrEmpty(Model.Employee.Email))
                         {
-                            <span class="EmployeeInfoEmailLabel">@T("Plugins.Widgets.Employees.Fields.Email"): </span>
+                            <span class="EmployeeInfoEmailLabel">@T(EmployeeResources.Email): </span>
                             <a class="EmployeeInfoEmailValue" href="mailto:@(Model.Employee.Email)">@Model.Employee.Email</a><br />
                         }
                     </div>
@@ -68,15 +67,22 @@
                         <br>
                     </div>
                     <div class="EmployeeInfoStarted">
-                        <span class="EmployeeInfoStartedLabel">@T("Plugins.Widgets.Employees.Fields.WorkStarted"): </span>
-                        <span class="EmployeeInfoStartedValue">@Model.Employee.WorkStarted.ToString("dd.MM.yyyy")</span><br>
+                        <span class="EmployeeInfoStartedLabel">@T(EmployeeResources.WorkStarted): </span>
+                        <span class="EmployeeInfoStartedValue">@Model.Employee.WorkStarted.ToShortDateString()</span><br>
                     </div>
+                    @if (Model.Employee.WorkEnded.HasValue)
+                    {
+                        <div class="EmployeeInfoEnded">
+                            <span class="EmployeeInfoEndedLabel">@T(EmployeeResources.WorkEnded): </span>
+                            <span class="EmployeeInfoEndedValue">@(Model.Employee.WorkEnded.HasValue ? Model.Employee.WorkEnded.Value.ToShortDateString() : "")</span><br>
+                        </div>
+                    }
                     <div class="EmployeeInfoSpecialities">
-                        <span class="EmployeeInfoSpecialitiesLabel">@T("Plugins.Widgets.Employees.Fields.Specialties"): </span>
+                        <span class="EmployeeInfoSpecialitiesLabel">@T(EmployeeResources.Specialties): </span>
                         <span class="EmployeeInfoSpecialitiesValue">@Html.Raw(Model.Employee.Specialties)</span><br>
                     </div>
                     <div class="EmployeeInfoInterests">
-                        <span class="EmployeeInfoInterestsLabel">@T("Plugins.Widgets.Employees.Fields.Interests"): </span>
+                        <span class="EmployeeInfoInterestsLabel">@T(EmployeeResources.Interests): </span>
                         @Html.Raw(Model.Employee.Interests)
                         <br>
                     </div>

@@ -50,18 +50,23 @@ namespace Nop.Plugin.Widgets.Employees.Models
         public DateTime WorkStarted { get; set; }
 
         [NopResourceDisplayName(EmployeeResources.WorkEnded)]
-        public DateTime WorkEnded { get; set; }
+        [UIHint("DateTimeNullable")]
+        public DateTime? WorkEnded { get; set; }
 
         [NopResourceDisplayName(GenericResources.Published)]
         public bool Published { get; set; }
 
-        [NopResourceDisplayName(GenericResources.Deleted)]
-        public bool Deleted { get; set; }
-
         public string PhotoUrl { get; set; }
+        public bool DepartmentPublished { get; set; }
         public string DepartmentName { get; set; }
         public string EmailPrefixOrId => (Email?.Contains('@') ?? false) ? Email.Split('@')[0] : Id.ToString();
      
         public IList<SelectListItem> AvailableDepartments { get; set; }
+
+        public bool IsActive => Published
+                               && DepartmentPublished
+                               && (WorkStarted.Date <= DateTime.Now.Date)
+                               && (!WorkEnded.HasValue ||
+                                    (WorkEnded.Value.Year < 2000 || WorkEnded.Value > DateTime.Now.Date));
     }
 }

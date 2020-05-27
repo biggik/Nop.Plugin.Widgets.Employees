@@ -1,9 +1,11 @@
 ﻿@{
     Layout = "~/Plugins/Widgets.Employees/Views/Shared/_AdminShared.cshtml";
 }
-@model List<Nop.Plugin.Widgets.Employees.Models.DepartmentModel>
+@model DepartmentSearchModel
 @using Nop.Plugin.Widgets.Employees.Resources;
 @using Nop.Plugin.Widgets.Employees.Controllers;
+@using Nop.Plugin.Widgets.Employees.Models;
+@using Nop.Web.Framework.Models.DataTables;
 @{
     //page title
     ViewBag.Title = T(AdminResources.DepartmentListCaption).Text;
@@ -25,73 +27,44 @@
         <div class="panel-group">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div id="department-grid"></div>
-
-                    <script>
-                $(document).ready(function () {
-                    $("#department-grid").kendoGrid({
-                        dataSource: {
-                            type: "json",
-                            transport: {
-                                read: {
-                                    url: "@Html.Raw(Url.Action("DepartmentList", "Employees"))",
-                                    type: "POST",
-                                    dataType: "json"
-                                }
+                   @await Html.PartialAsync("Table", new DataTablesModel
+                   {
+                       Name = "departments-grid",
+                       UrlRead = new DataUrl(nameof(WidgetsEmployeesController.DepartmentListData), WidgetsEmployeesController.ControllerName,
+                            new Microsoft.AspNetCore.Routing.RouteValueDictionary{["area"] = "Admin" }),
+                       Length = Model.PageSize,
+                       LengthMenu = Model.AvailablePageSizes,
+                       ColumnCollection = new List<ColumnProperty>
+                        {
+                            new ColumnProperty(nameof(DepartmentModel.Name))
+                            {
+                                Title = T(DepartmentResources.Name).Text,
+                                Width = "300"
                             },
-                            schema: {
-                                data: "Data",
-                                total: "Total",
-                                errors: "Errors"
+                            new ColumnProperty(nameof(DepartmentModel.DisplayOrder))
+                            {
+                                Title = T(GenericResources.DisplayOrder).Text,
+                                Width = "100"
                             },
-                            error: function(e) {
-                                display_kendoui_grid_error(e);
-                                // Cancel the changes
-                                this.cancelChanges();
+                            new ColumnProperty(nameof(DepartmentModel.Published))
+                            {
+                                Title = T(GenericResources.Published).Text,
+                                Width = "100",
+                                ClassName = NopColumnClassDefaults.CenterAll,
+                                Render = new RenderBoolean()
                             },
-                            serverPaging: true,
-                            serverFiltering: true,
-                            serverSorting: true
-                        },
-                        pageable: {
-                            refresh: true,
-                            numeric: false,
-                            previousNext: false,
-                            info: false
-                        },
-                        editable: {
-                            confirmation: false,
-                            mode: "inline"
-                        },
-                        scrollable: false,
-                        columns: [{
-                            field: "Name",
-                            title: "@T("Plugins.Widgets.Employees.Fields.DepartmentName")"
-                        }, {
-                            field: "DisplayOrder",
-                            title: "@T("Plugins.Widgets.Employees.Fields.DepartmentDisplayOrder")",
-                            width: 20
-                        },{
-                            field: "Published",
-                            title: "@T("Plugins.Widgets.Employees.Fields.DepartmentPublished")",
-                            width: 100,
-                            headerAttributes: { style: "text-align:center" },
-                            attributes: { style: "text-align:center" },
-                            template: '# if(Published) {# <i class="fa fa-check true-icon"></i> #} else {# <i class="fa fa-close false-icon"></i> #} #'
-                        },{
-                            field: "Id",
-                            title: "@T(AdminResources.EditDepartmentCaption)",
-                            width: 100,
-                            template: "@Html.ActionLink(T(AdminResources.EditDepartmentCaption).Text,
-                                        nameof(WidgetsEmployeesController.EditDepartment),
-                                        WidgetsEmployeesController.ControllerName,
-                                        null,
-                                        null)"
-                            // TODO: what about id? /#=Id#
-                        }]
-                    });
-                });
-                    </script>
+                            new ColumnProperty(nameof(DepartmentModel.Id))
+                            {
+                                Title = T(AdminResources.EditDepartmentCaption).Text,
+                                Width = "100",
+                                ClassName =  NopColumnClassDefaults.Button,
+                                Render = new RenderButtonEdit(
+                                    new DataUrl(@Url.Action(nameof(WidgetsEmployeesController.EditDepartment), 
+                                                            WidgetsEmployeesController.ControllerName,
+                                                            new { area = "Admin"})))
+                            }
+                        }
+                    })
                 </div>
             </div>
         </div>

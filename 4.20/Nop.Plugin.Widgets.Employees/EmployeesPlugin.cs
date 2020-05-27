@@ -58,7 +58,7 @@ namespace Nop.Plugin.Widgets.Employees
         /// </summary>
         public override string GetConfigurationPageUrl()
         {
-            return $"{_webHelper.GetStoreLocation()}{WidgetsEmployeesController.UrlRouteName}/Configure";
+            return $"{_webHelper.GetStoreLocation()}Admin/Employees/Configure";
         }
 
         /// <summary>

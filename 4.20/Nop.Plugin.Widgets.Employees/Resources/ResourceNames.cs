@@ -113,6 +113,14 @@ namespace Nop.Plugin.Widgets.Employees.Resources
         [LocaleString(LocaleStringAttribute.IS, "Skrá starfsmann")]
         public const string AddEmployeeButton = "Status.EmployeeWidget.Admin.Employee.Button.Add";
 
+        [LocaleString(LocaleStringAttribute.EN, "See published")]
+        [LocaleString(LocaleStringAttribute.IS, "Sjá virka")]
+        public const string SeePublished = "Status.EmployeeWidget.Admin.Employee.Button.SeePublished";
+
+        [LocaleString(LocaleStringAttribute.EN, "See all")]
+        [LocaleString(LocaleStringAttribute.IS, "Sjá alla")]
+        public const string SeeAllButton = "Status.EmployeeWidget.Admin.Employee.Button.SeeAll";
+
         [LocaleString(LocaleStringAttribute.EN, "Edit employee")]
         [LocaleString(LocaleStringAttribute.IS, "Breyta starfsmanni")]
         public const string EditEmployeeCaption = "Status.EmployeeWidget.Admin.Employee.Caption.Edit";
@@ -129,10 +137,9 @@ namespace Nop.Plugin.Widgets.Employees.Resources
         [LocaleString(LocaleStringAttribute.IS, "Breyta deild")]
         public const string EditDepartmentCaption = "Status.EmployeeWidget.Admin.Department.Caption.Edit";
 
-        [LocaleString(LocaleStringAttribute.EN, "Department list")]
-        [LocaleString(LocaleStringAttribute.IS, "Deildalisti")]
+        [LocaleString(LocaleStringAttribute.EN, "Eployee department list")]
+        [LocaleString(LocaleStringAttribute.IS, "Deildalisti starfsmanna")]
         public const string DepartmentListCaption = "Status.EmployeeWidget.Admin.Department.Caption.Departments";
-
     }
 
     [LocaleStringProvider]
@@ -153,6 +160,10 @@ namespace Nop.Plugin.Widgets.Employees.Resources
         [LocaleString(LocaleStringAttribute.EN, "Back to Department list")]
         [LocaleString(LocaleStringAttribute.IS, "Tilbaka í deildalista")]
         public const string BackToList = "Status.EmployeeWidget.Action.Department.BackToList";
+
+        [LocaleString(LocaleStringAttribute.EN, "Departments")]
+        [LocaleString(LocaleStringAttribute.IS, "Deildir")]
+        public const string DepartmentListButton = "Status.EmployeeWidget.Action.Department.List";
     }
 
     [LocaleStringProvider]
@@ -165,9 +176,5 @@ namespace Nop.Plugin.Widgets.Employees.Resources
         [LocaleString(LocaleStringAttribute.EN, "Published", "Should the record be displayed?")]
         [LocaleString(LocaleStringAttribute.IS, "Birt", "Á að birta færsluna?")]
         public const string Published = "Status.EmployeeWidget.Generic.Published";
-
-        [LocaleString(LocaleStringAttribute.EN, "Deleted", "Is the record deleted")]
-        [LocaleString(LocaleStringAttribute.IS, "Eytt", "Er búið að eyða færslunni")]
-        public const string Deleted = "Status.EmployeeWidget.Generic.Deleted";
     }
 }

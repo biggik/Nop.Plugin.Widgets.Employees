@@ -9,15 +9,11 @@ using Nop.Services.Security;
 using Nop.Core;
 using Nop.Services.Media;
 using Nop.Web.Framework.Models.Extensions;
-using System;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using System.IO;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
     public partial class WidgetsEmployeesController : BasePluginController
     {
-        internal const string UrlRouteName = "Employees";
         public static string ControllerName = nameof(WidgetsEmployeesController).Replace("Controller", "");
         const string Route = "~/Plugins/Widgets.Employees/Views/Employees/";
 
@@ -47,26 +43,44 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             _pictureService = pictureService;
         }
 
-        public IActionResult Index(bool showUnpublished = false, bool groupByDepartment = true)
+        public IActionResult Index(bool groupByDepartment = true)
         {
+            return ListEmployees(showUnpublished: false, groupByDepartment);
+        }
+
+        public IActionResult ListAll(bool groupByDepartment = true)
+        {
+            // Require admin access to see all
+            return ListEmployees(showUnpublished: _permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel), groupByDepartment);
+        }
+
+        private IActionResult ListEmployees(bool showUnpublished, bool groupByDepartment)
+        { 
             var model = new DepartmentEmployeeModel
             {
                 IsAdmin = _permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel),
+                ShowAll = showUnpublished,
                 GroupByDepartment = groupByDepartment
             };
 
-            var employesModel = new EmployeesListModel { DepartmentName = "" };
+            if (!model.IsAdmin && showUnpublished)
+            {
+                showUnpublished = false;
+            }
+
+            var employesModel = new EmployeesListModel { Department = new DepartmentModel { Name = "" } };
 
             foreach (var d in _employeeService.GetAllDepartments(showUnpublished))
             {
                 if (groupByDepartment)
                 {
-                    employesModel = new EmployeesListModel { DepartmentName = d.Name };
+                    employesModel = new EmployeesListModel { Department = d.ToModel() };
                 }
                 foreach (var employee in _employeeService.GetEmployeesByDepartmentId(d.Id, showUnpublished))
                 {
                     var e = employee.ToModel();
                     e.PhotoUrl = GetPictureUrl(e.PictureId);
+                    e.DepartmentPublished = d.Published;
                     e.DepartmentName = d.Name;
                     employesModel.Employees.Add(e);
                 }
@@ -120,12 +134,17 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             };
 
             var e = GetEmployeeByIdOrEmailPrefix(id);
+            if (e == null)
+            {
+                return RedirectToAction(nameof(Index), new { area = "" });
+            }
 
             model.Employee = e.ToModel();
             model.Employee.PhotoUrl = (e.PictureId > 0) ? _pictureService.GetPictureUrl(e.PictureId, 200) : null;
             var department = _employeeService.GetDepartmentById(e.DepartmentId);
             if (department != null)
             {
+                model.Employee.DepartmentPublished = department.Published;
                 model.Employee.DepartmentName = department.Name;
             }
             return View($"{Route}EmployeeInfo.cshtml", model);

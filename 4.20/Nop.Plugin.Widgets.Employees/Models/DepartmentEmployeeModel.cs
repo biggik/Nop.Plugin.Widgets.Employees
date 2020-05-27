@@ -9,6 +9,7 @@ namespace Nop.Plugin.Widgets.Employees.Models
         }
 
         public bool GroupByDepartment { get; set; }
+        public bool ShowAll { get; set; }
         public bool IsAdmin { get; set; }
 
         //public List<DepartmentModel> Departments { get; set; }

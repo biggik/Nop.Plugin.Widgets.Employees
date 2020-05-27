@@ -1,7 +1,6 @@
 ﻿@model EmployeeModel
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
-@using Nop.Web.Framework
 @using Nop.Plugin.Widgets.Employees.Controllers;
 
 @Html.ValidationSummary(false)
@@ -76,7 +75,6 @@
                             <nop-editor asp-for="Info" asp-required="true" asp-template="RichEditor" />
                             <span asp-validation-for="Info" />
                         </div>
-
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
@@ -86,7 +84,6 @@
                             <nop-editor asp-for="Specialties" asp-required="true" asp-template="RichEditor" />
                             <span asp-validation-for="Specialties" />
                         </div>
-
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
@@ -145,16 +142,6 @@
                         <div class="col-md-9">
                             <nop-editor asp-for="Published" asp-required="true" />
                             <span asp-validation-for="Published" />
-                        </div>
-
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-3">
-                            <nop-label asp-for="Deleted" />
-                        </div>
-                        <div class="col-md-9">
-                            <nop-editor asp-for="Deleted" asp-required="true" />
-                            <span asp-validation-for="Deleted" />
                         </div>
                     </div>
                 </div>

@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using Nop.Plugin.Widgets.Employees.Models;
-using Nop.Web.Framework.Mvc;
 using Nop.Web.Framework.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Services.Security;
 using Nop.Web.Framework;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.IO;
+using Nop.Web.Framework.Models.Extensions;
+using Nop.Web.Framework.Models;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
@@ -17,20 +17,20 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(AreaNames.Admin)]
         public IActionResult Configure()
         {
-            var model = new EmployeeModel();
-
-            return View($"{Route}Configure.cshtml", model);
+            return View($"{Route}Configure.cshtml", new EmployeeModel());
         }
 
         private IList<SelectListItem> GetAllAvailableDepartments(int selectedDepartmentId = -1)
         {
-            return (from d in _employeeService.GetAllDepartments()
+            return (from d in _employeeService.GetAllDepartments(showUnpublished: true)
+                    .Where(dep => dep.Id == selectedDepartmentId || dep.Published)
                     select new SelectListItem
                     {
                         Text = d.Name,
                         Value = d.Id.ToString(),
                         Selected = d.Id == selectedDepartmentId
-                    }).ToList();
+                    })
+                    .ToList();
         }
 
         private EmployeeModel GetEmployeeWithAllAvailableDepartments(int selectedDepartmentId = -1)
@@ -49,11 +49,11 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageShippingSettings))
                 return Content("Access denied");
 
-            var sbw = _employeeService.GetById(id);
-            if (sbw != null)
-                _employeeService.DeleteEmployee(sbw);
+            var employee = _employeeService.GetById(id);
+            if (employee != null)
+                _employeeService.DeleteEmployee(employee);
 
-            return new NullJsonResult();
+            return RedirectToAction(nameof(Index), new { area = "" });
         }
 
         [AuthorizeAdmin]
@@ -81,8 +81,8 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
                 _employeeService.InsertEmployee(employee);
                 return continueEditing
-                    ? RedirectToAction(nameof(EditEmployee), new { id = employee.Id })
-                    : RedirectToAction(nameof(WidgetsEmployeesController.Index), WidgetsEmployeesController.ControllerName);
+                    ? RedirectToAction(nameof(EmployeeInfo), new { id = employee.Id, area = "" })
+                    : RedirectToAction(nameof(Index), ControllerName, new { area = "" });
             }
 
             //If we got this far, something failed, redisplay form
@@ -98,6 +98,11 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 return AccessDeniedView();
 
             var employee = _employeeService.GetById(id);
+            if (employee == null)
+            {
+                return RedirectToAction(nameof(Index), new { area = "" });
+            }
+
             var model = employee.ToModel();
             model.AvailableDepartments = GetAllAvailableDepartments(employee.DepartmentId);
             return View($"{Route}EditEmployee.cshtml", model);
@@ -121,8 +126,8 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
                 _employeeService.UpdateEmployee(employee);
                 return continueEditing
-                    ? RedirectToAction(nameof(EditEmployee), new { id = employee.Id })
-                    : RedirectToAction(nameof(WidgetsEmployeesController.Index), WidgetsEmployeesController.ControllerName);
+                    ? RedirectToAction(nameof(EmployeeInfo), new { id = employee.Id, area = "" })
+                    : RedirectToAction(nameof(Index), ControllerName, new { area = "" });
             }
 
             //If we got this far, something failed, redisplay form
@@ -207,10 +212,27 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
                 return AccessDeniedView();
 
-            var model = (from department in _employeeService.GetAllDepartments(true)
-                         select department.ToModel()).ToList();
+            return View($"{Route}DepartmentList.cshtml", new DepartmentSearchModel());
+        }
 
-            return View($"{Route}DepartmentList.cshtml", model);
+        [AuthorizeAdmin]
+        [Area(AreaNames.Admin)]
+        public IActionResult DepartmentListData(DepartmentSearchModel searchModel)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+                return Content("Access denied");
+
+            var departments = _employeeService.GetAllDepartments(showUnpublished:true, searchModel.Page - 1, searchModel.PageSize);
+            var model = new DepartmentListModel().PrepareToGrid(searchModel, departments, () =>
+            {
+                return departments.Select(department =>
+                {
+                    var d = department.ToModel();
+                    return d;
+                });
+            });
+
+            return Json(model);
         }
 
         [AuthorizeAdmin]
@@ -224,7 +246,5 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             }
             return NotFound();
         }
-
-
     }
 }

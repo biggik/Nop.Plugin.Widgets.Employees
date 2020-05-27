@@ -7,6 +7,7 @@ namespace Nop.Plugin.Widgets.Employees.Services
     public partial interface IEmployeesService
     {
         IPagedList<Employee> GetAll(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue);
+        IPagedList<Department> GetAllDepartments(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue);
 
         Employee GetById(int id);
         Employee GetByEmailPrefix(string emailPrefix);
@@ -18,8 +19,6 @@ namespace Nop.Plugin.Widgets.Employees.Services
         void UpdateDepartment(Department department);
 
         void DeleteEmployee(Employee employee);
-
-        IList<Department> GetAllDepartments(bool showUnpublished = false);
 
         IList<Employee> GetEmployeesByDepartmentId(int departmentId, bool showUnpublished = false);
 

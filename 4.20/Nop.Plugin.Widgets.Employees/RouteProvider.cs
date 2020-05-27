@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Routing;
 using Nop.Plugin.Widgets.Employees.Controllers;
 using Nop.Web.Framework.Localization;
 using Nop.Web.Framework.Mvc.Routing;
@@ -10,83 +9,109 @@ namespace Nop.Plugin.Widgets.Employees
     {
         public void RegisterRoutes(IRouteBuilder routeBuilder)
         {
+            RegisterPublicRoutes(routeBuilder);
+            RegisterDepartmentAdminRoutes(routeBuilder);
+            RegisterEmployeeAdminRoutes(routeBuilder);
+        }
+
+        private void RegisterPublicRoutes(IRouteBuilder routeBuilder)
+        {
+            string controller = WidgetsEmployeesController.ControllerName;
+            string namePrefix = $"Plugins.{controller}.";
+            string routePrefix = "Employees";
+
             string action = "";
             string actionSanitized = "";
-            string namePrefix = "";
 
-            ////////////////////////////////////////////////
-            // Public methods
-            string controller = WidgetsEmployeesController.ControllerName;
-            namePrefix = $"Plugins.{controller}.";
+            void Build(string routeAction = null) 
+                => routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
+                        routeAction ?? $"{routePrefix}/{actionSanitized}",
+                        new { controller = controller, action = action });
 
             // Index
             action = nameof(WidgetsEmployeesController.Index);
-            actionSanitized = action;
-            routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
-                $"{WidgetsEmployeesController.UrlRouteName}", // Skip action - to get only /Employees
-                new { controller = controller, action = action });
+            actionSanitized = action + "/{groupByDepartment}";
+            Build(routePrefix); // Skip action - to get only /Employees
+
+            // ListAll
+            action = nameof(WidgetsEmployeesController.ListAll);
+            actionSanitized = action + "/{groupByDepartment}";
+            Build();
 
             // Employee info
             action = nameof(WidgetsEmployeesController.EmployeeInfo);
-            actionSanitized = "Info/{id}";
-            routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
-                $"{WidgetsEmployeesController.UrlRouteName}/{actionSanitized}",
-                new { controller = controller, action = action });
+            actionSanitized = "{id}";
+            Build();
+        }
 
-            ////////////////////////////////////////////////
-            // Admin methods
-            controller = WidgetsEmployeesController.ControllerName;
-            namePrefix = $"Plugins.{controller}.";
+        private void RegisterDepartmentAdminRoutes(IRouteBuilder routeBuilder)
+        {
+            string controller = WidgetsEmployeesController.ControllerName;
+            string namePrefix = $"Plugins.{controller}.";
+            string routePrefix = "Admin/EmployeeDepartments";
+
+            string action = "";
+            string actionSanitized = "";
+
+            void Build() => routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
+                                $"{routePrefix}/{actionSanitized}",
+                                new { controller = controller, action = action, area = "Admin" });
+
+            // Create department
+            action = nameof(WidgetsEmployeesController.CreateDepartment);
+            actionSanitized = "Create";
+            Build();
+
+            // Edit department
+            action = nameof(WidgetsEmployeesController.EditDepartment);
+            actionSanitized = "Edit/{id}";
+            Build();
+
+            // List departments
+            action = nameof(WidgetsEmployeesController.DepartmentList);
+            actionSanitized = "List";
+            Build();
+
+            // List department data
+            action = nameof(WidgetsEmployeesController.DepartmentListData);
+            actionSanitized = "ListData";
+            Build();
+        }
+
+        private void RegisterEmployeeAdminRoutes(IRouteBuilder routeBuilder)
+        {
+            string controller = WidgetsEmployeesController.ControllerName;
+            string namePrefix = $"Plugins.{controller}.";
+            string routePrefix = "Admin/Employees";
+
+            string action = "";
+            string actionSanitized = "";
+
+            void Build() => routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
+                                $"{routePrefix}/{actionSanitized}",
+                                new { controller = controller, action = action, area = "Admin" });
 
             // Configure
             action = nameof(WidgetsEmployeesController.Configure);
             actionSanitized = "Configure";
-            routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
-                $"{WidgetsEmployeesController.UrlRouteName}/{actionSanitized}",
-                new { controller = controller, action = action, area = "Admin" });
-
-            // Edit department
-            action = nameof(WidgetsEmployeesController.EditDepartment);
-            actionSanitized = "Department/Edit/{id}";
-            routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
-                $"{WidgetsEmployeesController.UrlRouteName}/{actionSanitized}",
-                new { controller = controller, action = action, area = "Admin" });
+            Build();
 
             // Edit employee
             action = nameof(WidgetsEmployeesController.EditEmployee);
-            actionSanitized = "Employee/Edit/{id}";
-            routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
-                $"{WidgetsEmployeesController.UrlRouteName}/{actionSanitized}",
-                new { controller = controller, action = action, area = "Admin" });
-
-            // Create department
-            action = nameof(WidgetsEmployeesController.CreateDepartment);
-            actionSanitized = "Department/Create";
-            routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
-                $"{WidgetsEmployeesController.UrlRouteName}/{actionSanitized}",
-                new { controller = controller, action = action, area = "Admin" });
+            actionSanitized = "Edit/{id}";
+            Build();
 
             // Create employee
             action = nameof(WidgetsEmployeesController.CreateEmployee);
-            actionSanitized = "Employee/Create";
-            routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
-                $"{WidgetsEmployeesController.UrlRouteName}/{actionSanitized}",
-                new { controller = controller, action = action, area = "Admin" });
+            actionSanitized = "Create";
+            Build();
 
-            // Create employee
+            // Full size employee picture
             action = nameof(WidgetsEmployeesController.GetFullSizeEmployeePicture);
-            actionSanitized = "Employee/Picture/{id}";
-            routeBuilder.MapLocalizedRoute($"{namePrefix}{action}",
-                $"{WidgetsEmployeesController.UrlRouteName}/{actionSanitized}",
-                new { controller = controller, action = action, area = "Admin" });
+            actionSanitized = "{id}/Picture";
+            Build();
         }
 
-        public int Priority
-        {
-            get
-            {
-                return -1;
-            }
-        }
+        public int Priority => -1;
     }
 }

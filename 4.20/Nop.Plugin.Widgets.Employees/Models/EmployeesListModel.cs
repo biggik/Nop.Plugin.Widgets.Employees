@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Nop.Plugin.Widgets.Employees.Domain;
 using Nop.Web.Framework.Models;
 namespace Nop.Plugin.Widgets.Employees.Models
 {
@@ -9,7 +10,7 @@ namespace Nop.Plugin.Widgets.Employees.Models
             Employees = new List<EmployeeModel>();
         }
 
-        public string DepartmentName { get; set; }
+        public DepartmentModel Department { get; set; }
         public List<EmployeeModel> Employees { get; set; }
     }
 }
