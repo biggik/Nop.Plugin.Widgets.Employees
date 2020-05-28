@@ -10,16 +10,6 @@
     <div class="Employees">
         <div class="employees-title">
             <div class="title">
-                @if (Model.IsAdmin)
-                {
-                    <div class="options">
-                        @Html.ActionLink(T(EmployeeActionResources.Edit).Text,
-                            nameof(WidgetsEmployeesController.EditEmployee),
-                            WidgetsEmployeesController.ControllerName,
-                            new { id = Model.Employee.Id },
-                            new { @class = "btn btn-dark" })
-                    </div>
-                }
                 <div class="EmployeeInfoBack">
                     @Html.ActionLink(T(EmployeeActionResources.BackToList).Text,
                         nameof(WidgetsEmployeesController.Index),

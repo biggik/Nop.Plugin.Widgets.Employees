@@ -121,6 +121,11 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 return RedirectToAction(nameof(Index), new { area = "" });
             }
 
+            if (model.IsAdmin)
+            {
+                DisplayEditLink(Url.Action(nameof(EditEmployee), ControllerName, new { id = e.Id.ToString() }));
+            }
+
             model.Employee = e.ToModel();
             model.Employee.PhotoUrl = (e.PictureId > 0) ? _pictureService.GetPictureUrl(e.PictureId, 200) : null;
             var department = _employeeService.GetDepartmentById(e.DepartmentId);

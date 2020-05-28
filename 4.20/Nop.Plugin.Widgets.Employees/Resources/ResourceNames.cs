@@ -90,13 +90,6 @@ namespace Nop.Plugin.Widgets.Employees.Resources
         [LocaleString(LocaleStringAttribute.IS, "Tilbaka í starfsmannalista")]
         public const string BackToList = "Status.EmployeeWidget.Action.Employee.BackToList";
 
-        //"Employee.Department", "Department", "Deild"),
-        //"Employee.Employee", "Employee", "Starfsmaður"),
-
-        [LocaleString(LocaleStringAttribute.EN, "Edit employee")]
-        [LocaleString(LocaleStringAttribute.IS, "Breyta starfsmanni")]
-        public const string Edit = "Status.EmployeeWidget.Action.Employee.Edit";
-
         [LocaleString(LocaleStringAttribute.EN, "View picture")]
         [LocaleString(LocaleStringAttribute.IS, "Skoða mynd")]
         public const string ViewPicture = "Status.EmployeeWidget.Action.Employee.ViewPicture";
