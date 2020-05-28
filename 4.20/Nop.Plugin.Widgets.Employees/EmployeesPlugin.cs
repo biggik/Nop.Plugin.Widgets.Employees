@@ -5,22 +5,18 @@ using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Plugin.Widgets.Employees.Data;
 using Nop.Plugin.Widgets.Employees.Services;
-using System;
 using Nop.Core.Infrastructure;
 using Nop.Core.Domain.Localization;
 using Nop.Core;
 using Nop.Services.Plugins;
 using Nop.Plugin.Widgets.Employees.Resources;
 using Nop.Web.Framework.Menu;
-using Nop.Plugin.Widgets.Employees.Controllers;
 
 namespace Nop.Plugin.Widgets.Employees
 {
     public class EmployeesPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
     {
         private static bool resourcesCreated = false;
-        private readonly IEmployeesService _employeeService;
-        private readonly EmployeesSettings _employeeSettings;
         private readonly EmployeesObjectContext _objectContext;
         private readonly ISettingService _settingService;
         private readonly IWebHelper _webHelper;
@@ -29,73 +25,36 @@ namespace Nop.Plugin.Widgets.Employees
 
         public EmployeesPlugin(
             IWebHelper webHelper,
-            IEmployeesService employeeService,
-            EmployeesSettings employeeSettings,
             EmployeesObjectContext objectContext,
+            IStoreContext storeContext,
             ISettingService settingService)
         {
-            this._webHelper = webHelper;
-            this._employeeService = employeeService;
-            this._employeeSettings = employeeSettings;
-            this._objectContext = objectContext;
-            this._settingService = settingService;
+            _webHelper = webHelper;
+            _objectContext = objectContext;
+            _settingService = settingService;
 #if DEBUG
             CreateLocaleStrings();
 #endif
+
+            var storeScope = storeContext.ActiveStoreScopeConfiguration;
+            var settings = _settingService.LoadSetting<EmployeeWidgetSettings>(storeScope);
+
+            _widgetZones = string.IsNullOrWhiteSpace(settings.WidgetZones)
+                ? new List<string>()
+                : settings.WidgetZones.Split(';').ToList();
         }
 
         /// <summary>
         /// Gets widget zones where this widget should be rendered
         /// </summary>
         /// <returns>Widget zones</returns>
-        public IList<string> GetWidgetZones()
-        {
-            return new string[] { };
-        }
+        public IList<string> GetWidgetZones() => _widgetZones;
+        List<string> _widgetZones;
 
         /// <summary>
         /// Gets a configuration page URL
         /// </summary>
-        public override string GetConfigurationPageUrl()
-        {
-            return $"{_webHelper.GetStoreLocation()}Admin/Employees/Configure";
-        }
-
-        /// <summary>
-        /// Gets a route for provider configuration
-        /// </summary>
-        /// <param name="actionName">Action name</param>
-        /// <param name="controllerName">Controller name</param>
-        /// <param name="routeValues">Route values</param>
-        //public void GetConfigurationRoute(out string actionName, out string controllerName, out RouteValueDictionary routeValues)
-        //{
-        //    actionName = "Configure";
-        //    controllerName = "Employees";
-        //    routeValues = new RouteValueDictionary
-        //    {
-        //        { "Namespaces", "Nop.Plugin.Widgets.Employees.Controllers" }, 
-        //        { "area", "admin" }
-        //    };
-        //}
-
-        /// <summary>
-        /// Gets a route for displaying widget
-        /// </summary>
-        /// <param name="widgetZone">Widget zone where it's displayed</param>
-        /// <param name="actionName">Action name</param>
-        /// <param name="controllerName">Controller name</param>
-        /// <param name="routeValues">Route values</param>
-        //public void GetDisplayWidgetRoute(string widgetZone, out string actionName, out string controllerName, out RouteValueDictionary routeValues)
-        //{
-        //    actionName = "PublicInfo";
-        //    controllerName = "Employees";
-        //    routeValues = new RouteValueDictionary
-        //    {
-        //        {"Namespaces", "Nop.Plugin.Widgets.Employees.Controllers"},
-        //        {"area", null},
-        //        {"widgetZone", widgetZone}
-        //    };
-        //}
+        public override string GetConfigurationPageUrl() => $"{_webHelper.GetStoreLocation()}Admin/Employees/Configure";
 
         internal void CreateLocaleStrings()
         {
@@ -107,18 +66,19 @@ namespace Nop.Plugin.Widgets.Employees
         }
 
         private void DoCreateLocaleStrings()
-        { 
+        {
             var localizationService = EngineContext.Current.Resolve<ILocalizationService>();
             var languageService = EngineContext.Current.Resolve<ILanguageService>();
 
             var availableLanguages = (from lang in languageService.GetAllLanguages()
-                                      select lang).ToDictionary(x => x.LanguageCulture, y => y);
+                                      select lang
+                                     ).ToDictionary(x => x.LanguageCulture, y => y);
 
             IEnumerable<(LocaleStringAttribute lsa, Language language)> AsLSA(object[] values)
             {
                 foreach (var v in values)
                 {
-                    var lsa = (LocaleStringAttribute)v;
+                    var lsa = v as LocaleStringAttribute;
                     if (availableLanguages.ContainsKey(lsa.Culture))
                     {
                         yield return (lsa, availableLanguages[lsa.Culture]);
@@ -128,7 +88,7 @@ namespace Nop.Plugin.Widgets.Employees
             var resources = from type in GetType().Assembly.GetTypes()
                             where type.CustomAttributes.Any(x => x.AttributeType == typeof(LocaleStringProviderAttribute))
                             from field in type.GetFields()
-                            select (resourceName: field.GetValue(null).ToString(), 
+                            select (resourceName: field.GetValue(null).ToString(),
                                     localeStrings: AsLSA(field.GetCustomAttributes(typeof(LocaleStringAttribute), false)));
 
             foreach (var resource in resources)
@@ -163,24 +123,19 @@ namespace Nop.Plugin.Widgets.Employees
                 }
             }
         }
-        
+
         /// <summary>
         /// Install plugin
         /// </summary>
         public override void Install()
         {
-            //settings
-            var settings = new EmployeesSettings
-            {
-                LimitMethodsToCreated = false,
-            };
-            _settingService.SaveSetting(settings);
+            _settingService.SaveSetting(new EmployeeWidgetSettings { });
 
             //database objects
             _objectContext.Install();
 
             CreateLocaleStrings();
-            
+
             base.Install();
         }
 
@@ -190,21 +145,18 @@ namespace Nop.Plugin.Widgets.Employees
         public override void Uninstall()
         {
             //settings
-            _settingService.DeleteSetting<EmployeesSettings>();
+            _settingService.DeleteSetting<EmployeeWidgetSettings>();
 
             //database objects
             _objectContext.Uninstall();
 
             //locales
             //this.DeletePluginLocaleResource("Plugins.Widgets.Employees.Fields.Country");
-            
+
             base.Uninstall();
         }
 
-        public string GetWidgetViewComponentName(string widgetZone)
-        {
-            return "WidgetsEmployees";
-        }
+        public string GetWidgetViewComponentName(string widgetZone) => "WidgetsEmployees";
 
         public void ManageSiteMap(SiteMapNode rootNode)
         {

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Nop.Plugin.Widgets.Employees.Models;
+﻿using Nop.Plugin.Widgets.Employees.Models;
 using Nop.Plugin.Widgets.Employees.Services;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Nop.Services.Security;
 using Nop.Core;
 using Nop.Services.Media;
-using Nop.Web.Framework.Models.Extensions;
+using Nop.Services.Messages;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
@@ -17,27 +16,30 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         public static string ControllerName = nameof(WidgetsEmployeesController).Replace("Controller", "");
         const string Route = "~/Plugins/Widgets.Employees/Views/Employees/";
 
-        private readonly EmployeesSettings _employeeSettings;
         private readonly IEmployeesService _employeeService;
+        private readonly IStoreContext _storeContext;
         private readonly ISettingService _settingService;
         private readonly ILocalizationService _localizationService;
+        private readonly INotificationService _notificationService;
         private readonly IPermissionService _permissionService;
         private readonly IWorkContext _workContext;
         private readonly IPictureService _pictureService;
 
         public WidgetsEmployeesController(
-            EmployeesSettings employeeSettings,
             IEmployeesService employeeService,
+            IStoreContext storeContext,
             ISettingService settingService,
             ILocalizationService localizationService,
+            INotificationService notificationService,
             IPermissionService permissionService,
             IWorkContext workContext,
             IPictureService pictureService)
         {
-            _employeeSettings = employeeSettings;
             _employeeService = employeeService;
+            _storeContext = storeContext;
             _settingService = settingService;
             _localizationService = localizationService;
+            _notificationService = notificationService;
             _permissionService = permissionService;
             _workContext = workContext;
             _pictureService = pictureService;

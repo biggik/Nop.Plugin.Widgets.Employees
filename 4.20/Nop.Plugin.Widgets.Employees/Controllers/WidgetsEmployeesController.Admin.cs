@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reflection;
 using Nop.Plugin.Widgets.Employees.Models;
 using Nop.Web.Framework.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using Nop.Web.Framework;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Web.Framework.Models.Extensions;
-using Nop.Web.Framework.Models;
+using Nop.Web.Framework.Controllers;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
@@ -17,7 +18,77 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(AreaNames.Admin)]
         public IActionResult Configure()
         {
-            return View($"{Route}Configure.cshtml", new EmployeeModel());
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
+                return BadRequest();
+
+            var storeScope = _storeContext.ActiveStoreScopeConfiguration;
+            var settings = _settingService.LoadSetting<EmployeeWidgetSettings>(storeScope);
+
+            var widgetZonesData = GetWidgetZoneData();
+            var lookup = widgetZonesData.ToDictionary(x => x.value, y => y.id);
+
+            var currentWidgetZones = (from i in (settings.WidgetZones ?? "").Split(';')
+                                      where lookup.ContainsKey(i)
+                                      select lookup[i]).ToList();
+
+            var model = new ConfigurationModel
+            {
+                WidgetZones = currentWidgetZones,
+                AvailableWidgetZones = (from wzd in widgetZonesData
+                                        select new SelectListItem
+                                        {
+                                            Text = wzd.name,
+                                            Value = wzd.id.ToString(),
+                                            Selected = currentWidgetZones.Contains(wzd.id)
+                                        }
+                                       ).ToList()
+            };
+
+            return View($"{Route}Configure.cshtml", model);
+        }
+
+        [AuthorizeAdmin]
+        [Area(AreaNames.Admin)]
+        [HttpPost, ActionName("Configure")]
+        [FormValueRequired("save")]
+        public IActionResult Configure(ConfigurationModel model)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return Configure();
+
+            var storeScope = _storeContext.ActiveStoreScopeConfiguration;
+            var settings = _settingService.LoadSetting<EmployeeWidgetSettings>(storeScope);
+
+            var widgetZonesData = GetWidgetZoneData();
+            var lookup = widgetZonesData.ToDictionary(x => x.id, y => y.value);
+
+            settings.WidgetZones = model.WidgetZones != null && model.WidgetZones.Any()
+                ? string.Join(";",
+                        from i in model.WidgetZones
+                        where lookup.ContainsKey(i)
+                        select lookup[i]
+                        )
+                : "";
+
+            _settingService.SaveSetting(settings, s => s.WidgetZones, clearCache: false);
+            _settingService.ClearCache();
+
+            _notificationService.SuccessNotification(_localizationService.GetResource("Admin.Plugins.Saved"));
+
+            return Configure();
+        }
+
+        private List<(string name, string value, int id)> GetWidgetZoneData()
+        {
+            int id = 1000;
+            return typeof(Nop.Web.Framework.Infrastructure.PublicWidgetZones)
+                .GetProperties(BindingFlags.Static | BindingFlags.Public)
+                .OrderBy(x => x.Name)
+                .Select(x => (name: x.Name, value: x.GetValue(null, null).ToString(), id++))
+                .ToList();
         }
 
         private IList<SelectListItem> GetAllAvailableDepartments(int selectedDepartmentId = -1)

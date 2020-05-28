@@ -167,6 +167,14 @@ namespace Nop.Plugin.Widgets.Employees.Resources
     }
 
     [LocaleStringProvider]
+    public static class ConfigurationResources
+    {
+        [LocaleString(LocaleStringAttribute.EN, "Widget zones", "In which zones should the widget be displayed")]
+        [LocaleString(LocaleStringAttribute.IS, "Birta í", "Hvar á síðunni á að birta íhlutinn")]
+        public const string WidgetZones = "Status.EmployeeWidget.Configuration.WidgetZones";
+    }
+
+    [LocaleStringProvider]
     public static class GenericResources
     {
         [LocaleString(LocaleStringAttribute.EN, "Display order", "The display order for the record")]
