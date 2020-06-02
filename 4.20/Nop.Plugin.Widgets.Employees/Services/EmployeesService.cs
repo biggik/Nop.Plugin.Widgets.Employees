@@ -157,12 +157,12 @@ namespace Nop.Plugin.Widgets.Employees.Services
                     select employee).ToList();
         }
 
-        public virtual Department GetDepartmentById(int departId)
+        public virtual Department GetDepartmentById(int departmentId)
         {
-            return (from sbw in _departmentRespository.Table
-                    where sbw.Id == departId
-                    orderby sbw.Name
-                    select sbw)
+            return (from department in _departmentRespository.Table
+                    where department.Id == departmentId
+                    orderby department.Name
+                    select department)
                     .FirstOrDefault();
         }
         #endregion

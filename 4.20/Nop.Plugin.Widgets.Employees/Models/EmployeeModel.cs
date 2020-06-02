@@ -59,7 +59,8 @@ namespace Nop.Plugin.Widgets.Employees.Models
         public string PhotoUrl { get; set; }
         public bool DepartmentPublished { get; set; }
         public string DepartmentName { get; set; }
-        public string EmailPrefixOrId => (Email?.Contains('@') ?? false) ? Email.Split('@')[0] : Id.ToString();
+        public bool HasUniqueEmail { get; set; }
+        public string EmailPrefixOrId => (Email?.Contains('@') ?? false) && HasUniqueEmail ? Email.Split('@')[0] : Id.ToString();
      
         public IList<SelectListItem> AvailableDepartments { get; set; }
 

@@ -8,6 +8,8 @@ using Nop.Services.Security;
 using Nop.Core;
 using Nop.Services.Media;
 using Nop.Services.Messages;
+using System.Collections.Generic;
+using System;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
@@ -72,6 +74,8 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             var employesModel = new EmployeesListModel { Department = new DepartmentModel { Name = "" } };
 
+            var emailCount = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
+
             foreach (var d in _employeeService.GetAllDepartments(showUnpublished))
             {
                 if (groupByDepartment)
@@ -81,9 +85,20 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 foreach (var employee in _employeeService.GetEmployeesByDepartmentId(d.Id, showUnpublished))
                 {
                     var e = employee.ToModel();
+
+                    if (emailCount.ContainsKey(e.Email))
+                    {
+                        emailCount[e.Email]++;
+                    }
+                    else
+                    {
+                        emailCount[e.Email] = 1;
+                    }
+
                     e.PhotoUrl = GetPictureUrl(e.PictureId);
                     e.DepartmentPublished = d.Published;
                     e.DepartmentName = d.Name;
+
                     employesModel.Employees.Add(e);
                 }
                 if (groupByDepartment)
@@ -96,6 +111,14 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             {
                 // The Model is a single-entry list (empty department) with a list of all employees
                 model.EmployeesList.Add(employesModel);
+            }
+
+            foreach (var employeeList in model.EmployeesList)
+            {
+                foreach (var employee in employeeList.Employees)
+                {
+                    employee.HasUniqueEmail = emailCount[employee.Email] == 1;
+                }
             }
 
             return View($"{Route}List.cshtml", model);
