@@ -12,33 +12,33 @@
         {
             <div class="options">
                 @Html.ActionLink(T(AdminResources.AddEmployeeButton).Text,
-                    nameof(WidgetsEmployeesController.CreateEmployee),
-                    WidgetsEmployeesController.ControllerName,
-                    null,
+                    nameof(EmployeesController.Create),
+                    EmployeesController.ControllerName,
+                    new { area = "Admin" },
                     new { @class = "btn btn-primary" })
                 |
                 @if (Model.ShowAll)
                 {
                     @Html.ActionLink(T(AdminResources.SeePublished).Text,
-                             nameof(WidgetsEmployeesController.Index),
-                             WidgetsEmployeesController.ControllerName,
+                             nameof(EmployeesController.Index),
+                             EmployeesController.ControllerName,
                              null,
                              new { @class = "btn btn-info" })
                 }
                 else
                 {
                     @Html.ActionLink(T(AdminResources.SeeAllButton).Text,
-                             nameof(WidgetsEmployeesController.ListAll),
-                             WidgetsEmployeesController.ControllerName,
+                             nameof(EmployeesController.ListAll),
+                             EmployeesController.ControllerName,
                              null,
                              new { @class = "btn btn-info" })
                 }
                 |
                 @Html.ActionLink(T(DepartmentActionResources.DepartmentListButton).Text,
-                    nameof(WidgetsEmployeesController.DepartmentList),
-                    WidgetsEmployeesController.ControllerName,
-                    null,
-                    new { @class = "btn btn-primary", area = "admin" })
+                    nameof(DepartmentsController.List),
+                    DepartmentsController.ControllerName,
+                    new { area = "admin" },
+                    new { @class = "btn btn-primary" })
             </div>
         }
     </div>
@@ -82,16 +82,16 @@
                             @if (Model.IsAdmin)
                             {
                                 @Html.ActionLink(T(EmployeeResources.Details).Text,
-                                                 nameof(WidgetsEmployeesController.EmployeeInfo),
-                                                 WidgetsEmployeesController.ControllerName,
+                                                 nameof(EmployeesController.Info),
+                                                 EmployeesController.ControllerName,
                                                  new { id = employee.Id },
                                                  new { @class = "employee-zoom" });
                             }
                             else
                             {
                                 @Html.ActionLink(T(EmployeeResources.Details).Text,
-                                                 nameof(WidgetsEmployeesController.EmployeeInfo),
-                                                 WidgetsEmployeesController.ControllerName,
+                                                 nameof(EmployeesController.Info),
+                                                 EmployeesController.ControllerName,
                                                  new { id = employee.EmailPrefixOrId },
                                                  new { @class = "employee-zoom" });
                             }

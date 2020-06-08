@@ -54,19 +54,19 @@
     <None Update="Views\Employees\Configure.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Employees\CreateDepartment.cshtml">
+    <None Update="Views\Departments\Create.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Employees\CreateEmployee.cshtml">
+    <None Update="Views\Employees\Create.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Employees\DepartmentList.cshtml">
+    <None Update="Views\Departments\List.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Employees\EditDepartment.cshtml">
+    <None Update="Views\Departments\Edit.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Employees\EditEmployee.cshtml">
+    <None Update="Views\Employees\Edit.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Views\Employees\_list.cshtml">
@@ -75,7 +75,7 @@
     <None Update="Views\Employees\ListAll.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Employees\_CreateOrUpdateDepartment.cshtml">
+    <None Update="Views\Departments\_CreateOrUpdateDepartment.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Views\Employees\_CreateOrUpdateEmployee.cshtml">
@@ -93,7 +93,7 @@
     <None Update="Content\Employees.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Employees\EmployeeInfo.cshtml">
+    <None Update="Views\Employees\Info.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Views\Employees\List.cshtml">

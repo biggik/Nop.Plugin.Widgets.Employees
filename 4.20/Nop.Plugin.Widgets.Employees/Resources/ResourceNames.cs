@@ -98,8 +98,8 @@ namespace Nop.Plugin.Widgets.Employees.Resources
     [LocaleStringProvider]
     public static class AdminResources
     {
-        [LocaleString(LocaleStringAttribute.EN, "Add new")]
-        [LocaleString(LocaleStringAttribute.IS, "Skrá starfsmann")]
+        [LocaleString(LocaleStringAttribute.EN, "Add a new employee")]
+        [LocaleString(LocaleStringAttribute.IS, "Skrá nýjan starfsmann")]
         public const string AddEmployeeCaption = "Status.EmployeeWidget.Admin.Employee.Caption.Add";
 
         [LocaleString(LocaleStringAttribute.EN, "Add new")]
@@ -130,7 +130,7 @@ namespace Nop.Plugin.Widgets.Employees.Resources
         [LocaleString(LocaleStringAttribute.IS, "Breyta deild")]
         public const string EditDepartmentCaption = "Status.EmployeeWidget.Admin.Department.Caption.Edit";
 
-        [LocaleString(LocaleStringAttribute.EN, "Eployee department list")]
+        [LocaleString(LocaleStringAttribute.EN, "Employee department list")]
         [LocaleString(LocaleStringAttribute.IS, "Deildalisti starfsmanna")]
         public const string DepartmentListCaption = "Status.EmployeeWidget.Admin.Department.Caption.Departments";
     }

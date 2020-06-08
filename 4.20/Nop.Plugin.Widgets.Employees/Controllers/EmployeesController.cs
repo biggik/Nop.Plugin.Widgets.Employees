@@ -13,9 +13,9 @@ using System;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
-    public partial class WidgetsEmployeesController : BasePluginController
+    public partial class EmployeesController : BasePluginController
     {
-        public static string ControllerName = nameof(WidgetsEmployeesController).Replace("Controller", "");
+        public static string ControllerName = nameof(EmployeesController).Replace("Controller", "");
         const string Route = "~/Plugins/Widgets.Employees/Views/Employees/";
 
         private readonly IEmployeesService _employeeService;
@@ -27,7 +27,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         private readonly IWorkContext _workContext;
         private readonly IPictureService _pictureService;
 
-        public WidgetsEmployeesController(
+        public EmployeesController(
             IEmployeesService employeeService,
             IStoreContext storeContext,
             ISettingService settingService,
@@ -48,6 +48,10 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
         public IActionResult Index(bool groupByDepartment = true)
+        {
+            return List(groupByDepartment);
+        }
+        public IActionResult List(bool groupByDepartment)
         {
             return ListEmployees(showUnpublished: false, groupByDepartment);
         }
@@ -121,7 +125,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 }
             }
 
-            return View($"{Route}List.cshtml", model);
+            return View($"{Route}{nameof(List)}.cshtml", model);
         }
 
         private string GetPictureUrl(int pictureId, int targetSize = 200)
@@ -131,7 +135,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 : _pictureService.GetDefaultPictureUrl(targetSize, Core.Domain.Media.PictureType.Avatar);
         }
 
-        public IActionResult EmployeeInfo(string id)
+        public IActionResult Info(string id)
         {
             var model = new EmployeeInfoModel
             {
@@ -146,7 +150,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             if (model.IsAdmin)
             {
-                DisplayEditLink(Url.Action(nameof(EditEmployee), ControllerName, new { id = e.Id.ToString() }));
+                DisplayEditLink(Url.Action(nameof(Edit), ControllerName, new { id = e.Id.ToString(), area = "Admin" }));
             }
 
             model.Employee = e.ToModel();
@@ -157,7 +161,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 model.Employee.DepartmentPublished = department.Published;
                 model.Employee.DepartmentName = department.Name;
             }
-            return View($"{Route}EmployeeInfo.cshtml", model);
+            return View($"{Route}{nameof(Info)}.cshtml", model);
         }
 
         private Domain.Employee GetEmployeeByIdOrEmailPrefix(string id)

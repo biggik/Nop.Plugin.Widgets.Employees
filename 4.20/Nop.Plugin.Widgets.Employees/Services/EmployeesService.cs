@@ -11,9 +11,10 @@ namespace Nop.Plugin.Widgets.Employees.Services
     public partial class EmployeesService : IEmployeesService
     {
         #region Constants
-        private const string EMPLOYEES_ALL_KEY = "Nop.employee.all-{0}-{1}";
-        private const string DEPARTMENTS_ALL_KEY = "Nop.department.all-{0}";
-        private const string EMPLOYEES_PATTERN_KEY = "Nop.employee.";
+        private const string _prefix = "Nop.status.employee.";
+        private readonly static string EmployeesAllKey = _prefix + "all-{0}-{1}-{2}";
+        private readonly static string EmployeesDepartmentKey = _prefix + "department.all-{0}-{1}";
+        private readonly static string DepartmentsKey = _prefix + "departments.all-{0}-{1}-{2}";
         #endregion
 
         #region Fields
@@ -35,19 +36,19 @@ namespace Nop.Plugin.Widgets.Employees.Services
         #endregion
 
         #region Methods
-        public virtual void DeleteEmployee(Employee employeeRecord)
+        public virtual void DeleteEmployee(Employee employee)
         {
-            if (employeeRecord == null)
-                throw new ArgumentNullException("employeeRecord");
+            if (employee == null)
+                throw new ArgumentNullException(nameof(employee));
 
-            _employeeRepository.Delete(employeeRecord);
+            _employeeRepository.Delete(employee);
 
-            _cacheManager.RemoveByPrefix(EMPLOYEES_PATTERN_KEY);
+            _cacheManager.RemoveByPrefix(_prefix);
         }
 
         public virtual IPagedList<Employee> GetAll(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            string key = string.Format(EMPLOYEES_ALL_KEY, pageIndex, pageSize);
+            string key = string.Format(EmployeesAllKey, showUnpublished, pageIndex, pageSize);
             return _cacheManager.Get(key, () =>
             {
                 return new PagedList<Employee>(
@@ -90,16 +91,16 @@ namespace Nop.Plugin.Widgets.Employees.Services
         public virtual void InsertEmployee(Employee employee)
         {
             if (employee == null)
-                throw new ArgumentNullException("employee");
+                throw new ArgumentNullException(nameof(employee));
 
             _employeeRepository.Insert(employee);
 
-            _cacheManager.RemoveByPrefix(EMPLOYEES_PATTERN_KEY);
+            _cacheManager.RemoveByPrefix(_prefix);
         }
 
         public virtual IPagedList<Department> GetAllDepartments(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            string key = string.Format(DEPARTMENTS_ALL_KEY, showUnpublished);
+            string key = string.Format(DepartmentsKey, showUnpublished, pageIndex, pageSize);
             return _cacheManager.Get(key, () =>
             {
                 return new PagedList<Department>(
@@ -115,46 +116,50 @@ namespace Nop.Plugin.Widgets.Employees.Services
         public virtual void InsertDepartment(Department department)
         {
             if (department == null)
-                throw new ArgumentNullException("department");
+                throw new ArgumentNullException(nameof(department));
 
             _departmentRespository.Insert(department);
 
-            _cacheManager.RemoveByPrefix(DEPARTMENTS_ALL_KEY);
+            _cacheManager.RemoveByPrefix(_prefix);
         }
 
         public virtual void UpdateEmployee(Employee employee)
         {
             if (employee == null)
-                throw new ArgumentNullException("employeeRecord");
+                throw new ArgumentNullException(nameof(employee));
 
             _employeeRepository.Update(employee);
 
-            _cacheManager.RemoveByPrefix(EMPLOYEES_PATTERN_KEY);
+            _cacheManager.RemoveByPrefix(_prefix);
         }
 
         public virtual void UpdateDepartment(Department department)
         {
             if (department == null)
-                throw new ArgumentNullException("departmentRecord");
+                throw new ArgumentNullException(nameof(department));
 
             _departmentRespository.Update(department);
 
-            _cacheManager.RemoveByPrefix(DEPARTMENTS_ALL_KEY);
+            _cacheManager.RemoveByPrefix(_prefix);
         }
 
         public virtual IList<Employee> GetEmployeesByDepartmentId(int departmentId, bool showUnpublished = false)
         {
-            return (from employee in _employeeRepository.Table
-                    where employee.DepartmentId == departmentId
-                          && (showUnpublished
-                              ||
-                              (employee.Published
-                               && (employee.WorkStarted.Date < DateTime.Now.Date)
-                               && (!employee.WorkEnded.HasValue ||
-                                       (employee.WorkEnded.Value.Year < 2000 || employee.WorkEnded.Value > DateTime.Now.Date)
-                                  )))
-                    orderby employee.Name
-                    select employee).ToList();
+            string key = string.Format(EmployeesDepartmentKey, departmentId, showUnpublished);
+            return _cacheManager.Get(key, () =>
+            {
+                return (from employee in _employeeRepository.Table
+                        where employee.DepartmentId == departmentId
+                              && (showUnpublished
+                                  ||
+                                  (employee.Published
+                                   && (employee.WorkStarted.Date < DateTime.Now.Date)
+                                   && (!employee.WorkEnded.HasValue ||
+                                           (employee.WorkEnded.Value.Year < 2000 || employee.WorkEnded.Value > DateTime.Now.Date)
+                                      )))
+                        orderby employee.Name
+                        select employee).ToList();
+            });
         }
 
         public virtual Department GetDepartmentById(int departmentId)

@@ -13,135 +13,138 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="Name" />
+                            <nop-label asp-for="@Model.Name" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="Name" asp-required="true" />
-                            <span asp-validation-for="Name" />
+                            <nop-editor asp-for="@Model.Name" asp-required="true" />
+                            <span asp-validation-for="@Model.Name" />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="Title" />
+                            <nop-label asp-for="@Model.Title" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="Title" asp-required="true" />
-                            <span asp-validation-for="Title" />
+                            <nop-editor asp-for="@Model.Title" asp-required="true" />
+                            <span asp-validation-for="@Model.Title" />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="Email" />
+                            <nop-label asp-for="@Model.Email" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="Email" asp-required="true" />
-                            <span asp-validation-for="Email" />
+                            <nop-editor asp-for="@Model.Email" asp-required="true" />
+                            <span asp-validation-for="@Model.Email" />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="DepartmentId" />
+                            <nop-label asp-for="@Model.DepartmentId" />
                         </div>
                         <div class="col-md-9">
-                            <nop-select asp-for="DepartmentId" asp-items="Model.AvailableDepartments" />
+                            <nop-select asp-for="@Model.DepartmentId" asp-items="@Model.AvailableDepartments" />
                             @Html.ActionLink(T(AdminResources.AddDepartmentCaption).Text,
-                                nameof(WidgetsEmployeesController.CreateDepartment),
-                                WidgetsEmployeesController.ControllerName,
+                                nameof(DepartmentsController.Create),
+                                DepartmentsController.ControllerName,
                                 null,
                                 null)
-                            <span asp-validation-for="DepartmentId" />
+                            <span asp-validation-for="@Model.DepartmentId" />
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="PictureId" />
+                            <nop-label asp-for="@Model.PictureId" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="PictureId" asp-required="true" />
-                            <span asp-validation-for="PictureId" />
-                            @Html.ActionLink(T(EmployeeActionResources.ViewPicture).Text,
-                                              nameof(WidgetsEmployeesController.GetFullSizeEmployeePicture),
-                                              WidgetsEmployeesController.ControllerName,
-                                              new { id = Model.PictureId, area = "Admin" },
-                                              null)
+                            <nop-editor asp-for="@Model.PictureId" asp-required="true" />
+                            <span asp-validation-for="@Model.PictureId" />
+                            @if (Model.PictureId >= 0)
+                            {
+                                Html.ActionLink(T(EmployeeActionResources.ViewPicture).Text,
+                                                       nameof(EmployeesController.GetFullSizeEmployeePicture),
+                                                       EmployeesController.ControllerName,
+                                                       new { id = Model.PictureId, area = "Admin" },
+                                                       null);
+                            }
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="Info" />
+                            <nop-label asp-for="@Model.Info" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="Info" asp-required="true" asp-template="RichEditor" />
-                            <span asp-validation-for="Info" />
+                            <nop-editor asp-for="@Model.Info" asp-required="true" asp-template="RichEditor" />
+                            <span asp-validation-for="@Model.Info" />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="Specialties" />
+                            <nop-label asp-for="@Model.Specialties" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="Specialties" asp-required="true" asp-template="RichEditor" />
-                            <span asp-validation-for="Specialties" />
+                            <nop-editor asp-for="@Model.Specialties" asp-required="true" asp-template="RichEditor" />
+                            <span asp-validation-for="@Model.Specialties" />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="Interests" />
+                            <nop-label asp-for="@Model.Interests" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="Interests" asp-required="true" asp-template="RichEditor" />
-                            <span asp-validation-for="Interests" />
+                            <nop-editor asp-for="@Model.Interests" asp-required="true" asp-template="RichEditor" />
+                            <span asp-validation-for="@Model.Interests" />
                         </div>
 
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="PhoneNumber" />
+                            <nop-label asp-for="@Model.PhoneNumber" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="PhoneNumber" asp-required="true" />
-                            <span asp-validation-for="PhoneNumber" />
+                            <nop-editor asp-for="@Model.PhoneNumber" asp-required="true" />
+                            <span asp-validation-for="@Model.PhoneNumber" />
                         </div>
 
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="MobileNumber" />
+                            <nop-label asp-for="@Model.MobileNumber" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="MobileNumber" asp-required="true" />
-                            <span asp-validation-for="MobileNumber" />
+                            <nop-editor asp-for="@Model.MobileNumber" asp-required="true" />
+                            <span asp-validation-for="@Model.MobileNumber" />
                         </div>
 
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="WorkStarted" />
+                            <nop-label asp-for="@Model.WorkStarted" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="WorkStarted" asp-required="true" />
-                            <span asp-validation-for="WorkStarted" />
+                            <nop-editor asp-for="@Model.WorkStarted" asp-required="true" />
+                            <span asp-validation-for="@Model.WorkStarted" />
                         </div>
 
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="WorkEnded" />
+                            <nop-label asp-for="@Model.WorkEnded" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="WorkEnded" asp-required="true" />
-                            <span asp-validation-for="WorkEnded" />
+                            <nop-editor asp-for="@Model.WorkEnded" asp-required="true" />
+                            <span asp-validation-for="@Model.WorkEnded" />
                         </div>
 
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <nop-label asp-for="Published" />
+                            <nop-label asp-for="@Model.Published" />
                         </div>
                         <div class="col-md-9">
-                            <nop-editor asp-for="Published" asp-required="true" />
-                            <span asp-validation-for="Published" />
+                            <nop-editor asp-for="@Model.Published" asp-required="true" />
+                            <span asp-validation-for="@Model.Published" />
                         </div>
                     </div>
                 </div>

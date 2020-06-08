@@ -16,8 +16,8 @@
     </h1>
     <div class="pull-right">
         @Html.ActionLink(T(AdminResources.AddDepartmentButton).Text,
-            nameof(WidgetsEmployeesController.CreateDepartment),
-            WidgetsEmployeesController.ControllerName,
+            nameof(DepartmentsController.Create),
+            DepartmentsController.ControllerName,
             null,
             new { @class = "btn bg-blue" })
     </div>
@@ -30,7 +30,7 @@
                    @await Html.PartialAsync("Table", new DataTablesModel
                    {
                        Name = "departments-grid",
-                       UrlRead = new DataUrl(nameof(WidgetsEmployeesController.DepartmentListData), WidgetsEmployeesController.ControllerName,
+                       UrlRead = new DataUrl(nameof(DepartmentsController.ListData), DepartmentsController.ControllerName,
                             new Microsoft.AspNetCore.Routing.RouteValueDictionary{["area"] = "Admin" }),
                        Length = Model.PageSize,
                        LengthMenu = Model.AvailablePageSizes,
@@ -59,8 +59,8 @@
                                 Width = "100",
                                 ClassName =  NopColumnClassDefaults.Button,
                                 Render = new RenderButtonEdit(
-                                    new DataUrl(@Url.Action(nameof(WidgetsEmployeesController.EditDepartment), 
-                                                            WidgetsEmployeesController.ControllerName,
+                                    new DataUrl(@Url.Action(nameof(DepartmentsController.Edit), 
+                                                            DepartmentsController.ControllerName,
                                                             new { area = "Admin"})))
                             }
                         }

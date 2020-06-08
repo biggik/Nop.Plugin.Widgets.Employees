@@ -1,24 +1,24 @@
 ﻿@{
     Layout = "~/Plugins/Widgets.Employees/Views/Shared/_AdminShared.cshtml";
 }
-@model DepartmentModel
+@model EmployeeModel
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
 @using Nop.Plugin.Widgets.Employees.Controllers;
+
 @{
-    //page title
-    ViewBag.Title = T(AdminResources.EditDepartmentCaption).Text;
+    ViewBag.PageTitle = T(AdminResources.AddEmployeeCaption).Text;
 }
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "employee-form" }))
 {
     <div class="content-header clearfix">
         <h1 class="pull-left">
-            @T(AdminResources.EditDepartmentCaption)
+            @T(AdminResources.AddEmployeeCaption)
             <small>
                 <i class="fa fa-arrow-circle-left"></i>
-                @Html.ActionLink(T(DepartmentActionResources.BackToList).Text,
-                    nameof(WidgetsEmployeesController.DepartmentList),
-                    WidgetsEmployeesController.ControllerName,
+                @Html.ActionLink(T(EmployeeActionResources.BackToList).Text,
+                    nameof(EmployeesController.Index),
+                    EmployeesController.ControllerName,
                     new { area = "" },
                     null)
             </small>
@@ -34,5 +34,5 @@
             </button>
         </div>
     </div>
-    <partial name="~/Plugins/Widgets.Employees/Views/Employees/_CreateOrUpdateDepartment.cshtml" />
+    <partial name="~/Plugins/Widgets.Employees/Views/Employees/_CreateOrUpdateEmployee.cshtml" />
 }
