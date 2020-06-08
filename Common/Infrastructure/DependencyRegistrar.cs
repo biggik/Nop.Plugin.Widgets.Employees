@@ -1,14 +1,16 @@
 using Autofac;
-using Autofac.Core;
 using Nop.Core.Configuration;
-using Nop.Core.Data;
 using Nop.Core.Infrastructure;
 using Nop.Core.Infrastructure.DependencyManagement;
+using Nop.Plugin.Widgets.Employees.Services;
+#if NOP_PRE_4_3
+using Autofac.Core;
+using Nop.Core.Data;
 using Nop.Data;
 using Nop.Plugin.Widgets.Employees.Data;
 using Nop.Plugin.Widgets.Employees.Domain;
-using Nop.Plugin.Widgets.Employees.Services;
 using Nop.Web.Framework.Infrastructure.Extensions;
+#endif
 
 namespace Nop.Plugin.Widgets.Employees.Infrastructure
 {
@@ -18,6 +20,7 @@ namespace Nop.Plugin.Widgets.Employees.Infrastructure
         {
             builder.RegisterType<EmployeesService>().As<IEmployeesService>().InstancePerLifetimeScope();
 
+#if NOP_PRE_4_3
             //data context
             builder.RegisterPluginDataContext<EmployeesObjectContext>("nop_object_context_employees_zip");
             
@@ -31,6 +34,7 @@ namespace Nop.Plugin.Widgets.Employees.Infrastructure
                 .As<IRepository<Department>>()
                 .WithParameter(ResolvedParameter.ForNamed<IDbContext>("nop_object_context_employees_zip"))
                 .InstancePerLifetimeScope();
+#endif
         }
 
         public int Order

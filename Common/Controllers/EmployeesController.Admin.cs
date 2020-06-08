@@ -212,7 +212,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (id > 0)
             {
                 var pic = _pictureService.GetPictureById(id);
+#if NOP_PRE_4_3
                 return File(pic.PictureBinary.BinaryData, pic.MimeType);
+#else
+                var binary = _pictureService.GetPictureBinaryByPictureId(id);
+                return File(binary.BinaryData, pic.MimeType);
+#endif
             }
             return NotFound();
         }

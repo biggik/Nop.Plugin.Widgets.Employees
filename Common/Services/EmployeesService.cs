@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Nop.Core;
 using Nop.Core.Caching;
-using Nop.Core.Data;
 using Nop.Plugin.Widgets.Employees.Domain;
+#if NOP_PRE_4_3
+using Nop.Core.Data;
+#else
+using Nop.Data;
+using Nop.Services.Caching;
+#endif
 
 namespace Nop.Plugin.Widgets.Employees.Services
 {
@@ -12,28 +17,63 @@ namespace Nop.Plugin.Widgets.Employees.Services
     {
         #region Constants
         private const string _prefix = "Nop.status.employee.";
-        private readonly static string EmployeesAllKey = _prefix + "all-{0}-{1}-{2}";
-        private readonly static string EmployeesDepartmentKey = _prefix + "department.all-{0}-{1}";
-        private readonly static string DepartmentsKey = _prefix + "departments.all-{0}-{1}-{2}";
+        private readonly static string _allKey = _prefix + "all-{0}-{1}-{2}";
+        private readonly static string _departmentKey = _prefix + "department.all-{0}-{1}";
+        private readonly static string _departmentsKey = _prefix + "departments.all-{0}-{1}-{2}";
+
+#if NOP_PRE_4_3
+        private readonly static string EmployeesAllKey = _allKey;
+        private readonly static string EmployeesDepartmentKey = _departmentKey;
+        private readonly static string DepartmentsKey = _departmentsKey;
+#else
+        private readonly CacheKey EmployeesAllKey = new CacheKey(_allKey, _prefix);
+        private readonly CacheKey EmployeesDepartmentKey = new CacheKey(_departmentKey, _prefix);
+        private readonly CacheKey DepartmentsKey = new CacheKey(_departmentsKey, _prefix);
+#endif
         #endregion
 
         #region Fields
         private readonly IRepository<Employee> _employeeRepository;
         private readonly IRepository<Department> _departmentRespository;
+#if NOP_PRE_4_3
         private readonly ICacheManager _cacheManager;
+#else
+        private readonly ICacheKeyService _cacheKeyService;
+        private readonly IStaticCacheManager _cacheManager;
+#endif
         #endregion
 
         #region Ctor
         public EmployeesService(
+#if NOP_PRE_4_3
             ICacheManager cacheManager,
+#else
+            ICacheKeyService cacheKeyService,
+            IStaticCacheManager cacheManager,
+#endif
             IRepository<Employee> employeeRepository,
             IRepository<Department> departmentRespository)
         {
             _cacheManager = cacheManager;
+#if !NOP_PRE_4_3
+            _cacheKeyService = cacheKeyService;
+#endif
             _employeeRepository = employeeRepository;
             _departmentRespository = departmentRespository;
         }
         #endregion
+
+#if NOP_PRE_4_3
+        private string CreateKey(string template, params object[] arguments)
+        {
+            return string.Format(template, arguments);
+        }
+#else
+        private CacheKey CreateKey(CacheKey cacheKey, params object[] arguments)
+        {
+            return _cacheKeyService.PrepareKeyForShortTermCache(cacheKey, arguments);
+        }
+#endif
 
         #region Methods
         public virtual void DeleteEmployee(Employee employee)
@@ -58,21 +98,21 @@ namespace Nop.Plugin.Widgets.Employees.Services
 
         public virtual IPagedList<Employee> GetAll(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            string key = string.Format(EmployeesAllKey, showUnpublished, pageIndex, pageSize);
+            var key = CreateKey(EmployeesAllKey, showUnpublished, pageIndex, pageSize);
             return _cacheManager.Get(key, () =>
             {
                 return new PagedList<Employee>(
                     from employee in _employeeRepository.Table
-                         where showUnpublished 
-                               ||
-                               (employee.Published
-                               && (employee.WorkStarted.Date < DateTime.Now.Date)
-                               && (!employee.WorkEnded.HasValue || 
-                                       (employee.WorkEnded.Value.Year < 2000 || employee.WorkEnded.Value > DateTime.Now.Date)
-                               ))
-                         orderby employee.Id
-                         select employee,
-                    pageIndex, 
+                    where showUnpublished
+                          ||
+                          (employee.Published
+                          && (employee.WorkStarted.Date < DateTime.Now.Date)
+                          && (!employee.WorkEnded.HasValue ||
+                                  (employee.WorkEnded.Value.Year < 2000 || employee.WorkEnded.Value > DateTime.Now.Date)
+                          ))
+                    orderby employee.Id
+                    select employee,
+                    pageIndex,
                     pageSize);
             });
         }
@@ -92,7 +132,7 @@ namespace Nop.Plugin.Widgets.Employees.Services
 
             return (from employee in _employeeRepository.Table
                     where employee.Published
-                          && !string.IsNullOrWhiteSpace(employee.Email) 
+                          && !string.IsNullOrWhiteSpace(employee.Email)
                           && employee.Email.ToLower().StartsWith(emailPrefix.ToLower() + '@')
                     select employee
                    ).FirstOrDefault();
@@ -110,7 +150,7 @@ namespace Nop.Plugin.Widgets.Employees.Services
 
         public virtual IPagedList<Department> GetAllDepartments(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            string key = string.Format(DepartmentsKey, showUnpublished, pageIndex, pageSize);
+            var key = CreateKey(DepartmentsKey, showUnpublished, pageIndex, pageSize);
             return _cacheManager.Get(key, () =>
             {
                 return new PagedList<Department>(
@@ -155,7 +195,7 @@ namespace Nop.Plugin.Widgets.Employees.Services
 
         public virtual IList<Employee> GetEmployeesByDepartmentId(int departmentId, bool showUnpublished = false)
         {
-            string key = string.Format(EmployeesDepartmentKey, departmentId, showUnpublished);
+            var key = CreateKey(EmployeesDepartmentKey, departmentId, showUnpublished);
             return _cacheManager.Get(key, () =>
             {
                 return (from employee in _employeeRepository.Table

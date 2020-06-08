@@ -17,7 +17,9 @@ namespace Nop.Plugin.Widgets.Employees
     public class EmployeesPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
     {
         private static bool resourcesCreated = false;
+#if NOP_PRE_4_3
         private readonly EmployeesObjectContext _objectContext;
+#endif
         private readonly ISettingService _settingService;
         private readonly IWebHelper _webHelper;
 
@@ -25,12 +27,16 @@ namespace Nop.Plugin.Widgets.Employees
 
         public EmployeesPlugin(
             IWebHelper webHelper,
+#if NOP_PRE_4_3
             EmployeesObjectContext objectContext,
+#endif
             IStoreContext storeContext,
             ISettingService settingService)
         {
             _webHelper = webHelper;
+#if NOP_PRE_4_3
             _objectContext = objectContext;
+#endif
             _settingService = settingService;
 #if DEBUG
             CreateLocaleStrings();
@@ -131,8 +137,9 @@ namespace Nop.Plugin.Widgets.Employees
         {
             _settingService.SaveSetting(new EmployeeWidgetSettings { });
 
-            //database objects
+#if NOP_PRE_4_3
             _objectContext.Install();
+#endif
 
             CreateLocaleStrings();
 
@@ -147,8 +154,9 @@ namespace Nop.Plugin.Widgets.Employees
             //settings
             _settingService.DeleteSetting<EmployeeWidgetSettings>();
 
-            //database objects
+#if NOP_PRE_4_3
             _objectContext.Uninstall();
+#endif
 
             //locales
             //this.DeletePluginLocaleResource("Plugins.Widgets.Employees.Fields.Country");
