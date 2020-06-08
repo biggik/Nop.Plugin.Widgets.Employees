@@ -19,9 +19,10 @@ namespace Nop.Plugin.Widgets.Employees.Services
         void UpdateDepartment(Department department);
 
         void DeleteEmployee(Employee employee);
+        void DeleteDepartment(Department department);
 
         IList<Employee> GetEmployeesByDepartmentId(int departmentId, bool showUnpublished = false);
 
-        Department GetDepartmentById(int departId);
+        Department GetDepartmentById(int departmentId);
     }
 }

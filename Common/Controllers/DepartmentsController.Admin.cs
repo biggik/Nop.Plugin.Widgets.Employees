@@ -121,6 +121,21 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         [AuthorizeAdmin]
         [Area(AreaNames.Admin)]
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageShippingSettings))
+                return Content("Access denied");
+
+            var department = _employeeService.GetDepartmentById(id);
+            if (department != null)
+                _employeeService.DeleteDepartment(department);
+
+            return RedirectToAction(nameof(List), new { area = "Admin" });
+        }
+
+        [AuthorizeAdmin]
+        [Area(AreaNames.Admin)]
         public IActionResult List()
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))

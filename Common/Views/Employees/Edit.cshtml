@@ -1,24 +1,24 @@
 ﻿@{
     Layout = "~/Plugins/Widgets.Employees/Views/Shared/_AdminShared.cshtml";
 }
-@model DepartmentModel
+@model EmployeeModel
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
 @using Nop.Plugin.Widgets.Employees.Controllers;
 @{
     //page title
-    ViewBag.Title = T(AdminResources.EditDepartmentCaption).Text;
+    ViewBag.Title = T(AdminResources.EditEmployeeCaption).Text;
 }
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "employee-form" }))
 {
     <div class="content-header clearfix">
         <h1 class="pull-left">
-            @T(AdminResources.EditDepartmentCaption)
+            @T(AdminResources.EditEmployeeCaption)
             <small>
                 <i class="fa fa-arrow-circle-left"></i>
-                @Html.ActionLink(T(DepartmentActionResources.BackToList).Text,
-                    nameof(DepartmentsController.List),
-                    DepartmentsController.ControllerName,
+                @Html.ActionLink(T(EmployeeActionResources.BackToList).Text,
+                    nameof(EmployeesController.Index),
+                    EmployeesController.ControllerName,
                     new { area = "" },
                     null)
             </small>
@@ -32,7 +32,13 @@
                 <i class="fa fa-floppy-o"></i>
                 @T("Admin.Common.SaveContinue")
             </button>
+            <span id="employee-delete" class="btn bg-red">
+                <i class="fa fa-trash-o"></i>
+                @T("Admin.Common.Delete")
+            </span>
         </div>
     </div>
-    <partial name="~/Plugins/Widgets.Employees/Views/Employees/_CreateOrUpdateDepartment.cshtml" />
+    <partial name="_CreateOrUpdateEmployee.cshtml" />
 }
+
+<nop-delete-confirmation asp-model-id="@Model.Id" asp-button-id="employee-delete" asp-action="Delete" />

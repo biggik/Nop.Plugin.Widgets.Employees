@@ -1,6 +1,5 @@
 using Autofac;
 using Autofac.Core;
-using Microsoft.EntityFrameworkCore;
 using Nop.Core.Configuration;
 using Nop.Core.Data;
 using Nop.Core.Infrastructure;

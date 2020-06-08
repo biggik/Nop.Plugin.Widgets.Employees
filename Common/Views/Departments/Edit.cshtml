@@ -5,22 +5,21 @@
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
 @using Nop.Plugin.Widgets.Employees.Controllers;
-
 @{
     //page title
-    ViewBag.Title = T(AdminResources.AddDepartmentCaption).Text;
+    ViewBag.Title = T(AdminResources.EditDepartmentCaption).Text;
 }
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "employee-form" }))
 {
     <div class="content-header clearfix">
         <h1 class="pull-left">
-            @T(AdminResources.AddDepartmentCaption)
+            @T(AdminResources.EditDepartmentCaption)
             <small>
                 <i class="fa fa-arrow-circle-left"></i>
                 @Html.ActionLink(T(DepartmentActionResources.BackToList).Text,
                     nameof(DepartmentsController.List),
                     DepartmentsController.ControllerName,
-                    new { area = "" },
+                    new { area = "Admin" },
                     null)
             </small>
         </h1>
@@ -33,7 +32,12 @@
                 <i class="fa fa-floppy-o"></i>
                 @T("Admin.Common.SaveContinue")
             </button>
+            <span id="department-delete" class="btn bg-red">
+                <i class="fa fa-trash-o"></i>
+                @T("Admin.Common.Delete")
+            </span>
         </div>
     </div>
     <partial name="_CreateOrUpdateDepartment.cshtml" />
 }
+<nop-delete-confirmation asp-model-id="@Model.Id" asp-button-id="department-delete" asp-action="Delete" />

@@ -46,6 +46,16 @@ namespace Nop.Plugin.Widgets.Employees.Services
             _cacheManager.RemoveByPrefix(_prefix);
         }
 
+        public virtual void DeleteDepartment(Department department)
+        {
+            if (department == null)
+                throw new ArgumentNullException(nameof(department));
+
+            _departmentRespository.Delete(department);
+
+            _cacheManager.RemoveByPrefix(_prefix);
+        }
+
         public virtual IPagedList<Employee> GetAll(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue)
         {
             string key = string.Format(EmployeesAllKey, showUnpublished, pageIndex, pageSize);

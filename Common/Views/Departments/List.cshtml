@@ -7,8 +7,7 @@
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Web.Framework.Models.DataTables;
 @{
-    //page title
-    ViewBag.Title = T(AdminResources.DepartmentListCaption).Text;
+    ViewBag.PageTitle = T(AdminResources.DepartmentListCaption).Text;
 }
 <div class="content-header clearfix">
     <h1 class="pull-left">
@@ -18,7 +17,7 @@
         @Html.ActionLink(T(AdminResources.AddDepartmentButton).Text,
             nameof(DepartmentsController.Create),
             DepartmentsController.ControllerName,
-            null,
+            new { area = "Admin" },
             new { @class = "btn bg-blue" })
     </div>
 </div>
