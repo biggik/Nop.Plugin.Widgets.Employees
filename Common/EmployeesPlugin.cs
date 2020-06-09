@@ -14,10 +14,11 @@ using Nop.Web.Framework.Menu;
 using System;
 using Microsoft.AspNetCore.Routing;
 using Nop.Services.Security;
+using Nop.Plugin.Widgets.Employees.Controllers;
 
 namespace Nop.Plugin.Widgets.Employees
 {
-    public class EmployeesPlugin : BasePlugin, IWidgetPlugin
+    public class EmployeesPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
     {
 #if NOP_PRE_4_3
         private readonly EmployeesObjectContext _objectContext;
@@ -159,6 +160,46 @@ namespace Nop.Plugin.Widgets.Employees
         }
 
         public string GetWidgetViewComponentName(string widgetZone) => "WidgetsEmployees";
+
+        public void ManageSiteMap(SiteMapNode rootNode)
+        {
+            var contentMenu = rootNode.ChildNodes.FirstOrDefault(x => x.SystemName == "Content Management");
+            if (contentMenu == null)
+            {
+                // Unable to find the "Configure" menu, create our own menu container
+                contentMenu = new SiteMapNode()
+                {
+                    SystemName = "Employees",
+                    Title = EmployeeResources.ListCaption,
+                    Visible = true,
+                    IconClass = "fa-cubes"
+                };
+                rootNode.ChildNodes.Add(contentMenu);
+            }
+
+            var localizationService = EngineContext.Current.Resolve<ILocalizationService>();
+            string T(string format) => _localizationService.GetResource(format) ?? format;
+
+            foreach (var item in new List<(string caption, string controller, string action)>
+            {
+                (T(EmployeeResources.ListCaption), EmployeesController.ControllerName, nameof(EmployeesController.List)),
+                (T(AdminResources.DepartmentListCaption), DepartmentsController.ControllerName, nameof(DepartmentsController.List)),
+            })
+            {
+                contentMenu.ChildNodes.Add(new SiteMapNode
+                {
+                    SystemName = $"{item.controller}.{item.action}",
+                    Title = item.caption,
+                    ControllerName = item.controller,
+                    ActionName = item.action,
+                    Visible = true,
+                    IconClass = "fa-dot-circle-o",
+                    RouteValues = new RouteValueDictionary {
+                    { "area", "Admin" }
+                },
+                });
+            }
+        }
 
         private IEnumerable<(string resourceName, IEnumerable<(LocaleStringAttribute lsa, Language language)> localeStrings)> PluginResources
         {
