@@ -5,10 +5,8 @@
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
 @using Nop.Plugin.Widgets.Employees.Controllers;
-
 @{
-    //page title
-    ViewBag.Title = T(AdminResources.AddDepartmentCaption).Text;
+    ViewBag.PageTitle = T(AdminResources.AddDepartmentCaption).Text;
 }
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "employee-form" }))
 {
