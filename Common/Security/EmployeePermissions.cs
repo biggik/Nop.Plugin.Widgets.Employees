@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nop.Services.Security;
 using Nop.Core.Domain.Security;
+using System.Linq;
 
 namespace Nop.Plugin.Widgets.Employees.Services
 {
@@ -16,7 +17,12 @@ namespace Nop.Plugin.Widgets.Employees.Services
                 ManageDepartments
             };
 
+#if NOP_PRE_4_3
+        public virtual IEnumerable<DefaultPermissionRecord> GetDefaultPermissions() =>
+            Enumerable.Empty<DefaultPermissionRecord>();
+#else
         public virtual HashSet<(string systemRoleName, PermissionRecord[] permissions)> GetDefaultPermissions() =>
             new HashSet<(string, PermissionRecord[])>();
+#endif
     }
 }
