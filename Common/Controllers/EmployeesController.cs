@@ -58,7 +58,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             var emailCount = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
 
-            foreach (var d in _employeeService.GetAllDepartments(showUnpublished: false))
+            foreach (var d in _employeeService.GetOrderedDepartments(showUnpublished: false))
             {
                 if (groupByDepartment)
                 {

@@ -151,7 +151,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
                 return AccessDeniedView();
 
-            var departments = _employeeService.GetAllDepartments(showUnpublished:true, searchModel.Page - 1, searchModel.PageSize);
+            var departments = _employeeService.GetOrderedDepartments(showUnpublished:true, searchModel.Page - 1, searchModel.PageSize);
             var model = new DepartmentListModel().PrepareToGrid(searchModel, departments, () =>
             {
                 return departments.Select(department =>

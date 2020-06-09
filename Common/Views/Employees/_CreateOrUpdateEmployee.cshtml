@@ -136,7 +136,15 @@
                             <nop-editor asp-for="@Model.WorkEnded" asp-required="true" />
                             <span asp-validation-for="@Model.WorkEnded" />
                         </div>
-
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <nop-label asp-for="@Model.DisplayOrder" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="@Model.DisplayOrder" asp-required="true" />
+                            <span asp-validation-for="@Model.DisplayOrder" />
+                        </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">

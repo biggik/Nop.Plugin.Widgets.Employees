@@ -27,6 +27,7 @@ namespace Nop.Plugin.Widgets.Employees.Models
                 .ForMember(em => em.WorkStarted, mo => mo.MapFrom(e => e.WorkStarted))
                 .ForMember(em => em.WorkEnded, mo => mo.MapFrom(e => e.WorkEnded))
                 .ForMember(em => em.Published, mo => mo.MapFrom(e => e.Published))
+                .ForMember(em => em.DisplayOrder, mo => mo.MapFrom(e => e.DisplayOrder))
                 .ForAllOtherMembers(x => x.Ignore());
             
             CreateMap<DepartmentModel, Department>();

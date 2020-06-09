@@ -27,7 +27,10 @@
                 </div>
             }
             <main class="cards">
-                @foreach (var employee in departmentEmployees.Employees.OrderBy(x => x.Name))
+                @foreach (var employee in departmentEmployees.Employees
+                                            .OrderBy(x => x.DisplayOrder)
+                                            .ThenBy(x => x.Name)
+                )
                 {
                     string clazz = "card";
                     if (!employee.IsActive)

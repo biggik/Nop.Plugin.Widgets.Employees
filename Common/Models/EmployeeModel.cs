@@ -56,6 +56,9 @@ namespace Nop.Plugin.Widgets.Employees.Models
         [NopResourceDisplayName(GenericResources.Published)]
         public bool Published { get; set; }
 
+        [NopResourceDisplayName(GenericResources.DisplayOrder)]
+        public int DisplayOrder { get; set; }
+
         public string PhotoUrl { get; set; }
         public bool DepartmentPublished { get; set; }
         public string DepartmentName { get; set; }

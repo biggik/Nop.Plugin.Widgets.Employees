@@ -104,7 +104,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         private IList<SelectListItem> GetAllAvailableDepartments(int selectedDepartmentId = -1)
         {
-            return (from d in _employeeService.GetAllDepartments(showUnpublished: true)
+            return (from d in _employeeService.GetOrderedDepartments(showUnpublished: true)
                     .Where(dep => dep.Id == selectedDepartmentId || dep.Published)
                     select new SelectListItem
                     {
@@ -163,8 +163,8 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
                 _employeeService.InsertEmployee(employee);
                 return continueEditing
-                    ? RedirectToAction(nameof(Info), new { id = employee.Id, area = "" })
-                    : RedirectToAction(nameof(Index), ControllerName, new { area = "" });
+                    ? RedirectToAction(nameof(Edit), new { id = employee.Id })
+                    : RedirectToAction(nameof(List));
             }
 
             //If we got this far, something failed, redisplay form
@@ -208,8 +208,8 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
                 _employeeService.UpdateEmployee(employee);
                 return continueEditing
-                    ? RedirectToAction(nameof(Info), new { id = employee.Id, area = "" })
-                    : RedirectToAction(nameof(Index), ControllerName, new { area = "" });
+                    ? RedirectToAction(nameof(Edit), new { id = employee.Id })
+                    : RedirectToAction(nameof(List));
             }
 
             //If we got this far, something failed, redisplay form
@@ -241,9 +241,9 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
                 return AccessDeniedView();
 
-            var departmentDict = _employeeService.GetAllDepartments(showUnpublished: true).ToDictionary(x => x.Id, x => x);
+            var departmentDict = _employeeService.GetOrderedDepartments(showUnpublished: true).ToDictionary(x => x.Id, x => x);
 
-            var employees = _employeeService.GetAll(showUnpublished: true, searchModel.Page - 1, searchModel.PageSize);
+            var employees = _employeeService.GetOrderedEmployees(showUnpublished: true, searchModel.Page - 1, searchModel.PageSize);
             var model = new EmployeeListModel().PrepareToGrid(searchModel, employees, () =>
             {
                 return employees.Select(employee =>
