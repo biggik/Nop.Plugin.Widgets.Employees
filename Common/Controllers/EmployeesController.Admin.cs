@@ -8,6 +8,7 @@ using Nop.Web.Framework;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Web.Framework.Controllers;
+using Nop.Plugin.Widgets.Employees.Services;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
@@ -17,7 +18,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(AreaNames.Admin)]
         public IActionResult Configure()
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
                 return BadRequest();
 
             var storeScope = _storeContext.ActiveStoreScopeConfiguration;
@@ -52,7 +53,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [FormValueRequired("save")]
         public IActionResult Configure(ConfigurationModel model)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
                 return BadRequest();
 
             if (!ModelState.IsValid)
@@ -116,7 +117,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageShippingSettings))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
                 return Content("Access denied");
 
             var employee = _employeeService.GetById(id);
@@ -130,7 +131,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(AreaNames.Admin)]
         public IActionResult Create()
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
                 return AccessDeniedView();
 
             var model = GetEmployeeWithAllAvailableDepartments();
@@ -142,7 +143,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public IActionResult Create(EmployeeModel model, bool continueEditing)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
                 return AccessDeniedView();
 
             if (ModelState.IsValid)
@@ -164,7 +165,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(AreaNames.Admin)]
         public IActionResult Edit(int id)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
                 return AccessDeniedView();
 
             var employee = _employeeService.GetById(id);
@@ -183,7 +184,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public IActionResult Edit(EmployeeModel model, bool continueEditing)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
                 return AccessDeniedView();
 
             if (ModelState.IsValid)

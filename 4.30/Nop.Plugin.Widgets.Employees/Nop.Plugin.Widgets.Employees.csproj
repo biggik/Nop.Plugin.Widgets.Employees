@@ -85,6 +85,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\Common\Security\EmployeePermissions.cs" Link="Security\EmployeePermissions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\..\Common\Services\EmployeesService.cs" Link="Services\EmployeesService.cs" />
     <Compile Include="..\..\Common\Services\IEmployeesService.cs" Link="Services\IEmployeesService.cs" />
   </ItemGroup>

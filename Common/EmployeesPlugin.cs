@@ -12,10 +12,12 @@ using Nop.Services.Plugins;
 using Nop.Plugin.Widgets.Employees.Resources;
 using Nop.Web.Framework.Menu;
 using System;
+using Microsoft.AspNetCore.Routing;
+using Nop.Services.Security;
 
 namespace Nop.Plugin.Widgets.Employees
 {
-    public class EmployeesPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
+    public class EmployeesPlugin : BasePlugin, IWidgetPlugin
     {
 #if NOP_PRE_4_3
         private readonly EmployeesObjectContext _objectContext;
@@ -24,6 +26,7 @@ namespace Nop.Plugin.Widgets.Employees
         private readonly IWebHelper _webHelper;
         private readonly ILocalizationService _localizationService;
         private readonly ILanguageService _languageService;
+        private readonly IPermissionService _permissionService;
 
         public bool HideInWidgetList => false;
 
@@ -31,6 +34,7 @@ namespace Nop.Plugin.Widgets.Employees
             IWebHelper webHelper,
             ILocalizationService localizationService,
             ILanguageService languageService,
+            IPermissionService permissionService,
 #if NOP_PRE_4_3
             EmployeesObjectContext objectContext,
 #endif
@@ -40,6 +44,7 @@ namespace Nop.Plugin.Widgets.Employees
             _webHelper = webHelper;
             _localizationService = localizationService;
             _languageService = languageService;
+            _permissionService = permissionService;
 #if NOP_PRE_4_3
             _objectContext = objectContext;
 #endif
@@ -121,6 +126,7 @@ namespace Nop.Plugin.Widgets.Employees
 #endif
 
             CreateLocaleStrings();
+            _permissionService.InstallPermissions(new EmployeePermissionProvider());
 
             base.Install();
         }
@@ -147,16 +153,12 @@ namespace Nop.Plugin.Widgets.Employees
             }
 
             ManageLocaleStrings(Delete);
+            _permissionService.UninstallPermissions(new EmployeePermissionProvider());
 
             base.Uninstall();
         }
 
         public string GetWidgetViewComponentName(string widgetZone) => "WidgetsEmployees";
-
-        public void ManageSiteMap(SiteMapNode rootNode)
-        {
-            // TODO
-        }
 
         private IEnumerable<(string resourceName, IEnumerable<(LocaleStringAttribute lsa, Language language)> localeStrings)> PluginResources
         {

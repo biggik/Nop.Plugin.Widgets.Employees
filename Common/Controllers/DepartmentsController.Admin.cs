@@ -53,7 +53,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(AreaNames.Admin)]
         public IActionResult Create()
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
                 return AccessDeniedView();
 
             var model = new DepartmentModel();
@@ -65,7 +65,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [HttpPost, ParameterBasedOnFormNameAttribute("save-continue", "continueEditing")]
         public IActionResult Create(DepartmentModel model, bool continueEditing)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
                 return AccessDeniedView();
 
             if (ModelState.IsValid)
@@ -85,7 +85,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(AreaNames.Admin)]
         public IActionResult Edit(int id)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
                 return AccessDeniedView();
 
             var department = _employeeService.GetDepartmentById(id);
@@ -98,7 +98,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [HttpPost, ParameterBasedOnFormNameAttribute("save-continue", "continueEditing")]
         public IActionResult Edit(DepartmentModel model, bool continueEditing)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
                 return AccessDeniedView();
 
             if (ModelState.IsValid)
@@ -124,7 +124,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageShippingSettings))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
                 return Content("Access denied");
 
             var department = _employeeService.GetDepartmentById(id);
@@ -138,7 +138,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(AreaNames.Admin)]
         public IActionResult List()
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
                 return AccessDeniedView();
 
             return View($"{Route}{nameof(List)}.cshtml", new DepartmentSearchModel());
@@ -148,7 +148,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(AreaNames.Admin)]
         public IActionResult ListData(DepartmentSearchModel searchModel)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel))
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
                 return Content("Access denied");
 
             var departments = _employeeService.GetAllDepartments(showUnpublished:true, searchModel.Page - 1, searchModel.PageSize);

@@ -59,14 +59,14 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         public IActionResult ListAll(bool groupByDepartment = true)
         {
             // Require admin access to see all
-            return ListEmployees(showUnpublished: _permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel), groupByDepartment);
+            return ListEmployees(showUnpublished: _permissionService.Authorize(EmployeePermissionProvider.ManageEmployees), groupByDepartment);
         }
 
         private IActionResult ListEmployees(bool showUnpublished, bool groupByDepartment)
         { 
             var model = new DepartmentEmployeeModel
             {
-                IsAdmin = _permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel),
+                IsAdmin = _permissionService.Authorize(EmployeePermissionProvider.ManageEmployees),
                 ShowAll = showUnpublished,
                 GroupByDepartment = groupByDepartment
             };
@@ -139,7 +139,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         {
             var model = new EmployeeInfoModel
             {
-                IsAdmin = _permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel)
+                IsAdmin = _permissionService.Authorize(EmployeePermissionProvider.ManageEmployees)
             };
 
             var e = GetEmployeeByIdOrEmailPrefix(id);
