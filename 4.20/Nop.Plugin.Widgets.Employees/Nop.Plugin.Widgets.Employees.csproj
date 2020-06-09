@@ -30,7 +30,7 @@
     <OutputPath>..\_build\debug</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DefineConstants>TRACE;NOP_PRE_4_3</DefineConstants>
+    <DefineConstants>NOP_PRE_4_3</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
