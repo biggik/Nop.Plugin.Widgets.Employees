@@ -125,7 +125,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         public IActionResult Delete(int id)
         {
             if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
-                return Content("Access denied");
+                return AccessDeniedView();
 
             var department = _employeeService.GetDepartmentById(id);
             if (department != null)
@@ -149,7 +149,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         public IActionResult ListData(DepartmentSearchModel searchModel)
         {
             if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
-                return Content("Access denied");
+                return AccessDeniedView();
 
             var departments = _employeeService.GetAllDepartments(showUnpublished:true, searchModel.Page - 1, searchModel.PageSize);
             var model = new DepartmentListModel().PrepareToGrid(searchModel, departments, () =>

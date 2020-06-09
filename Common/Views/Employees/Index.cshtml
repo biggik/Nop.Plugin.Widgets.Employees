@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "~/Plugins/Widgets.Employees/Views/Shared/_Shared.cshtml";
+}
+@model DepartmentEmployeeModel
+@using Nop.Plugin.Widgets.Employees.Models;
+@using Nop.Plugin.Widgets.Employees.Resources;
+@using Nop.Plugin.Widgets.Employees.Controllers;
+
+<div class="Employees">
+    <div class="section">
+        <div class="title">
+            @T(EmployeeResources.ListCaption)
+        </div>
+    </div>
+    <div class="clear"></div>
+    @foreach (var departmentEmployees in Model.EmployeesList)
+    {
+        if (!departmentEmployees.Employees.Any())
+        {
+            continue;
+        }
+        <div class="employee-group">
+            @if (Model.GroupByDepartment)
+            {
+                <div class="department">
+                    @departmentEmployees.Department.Name
+                </div>
+            }
+            <main class="cards">
+                @foreach (var employee in departmentEmployees.Employees.OrderBy(x => x.Name))
+                {
+                    string clazz = "card";
+                    if (!employee.IsActive)
+                    {
+                        clazz += " card-unpublished";
+                    }
+                    <article class="@clazz">
+                        <div class="content">
+                            <p class="employee-name">@employee.Name</p>
+                            <p class="employee-title">
+                                <span>@employee.Title</span>
+                                @if (!Model.GroupByDepartment)
+                                {
+                                    <span>&nbsp;/&nbsp;@employee.DepartmentName</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="image">
+                            <img src="@employee.PhotoUrl" class="image" width="100" alt="@employee.Name">
+                        </div>
+                        <footer>
+                            @Html.ActionLink(T(EmployeeResources.Details).Text,
+                                                nameof(EmployeesController.Info),
+                                                EmployeesController.ControllerName,
+                                                new { id = employee.EmailPrefixOrId },
+                                                new { @class = "employee-zoom" });
+                        </footer>
+                    </article>
+                }
+            </main>
+        </div>
+    }
+</div>
+

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Web.Framework.Controllers;
 using Nop.Plugin.Widgets.Employees.Services;
+using Nop.Web.Framework.Models.Extensions;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
@@ -81,6 +82,16 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             return Configure();
         }
 
+        [AuthorizeAdmin]
+        [Area(AreaNames.Admin)]
+        public IActionResult List()
+        {
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
+                return AccessDeniedView();
+
+            return View($"{Route}{nameof(List)}.cshtml", new EmployeeSearchModel());
+        }
+
         private List<(string name, string value, int id)> GetWidgetZoneData()
         {
             int id = 1000;
@@ -118,7 +129,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         public IActionResult Delete(int id)
         {
             if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
-                return Content("Access denied");
+                return AccessDeniedView();
 
             var employee = _employeeService.GetById(id);
             if (employee != null)
@@ -222,5 +233,30 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             }
             return NotFound();
         }
+
+        [AuthorizeAdmin]
+        [Area(AreaNames.Admin)]
+        public IActionResult ListData(DepartmentSearchModel searchModel)
+        {
+            if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
+                return AccessDeniedView();
+
+            var departmentDict = _employeeService.GetAllDepartments(showUnpublished: true).ToDictionary(x => x.Id, x => x);
+
+            var employees = _employeeService.GetAll(showUnpublished: true, searchModel.Page - 1, searchModel.PageSize);
+            var model = new EmployeeListModel().PrepareToGrid(searchModel, employees, () =>
+            {
+                return employees.Select(employee =>
+                {
+                    var e = employee.ToModel();
+                    e.DepartmentName = departmentDict[e.DepartmentId].Name;
+                    e.DepartmentPublished = departmentDict[e.DepartmentId].Published;
+                    return e;
+                });
+            });
+
+            return Json(model);
+        }
+
     }
 }

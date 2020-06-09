@@ -72,6 +72,7 @@
     <Compile Include="..\..\Common\Models\DepartmentListModel.cs" Link="Models\DepartmentListModel.cs" />
     <Compile Include="..\..\Common\Models\DepartmentModel.cs" Link="Models\DepartmentModel.cs" />
     <Compile Include="..\..\Common\Models\DepartmentSearchModel.cs" Link="Models\DepartmentSearchModel.cs" />
+    <Compile Include="..\..\Common\Models\EmployeeSearchModel.cs" Link="Models\EmployeeSearchModel.cs" />
     <Compile Include="..\..\Common\Models\EmployeeInfoModel.cs" Link="Models\EmployeeInfoModel.cs" />
     <Compile Include="..\..\Common\Models\EmployeeListModel.cs" Link="Models\EmployeeListModel.cs" />
     <Compile Include="..\..\Common\Models\EmployeeModel.cs" Link="Models\EmployeeModel.cs" />
@@ -110,7 +111,10 @@
     <None Include="..\..\Common\Views\Employees\_CreateOrUpdateEmployee.cshtml" Link="Views\Employees\_CreateOrUpdateEmployee.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\Common\Views\Employees\_list.cshtml" Link="Views\Employees\_list.cshtml">
+    <None Include="..\..\Common\Views\Employees\List.cshtml" Link="Views\Employees\List.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Common\Views\Employees\Index.cshtml" Link="Views\Employees\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\Common\Views\Employees\Configure.cshtml" Link="Views\Employees\Configure.cshtml">
@@ -126,9 +130,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\Common\Views\Employees\List.cshtml" Link="Views\Employees\List.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\Common\Views\Employees\ListAll.cshtml" Link="Views\Employees\ListAll.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\Common\Views\Employees\PublicInfo.cshtml" Link="Views\Employees\PublicInfo.cshtml">

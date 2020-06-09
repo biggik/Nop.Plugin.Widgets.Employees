@@ -49,44 +49,22 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         public IActionResult Index(bool groupByDepartment = true)
         {
-            return List(groupByDepartment);
-        }
-        public IActionResult List(bool groupByDepartment)
-        {
-            return ListEmployees(showUnpublished: false, groupByDepartment);
-        }
-
-        public IActionResult ListAll(bool groupByDepartment = true)
-        {
-            // Require admin access to see all
-            return ListEmployees(showUnpublished: _permissionService.Authorize(EmployeePermissionProvider.ManageEmployees), groupByDepartment);
-        }
-
-        private IActionResult ListEmployees(bool showUnpublished, bool groupByDepartment)
-        { 
             var model = new DepartmentEmployeeModel
             {
-                IsAdmin = _permissionService.Authorize(EmployeePermissionProvider.ManageEmployees),
-                ShowAll = showUnpublished,
                 GroupByDepartment = groupByDepartment
             };
-
-            if (!model.IsAdmin && showUnpublished)
-            {
-                showUnpublished = false;
-            }
 
             var employesModel = new EmployeesListModel { Department = new DepartmentModel { Name = "" } };
 
             var emailCount = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
 
-            foreach (var d in _employeeService.GetAllDepartments(showUnpublished))
+            foreach (var d in _employeeService.GetAllDepartments(showUnpublished: false))
             {
                 if (groupByDepartment)
                 {
                     employesModel = new EmployeesListModel { Department = d.ToModel() };
                 }
-                foreach (var employee in _employeeService.GetEmployeesByDepartmentId(d.Id, showUnpublished))
+                foreach (var employee in _employeeService.GetEmployeesByDepartmentId(d.Id, showUnpublished: false))
                 {
                     var e = employee.ToModel();
 
@@ -125,7 +103,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 }
             }
 
-            return View($"{Route}{nameof(List)}.cshtml", model);
+            if (_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
+            {
+                DisplayEditLink(Url.Action(nameof(List), ControllerName, new { area = "Admin" }));
+            }
+
+            return View($"{Route}{nameof(Index)}.cshtml", model);
         }
 
         private string GetPictureUrl(int pictureId, int targetSize = 200)

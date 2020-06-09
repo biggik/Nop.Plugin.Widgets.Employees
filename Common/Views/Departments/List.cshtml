@@ -19,6 +19,11 @@
             DepartmentsController.ControllerName,
             new { area = "Admin" },
             new { @class = "btn bg-blue" })
+        @Html.ActionLink(T(EmployeeActionResources.EmployeeListButton).Text,
+            nameof(EmployeesController.List),
+            EmployeesController.ControllerName,
+            new { area = "admin" },
+            new { @class = "btn btn-primary" })
     </div>
 </div>
 <div class="content">

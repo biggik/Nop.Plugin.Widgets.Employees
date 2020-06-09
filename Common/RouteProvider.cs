@@ -56,11 +56,6 @@ namespace Nop.Plugin.Widgets.Employees
             actionSanitized = action + "/{groupByDepartment}";
             Build(routePrefix); // Skip action - to get only /Employees
 
-            // ListAll
-            action = nameof(EmployeesController.ListAll);
-            actionSanitized = action + "/{groupByDepartment}";
-            Build();
-
             // Employee info
             action = nameof(EmployeesController.Info);
             actionSanitized = action + "/{id}";
@@ -158,6 +153,16 @@ namespace Nop.Plugin.Widgets.Employees
 
             // Create employee
             action = nameof(EmployeesController.Create);
+            actionSanitized = action;
+            Build();
+
+            // List Employees
+            action = nameof(EmployeesController.List);
+            actionSanitized = action;
+            Build();
+
+            // List employee data
+            action = nameof(EmployeesController.ListData);
             actionSanitized = action;
             Build();
 

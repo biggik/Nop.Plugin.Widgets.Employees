@@ -86,6 +86,10 @@ namespace Nop.Plugin.Widgets.Employees.Resources
     [LocaleStringProvider]
     public static class EmployeeActionResources
     {
+        [LocaleString(LocaleStringAttribute.EN, "Employees")]
+        [LocaleString(LocaleStringAttribute.IS, "Starfsmenn")]
+        public const string EmployeeListButton = "Status.EmployeeWidget.Action.Employees.List";
+
         [LocaleString(LocaleStringAttribute.EN, "Back to Employee list")]
         [LocaleString(LocaleStringAttribute.IS, "Tilbaka í starfsmannalista")]
         public const string BackToList = "Status.EmployeeWidget.Action.Employee.BackToList";
@@ -98,6 +102,10 @@ namespace Nop.Plugin.Widgets.Employees.Resources
     [LocaleStringProvider]
     public static class AdminResources
     {
+        [LocaleString(LocaleStringAttribute.EN, "Employee list")]
+        [LocaleString(LocaleStringAttribute.IS, "Starfsmannalisti")]
+        public const string EmployeeListCaption = "Status.EmployeeWidget.Admin.Employee.Caption.Employees";
+
         [LocaleString(LocaleStringAttribute.EN, "Add a new employee")]
         [LocaleString(LocaleStringAttribute.IS, "Skrá nýjan starfsmann")]
         public const string AddEmployeeCaption = "Status.EmployeeWidget.Admin.Employee.Caption.Add";
