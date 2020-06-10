@@ -2,7 +2,7 @@ Name:
 List your employees along with contact info and details
 
 Short description:
-Employees list
+Employee list
 
 Description:
 This is a nopCommerce widget plugin for managing employee info for displaying on your nopCommerce public site, e.g. name, title, image, email, phone number, etc.
