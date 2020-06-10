@@ -1,0 +1,16 @@
+Name:
+List your employees along with contact info and details
+
+Short description:
+Employees list
+
+Description:
+This is a nopCommerce widget plugin for managing employee info for displaying on your nopCommerce public site, e.g. name, title, image, email, phone number, etc.
+
+The plugin lists employees by department, and supports both unpublishing employees as well as indicating that they have left your company (work started as well as work ended fields). Custom display order is also available, with alphabetical order being the default.
+
+It behaves similarly to nopCommerce core plugins. It has Admin area menu entries for accessing the functionality, but if you are logged on and have the appropriate ACL rights to manage employees you'll also have a <b>Manage this page</b> link in the administration header.
+
+You can take a look at the <a href="https://demo.status.is" target="_blank">demo site</a> for an example or take a look at the source code on <a href="https://github.com/biggik/Nop.Plugin.Widgets.Employees" target="_blank">GitHub</a>. 
+This is a completely free plugin, so any requested support or change requests will be managed accordingly. However, the plugin is live on an actual site and will be maintained. 
+
