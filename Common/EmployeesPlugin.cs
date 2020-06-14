@@ -149,9 +149,8 @@ namespace Nop.Plugin.Widgets.Employees
                 rootNode.ChildNodes.Add(contentMenu);
             }
 
-            var localizationService = EngineContext.Current.Resolve<ILocalizationService>();
             string T(string format) => _localizationService.GetResource(format) ?? format;
-
+            
             foreach (var item in new List<(string caption, string controller, string action)>
             {
                 (T(EmployeeResources.ListCaption), EmployeesController.ControllerName, nameof(EmployeesController.List)),
