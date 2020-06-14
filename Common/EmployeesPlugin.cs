@@ -15,6 +15,7 @@ using System;
 using Microsoft.AspNetCore.Routing;
 using Nop.Services.Security;
 using Nop.Plugin.Widgets.Employees.Controllers;
+using nopLocalizationHelper;
 
 namespace Nop.Plugin.Widgets.Employees
 {
@@ -62,6 +63,21 @@ namespace Nop.Plugin.Widgets.Employees
                 : settings.WidgetZones.Split(';').ToList();
         }
 
+        private LocaleStringHelper<LocaleStringResource> ResourceHelper()
+        {
+            return new LocaleStringHelper<LocaleStringResource>
+            (
+                GetType().Assembly,
+                from lang in _languageService.GetAllLanguages() select (lang.Id, lang.LanguageCulture),
+                (resourceName, languageId) => _localizationService.GetLocaleStringResourceByName(resourceName, languageId, false),
+                (languageId, resourceName, resourceValue) => new LocaleStringResource { LanguageId = languageId, ResourceName = resourceName, ResourceValue = resourceValue },
+                (lsr) => _localizationService.InsertLocaleStringResource(lsr),
+                (lsr, resourceValue) => { lsr.ResourceValue = resourceValue; _localizationService.UpdateLocaleStringResource(lsr); },
+                (lsr) => _localizationService.DeleteLocaleStringResource(lsr),
+                (lsr, resourceValue) => lsr.ResourceValue == resourceValue
+            );
+        }
+
         /// <summary>
         /// Gets widget zones where this widget should be rendered
         /// </summary>
@@ -76,43 +92,7 @@ namespace Nop.Plugin.Widgets.Employees
 
         private void CreateLocaleStrings()
         {
-            void Create(string resourceName, int languageId, string resourceValue)
-            {
-                var lsr = _localizationService.GetLocaleStringResourceByName(resourceName, languageId, false);
-                if (lsr == null)
-                {
-                    lsr = new LocaleStringResource
-                    {
-                        LanguageId = languageId,
-                        ResourceName = resourceName,
-                        ResourceValue = resourceValue
-                    };
-                    _localizationService.InsertLocaleStringResource(lsr);
-                }
-                else if (lsr.ResourceValue != resourceValue)
-                {
-                    lsr.ResourceValue = resourceValue;
-                    _localizationService.UpdateLocaleStringResource(lsr);
-                }
-            }
-
-            ManageLocaleStrings(Create);
-        }
-
-        private void ManageLocaleStrings(Action<string, int, string> action)
-        {
-            foreach (var resource in PluginResources)
-            {
-                foreach (var resourceLanguage in resource.localeStrings)
-                {
-                    action.Invoke(resource.resourceName, resourceLanguage.language.Id, resourceLanguage.lsa.Value);
-
-                    if (!string.IsNullOrWhiteSpace(resourceLanguage.lsa.Hint))
-                    {
-                        action.Invoke(resource.resourceName + ".Hint", resourceLanguage.language.Id, resourceLanguage.lsa.Hint);
-                    }
-                }
-            }
+            ResourceHelper().CreateLocaleStrings();
         }
 
         /// <summary>
@@ -144,16 +124,8 @@ namespace Nop.Plugin.Widgets.Employees
             _objectContext.Uninstall();
 #endif
 
-            void Delete(string resourceName, int languageId, string resourceValue)
-            {
-                var lsr = _localizationService.GetLocaleStringResourceByName(resourceName, languageId, false);
-                if (lsr != null)
-                {
-                    _localizationService.DeleteLocaleStringResource(lsr);
-                }
-            }
+            ResourceHelper().DeleteLocaleStrings();
 
-            ManageLocaleStrings(Delete);
             _permissionService.UninstallPermissions(new EmployeePermissionProvider());
 
             base.Uninstall();
@@ -200,34 +172,5 @@ namespace Nop.Plugin.Widgets.Employees
                 });
             }
         }
-
-        private IEnumerable<(string resourceName, IEnumerable<(LocaleStringAttribute lsa, Language language)> localeStrings)> PluginResources
-        {
-            get
-            {
-                var availableLanguages = (from lang in _languageService.GetAllLanguages()
-                                          select lang
-                                         ).ToDictionary(x => x.LanguageCulture, y => y);
-
-                IEnumerable<(LocaleStringAttribute lsa, Language language)> AsLSA(object[] values)
-                {
-                    foreach (var v in values)
-                    {
-                        var lsa = v as LocaleStringAttribute;
-                        if (availableLanguages.ContainsKey(lsa.Culture))
-                        {
-                            yield return (lsa, availableLanguages[lsa.Culture]);
-                        }
-                    }
-                }
-
-                return from type in GetType().Assembly.GetTypes()
-                       where type.CustomAttributes.Any(x => x.AttributeType == typeof(LocaleStringProviderAttribute))
-                       from field in type.GetFields()
-                       select (resourceName: field.GetValue(null).ToString(),
-                               localeStrings: AsLSA(field.GetCustomAttributes(typeof(LocaleStringAttribute), false)));
-            }
-        }
-
     }
 }
