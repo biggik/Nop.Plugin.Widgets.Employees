@@ -17,6 +17,7 @@ if not exist %nopOut%\Views (
 xcopy /d /y /Q "..\_build\debug\logo.jpg" %nopOut%\. > nul
 xcopy /d /y /Q "..\_build\debug\plugin.json" %nopOut%\. > nul
 xcopy /d /y /Q "..\_build\debug\Nop.Plugin.%plugin%*.*" %nopOut%\. > nul
+xcopy /d /y /Q "..\_build\debug\nopLocalizationHelper.dll" %nopOut%\. > nul
 xcopy /d /y /Q /S "..\_build\debug\Content\." %nopOut%\Content\. > nul
 xcopy /d /y /Q /S "..\_build\debug\Views\." %nopOut%\Views\. > nul
 echo %nopOut% was updated
