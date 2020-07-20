@@ -141,7 +141,9 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (!_permissionService.Authorize(EmployeePermissionProvider.ManageDepartments))
                 return AccessDeniedView();
 
-            return View($"{Route}{nameof(List)}.cshtml", new DepartmentSearchModel());
+            var model = new DepartmentSearchModel();
+            model.SetGridPageSize();
+            return View($"{Route}{nameof(List)}.cshtml", model);
         }
 
         [AuthorizeAdmin]

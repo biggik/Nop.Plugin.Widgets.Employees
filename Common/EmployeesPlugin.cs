@@ -53,6 +53,7 @@ namespace Nop.Plugin.Widgets.Employees
             _settingService = settingService;
 #if DEBUG
             CreateLocaleStrings();
+            _permissionService.InstallPermissions(new EmployeePermissionProvider());
 #endif
 
             var storeScope = storeContext.ActiveStoreScopeConfiguration;
@@ -100,7 +101,10 @@ namespace Nop.Plugin.Widgets.Employees
         /// </summary>
         public override void Install()
         {
-            _settingService.SaveSetting(new EmployeeWidgetSettings { });
+            _settingService.SaveSetting(new EmployeeWidgetSettings
+            {
+                WidgetZones = "header_menu_after",
+            });
 
 #if NOP_PRE_4_3
             _objectContext.Install();
@@ -150,7 +154,7 @@ namespace Nop.Plugin.Widgets.Employees
             }
 
             string T(string format) => _localizationService.GetResource(format) ?? format;
-            
+
             foreach (var item in new List<(string caption, string controller, string action)>
             {
                 (T(EmployeeResources.ListCaption), EmployeesController.ControllerName, nameof(EmployeesController.List)),

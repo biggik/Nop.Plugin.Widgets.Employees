@@ -101,23 +101,24 @@ namespace Nop.Plugin.Widgets.Employees.Services
             var key = CreateKey(EmployeesAllKey, showUnpublished, pageIndex, pageSize);
             return _cacheManager.Get(key, () =>
             {
-                return new PagedList<Employee>(
-                    from employee in _employeeRepository.Table
-                    join department in _departmentRepository.Table on employee.DepartmentId equals department.Id 
-                    where showUnpublished
-                          ||
-                          (employee.Published
-                          && (employee.WorkStarted.Date < DateTime.Now.Date)
-                          && (!employee.WorkEnded.HasValue ||
-                                  (employee.WorkEnded.Value.Year < 2000 || employee.WorkEnded.Value > DateTime.Now.Date)
-                          ))
-                    
-                    orderby department.DisplayOrder ascending,
-                            department.Name ascending,
-                            employee.DisplayOrder ascending,
-                            employee.Name ascending
+                var query = from employee in _employeeRepository.Table
+                            join department in _departmentRepository.Table on employee.DepartmentId equals department.Id
+                            where showUnpublished
+                                  ||
+                                  (employee.Published
+                                  && (employee.WorkStarted.Date < DateTime.Now.Date)
+                                  && (!employee.WorkEnded.HasValue ||
+                                          (employee.WorkEnded.Value.Year < 2000 || employee.WorkEnded.Value > DateTime.Now.Date)
+                                  ))
+                            orderby department.DisplayOrder ascending,
+                                    department.Name ascending,
+                                    employee.DisplayOrder ascending,
+                                    employee.Name ascending
 
-                    select employee,
+                            select employee;
+
+                return new PagedList<Employee>(
+                    query,    
                     pageIndex,
                     pageSize);
             });

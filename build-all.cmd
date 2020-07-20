@@ -11,4 +11,4 @@ Echo building 4.20 of %project%
 rd ..\_build\release\. /s /q > 0
 dotnet build %project%.csproj --configuration=Release --no-incremental
 
-cd ..
+cd ..\..

@@ -89,7 +89,9 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
                 return AccessDeniedView();
 
-            return View($"{Route}{nameof(List)}.cshtml", new EmployeeSearchModel());
+            var model = new EmployeeSearchModel();
+            model.SetGridPageSize();
+            return View($"{Route}{nameof(List)}.cshtml", model);
         }
 
         private List<(string name, string value, int id)> GetWidgetZoneData()
