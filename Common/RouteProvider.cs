@@ -33,7 +33,7 @@ namespace Nop.Plugin.Widgets.Employees
         {
             string controller = EmployeesController.ControllerName;
             string namePrefix = $"Plugins.{controller}.";
-            const string routePrefix = "Employees";
+            string routePrefix = controller;
 
             string action = "";
             string actionSanitized = "";

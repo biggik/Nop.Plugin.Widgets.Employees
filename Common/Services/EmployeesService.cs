@@ -139,7 +139,7 @@ namespace Nop.Plugin.Widgets.Employees.Services
 
             return (from employee in _employeeRepository.Table
                     where employee.Published
-                          && !string.IsNullOrWhiteSpace(employee.Email)
+                          && !(employee.Email == null || employee.Email.Trim() == string.Empty)
                           && employee.Email.ToLower().StartsWith(emailPrefix.ToLower() + '@')
                     select employee
                    ).FirstOrDefault();
