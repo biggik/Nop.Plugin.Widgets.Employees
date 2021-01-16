@@ -213,7 +213,7 @@ namespace Nop.Plugin.Widgets.Employees.Services
                               && (showUnpublished
                                   ||
                                   (employee.Published
-                                   && (employee.WorkStarted.Date < DateTime.Now.Date)
+                                   && (!employee.WorkStarted.HasValue || employee.WorkStarted.Date < DateTime.Now.Date)
                                    && (!employee.WorkEnded.HasValue ||
                                            (employee.WorkEnded.Value.Year < 2000 || employee.WorkEnded.Value > DateTime.Now.Date)
                                       )))
