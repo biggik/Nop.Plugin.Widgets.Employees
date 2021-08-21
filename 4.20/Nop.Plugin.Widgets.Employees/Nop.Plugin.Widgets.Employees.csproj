@@ -9,9 +9,9 @@
     <PackageProjectUrl>http://www.status.is</PackageProjectUrl>
     <RepositoryUrl></RepositoryUrl>
     <RepositoryType></RepositoryType>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
-    <Version>2.1.0</Version>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <FileVersion>2.2.0.0</FileVersion>
+    <Version>2.2.0</Version>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
@@ -168,7 +168,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="nopLocalizationHelper" Version="0.5.0" />
+    <PackageReference Include="nopLocalizationHelper" Version="0.6.1" />
   </ItemGroup>
 
   <ItemGroup>

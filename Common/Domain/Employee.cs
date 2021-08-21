@@ -16,7 +16,7 @@ namespace Nop.Plugin.Widgets.Employees.Domain
         public string Interests { get; set; }
         public string PhoneNumber { get; set; }
         public string MobileNumber { get; set; }
-        public DateTime WorkStarted { get; set; }
+        public DateTime? WorkStarted { get; set; }
         public DateTime? WorkEnded { get; set; }
         public bool Published { get; set; }
         public int DisplayOrder { get; set; }

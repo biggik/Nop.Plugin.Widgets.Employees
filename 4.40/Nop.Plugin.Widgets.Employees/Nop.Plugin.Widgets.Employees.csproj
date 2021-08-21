@@ -1,19 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Copyright>Copyright © Status ehf</Copyright>
-    <Company>Status ehf</Company>
-    <Authors>Status ehf</Authors>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl>http://www.status.is</PackageProjectUrl>
-    <RepositoryUrl></RepositoryUrl>
-    <RepositoryType></RepositoryType>
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <FileVersion>2.2.0.0</FileVersion>
-    <Version>2.2.0</Version>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)../../Common/Common.Build.props" />
 
   <ItemGroup>
     <None Remove="logo.jpg" />
@@ -23,7 +14,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\_build\release</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NOP_ASYNC</DefineConstants>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -31,6 +22,7 @@
     <OutputPath>..\_build\debug</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DefineConstants>NOP_ASYNC</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -161,8 +153,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="n:\nopCommerce 4.30\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
-    <ProjectReference Include="n:\nopCommerce 4.30\Presentation\Nop.Web\Nop.Web.csproj" />
+    <ProjectReference Include="n:\nopCommerce 4.40\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+    <ProjectReference Include="n:\nopCommerce 4.40\Presentation\Nop.Web\Nop.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -175,8 +167,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="nopLocalizationHelper" Version="0.6.1" />
+    <PackageReference Include="nopLocalizationHelper" Version="0.6.2" GeneratePathProperty="true" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <!-- this in combination with GeneratePathProperty allows us to let the build helper copy the file for packaging -->
+    <nopLocRef Condition=" '$(nopLocRef)' == '' ">$(PkgnopLocalizationHelper)\lib\netstandard2.0\nopLocalizationHelper.dll</nopLocRef>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Update="Views\Employees\Configure.cshtml">
@@ -235,10 +232,10 @@
   <!-- This target execute after "Build" target -->
   <Target Name="NopTarget" AfterTargets="Build">
     <!-- Delete unnecessary libraries from plugins path -->
-    <MSBuild Projects="n:\nopCommerce 4.30\Build\ClearPluginAssemblies.proj" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+    <MSBuild Projects="n:\nopCommerce 4.40\Build\ClearPluginAssemblies.proj" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
   </Target>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if exist ..\BuildHelpers\%25computername%25-widgets-employees-$(ConfigurationName).bat (&#xD;&#xA;  ..\BuildHelpers\%25computername%25-widgets-employees-$(ConfigurationName).bat&#xD;&#xA;)" />
+    <Exec Command="if exist ..\BuildHelpers\%25computername%25-widgets-employees-$(ConfigurationName).bat (&#xD;&#xA;  ..\BuildHelpers\%25computername%25-widgets-employees-$(ConfigurationName).bat $(nopLocRef)&#xD;&#xA;)" />
   </Target>
 
 </Project>

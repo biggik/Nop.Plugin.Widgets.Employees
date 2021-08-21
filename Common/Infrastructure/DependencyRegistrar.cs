@@ -1,4 +1,8 @@
+#if !NOP_ASYNC
 using Autofac;
+#else
+using Microsoft.Extensions.DependencyInjection;
+#endif
 using Nop.Core.Configuration;
 using Nop.Core.Infrastructure;
 using Nop.Core.Infrastructure.DependencyManagement;
@@ -16,6 +20,7 @@ namespace Nop.Plugin.Widgets.Employees.Infrastructure
 {
     public class DependencyRegistrar : IDependencyRegistrar
     {
+#if !NOP_ASYNC
         public virtual void Register(ContainerBuilder builder, ITypeFinder typeFinder, NopConfig config)
         {
             builder.RegisterType<EmployeesService>().As<IEmployeesService>().InstancePerLifetimeScope();
@@ -36,10 +41,13 @@ namespace Nop.Plugin.Widgets.Employees.Infrastructure
                 .InstancePerLifetimeScope();
 #endif
         }
-
-        public int Order
+#else
+        public void Register(IServiceCollection services, ITypeFinder typeFinder, AppSettings appSettings)
         {
-            get { return 1; }
+            services.AddScoped<EmployeesService>();
         }
+#endif
+
+        public int Order => 1;
     }
 }

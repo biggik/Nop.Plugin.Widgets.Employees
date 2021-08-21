@@ -3,7 +3,12 @@ using Nop.Web.Framework.Models;
 
 namespace Nop.Plugin.Widgets.Employees.Models
 {
-    public class EmployeesListModel : BaseNopEntityModel
+#if NOP_ASYNC
+    public record
+#else
+    public class
+#endif
+    EmployeesListModel : BaseNopEntityModel
     {
         public EmployeesListModel()
         {

@@ -5,7 +5,12 @@ using Nop.Plugin.Widgets.Employees.Resources;
 
 namespace Nop.Plugin.Widgets.Employees.Models
 {
-    public class DepartmentModel : BaseNopEntityModel
+#if NOP_ASYNC
+    public record
+#else
+    public class 
+#endif
+        DepartmentModel : BaseNopEntityModel
     {
         [NopResourceDisplayName(DepartmentResources.Name)]
         public string Name { get; set; }

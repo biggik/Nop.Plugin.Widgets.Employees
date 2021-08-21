@@ -2,7 +2,12 @@
 
 namespace Nop.Plugin.Widgets.Employees.Models
 {
-    public class EmployeeListModel : BasePagedListModel<EmployeeModel>
+#if NOP_ASYNC
+    public record
+#else
+    public class
+#endif
+        EmployeeListModel : BasePagedListModel<EmployeeModel>
     {
     }
 }

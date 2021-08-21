@@ -2,7 +2,12 @@
 
 namespace Nop.Plugin.Widgets.Employees.Models
 {
-    public class EmployeeSearchModel : BaseSearchModel
+#if NOP_ASYNC
+    public record
+#else
+    public class 
+#endif
+        EmployeeSearchModel : BaseSearchModel
     {
     }
 }
