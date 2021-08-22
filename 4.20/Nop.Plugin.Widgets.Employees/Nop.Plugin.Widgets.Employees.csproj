@@ -2,18 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <Copyright>Copyright © Status ehf</Copyright>
-    <Company>Status ehf</Company>
-    <Authors>Status ehf</Authors>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl>http://www.status.is</PackageProjectUrl>
-    <RepositoryUrl></RepositoryUrl>
-    <RepositoryType></RepositoryType>
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <FileVersion>2.2.0.0</FileVersion>
-    <Version>2.2.0</Version>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)../../Common/Common.Build.props" />
 
   <ItemGroup>
     <None Remove="logo.jpg" />
@@ -230,6 +221,12 @@
     <!-- Delete unnecessary libraries from plugins path -->
     <MSBuild Projects="n:\nopCommerce 4.20\Build\ClearPluginAssemblies.proj" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
   </Target>
+  <Target Name="FilterCopyLocalItems" AfterTargets="ResolveLockFileCopyLocalProjectDeps">
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)' != 'nopLocalizationHelper'" />
+    </ItemGroup>
+  </Target>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="if exist ..\BuildHelpers\%25computername%25-widgets-employees-$(ConfigurationName).bat (&#xD;&#xA;  ..\BuildHelpers\%25computername%25-widgets-employees-$(ConfigurationName).bat&#xD;&#xA;)" />
   </Target>
