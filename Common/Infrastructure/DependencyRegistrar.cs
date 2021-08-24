@@ -44,7 +44,7 @@ namespace Nop.Plugin.Widgets.Employees.Infrastructure
 #else
         public void Register(IServiceCollection services, ITypeFinder typeFinder, AppSettings appSettings)
         {
-            services.AddScoped<EmployeesService>();
+            services.AddScoped<IEmployeesService, EmployeesService>();
         }
 #endif
 

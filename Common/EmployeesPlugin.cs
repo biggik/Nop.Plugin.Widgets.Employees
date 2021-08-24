@@ -17,6 +17,7 @@ using Nop.Services.Security;
 using Nop.Plugin.Widgets.Employees.Controllers;
 using nopLocalizationHelper;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Nop.Plugin.Widgets.Employees
 {
@@ -54,19 +55,30 @@ namespace Nop.Plugin.Widgets.Employees
             _objectContext = objectContext;
 #endif
             _settingService = settingService;
+
 #if DEBUG
-#if NOP_ASYNC
-            ResourceHelper().CreateLocaleStringsAsync().RunSynchronously();
-#else
-            ResourceHelper().CreateLocaleStrings();
-#endif
-#if NOP_ASYNC
-            _permissionService.InstallPermissionsAsync(new EmployeePermissionProvider()).RunSynchronously();
-#else
-            _permissionService.InstallPermissions(new EmployeePermissionProvider());
-#endif
+            DebugInitialize();
 #endif
         }
+
+#if DEBUG
+        private static bool _debugInitialized = false;
+
+        private void DebugInitialize()
+        {
+            if (_debugInitialized)
+                return;
+
+            _debugInitialized = true;
+#if NOP_ASYNC
+            ResourceHelper().CreateLocaleStringsAsync();
+            _permissionService.InstallPermissionsAsync(new EmployeePermissionProvider());
+#else
+            ResourceHelper().CreateLocaleStrings();
+            _permissionService.InstallPermissions(new EmployeePermissionProvider());
+#endif
+        }
+#endif
 
         private LocaleStringHelper<LocaleStringResource> ResourceHelper()
         {

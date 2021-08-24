@@ -26,12 +26,16 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         {
 #if NOP_ASYNC
             if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
-                return BadRequest();
+            {
+                return AccessDeniedView();
+            }
             var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
             var settings = await _settingService.LoadSettingAsync<EmployeeWidgetSettings>(storeScope);
 #else
             if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
-                return BadRequest();
+            {
+                return AccessDeniedView();
+            }
             var storeScope = _storeContext.ActiveStoreScopeConfiguration;
             var settings = _settingService.LoadSetting<EmployeeWidgetSettings>(storeScope);
 #endif
@@ -74,7 +78,9 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 #else
             if (!_permissionService.Authorize(EmployeePermissionProvider.ManageEmployees))
 #endif
-                return BadRequest();
+            {
+                return AccessDeniedView();
+            }
 
             if (!ModelState.IsValid)
 #if NOP_ASYNC

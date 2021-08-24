@@ -71,7 +71,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         [AuthorizeAdmin]
         [Area(AreaNames.Admin)]
-        [HttpPost, ParameterBasedOnFormNameAttribute("save-continue", "continueEditing")]
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
 #if NOP_ASYNC
         public async Task<IActionResult> Create(DepartmentModel model, bool continueEditing)
 #else
@@ -128,7 +128,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         [AuthorizeAdmin]
         [Area(AreaNames.Admin)]
-        [HttpPost, ParameterBasedOnFormNameAttribute("save-continue", "continueEditing")]
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
 #if NOP_ASYNC
         public async Task<IActionResult> Edit(DepartmentModel model, bool continueEditing)
 #else

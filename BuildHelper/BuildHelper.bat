@@ -14,6 +14,7 @@ del ..\_build\%configuration%\nop.web.* /q > nul
 del ..\_build\%configuration%\nop.services.* /q > nul
 rd ..\_build\%configuration%\ref /s /q > nul
 rd ..\_build\%configuration%\refs /s /q > nul
+rd ..\_build\%configuration%\runtimes /s /q > nul
 
 if "%~3" NEQ "" copy %3 ..\_build\%configuration%\. /y
 if "%~4" NEQ "" copy %4 ..\_build\%configuration%\. /y
