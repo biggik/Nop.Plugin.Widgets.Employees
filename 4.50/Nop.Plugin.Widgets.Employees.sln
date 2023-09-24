@@ -7,17 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Plugin.Widgets.Employee
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nopCommerce", "nopCommerce", "{5C73F01E-0888-4CFD-840E-65757E623050}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Core", "n:\nopCommerce 4.40\Libraries\Nop.Core\Nop.Core.csproj", "{B6CE41AC-05F5-4D91-9199-5B39D6F35DA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Core", "n:\nopCommerce 4.50\Libraries\Nop.Core\Nop.Core.csproj", "{B6CE41AC-05F5-4D91-9199-5B39D6F35DA5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Data", "n:\nopCommerce 4.40\Libraries\Nop.Data\Nop.Data.csproj", "{EF4D222C-6C43-4A44-8F83-8E3994D83243}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Data", "n:\nopCommerce 4.50\Libraries\Nop.Data\Nop.Data.csproj", "{EF4D222C-6C43-4A44-8F83-8E3994D83243}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Services", "n:\nopCommerce 4.40\Libraries\Nop.Services\Nop.Services.csproj", "{18E90A9F-8749-457C-B9BC-AF2C3999BFF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Services", "n:\nopCommerce 4.50\Libraries\Nop.Services\Nop.Services.csproj", "{18E90A9F-8749-457C-B9BC-AF2C3999BFF2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Web.Framework", "n:\nopCommerce 4.40\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj", "{3F8E68F5-04AF-4CF3-AF5F-CAA49FE423A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Web.Framework", "n:\nopCommerce 4.50\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj", "{3F8E68F5-04AF-4CF3-AF5F-CAA49FE423A1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Web", "n:\nopCommerce 4.40\Presentation\Nop.Web\Nop.Web.csproj", "{AB55C4C4-C662-4008-8A5A-8974588BED35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Web", "n:\nopCommerce 4.50\Presentation\Nop.Web\Nop.Web.csproj", "{AB55C4C4-C662-4008-8A5A-8974588BED35}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{B4876BCC-D260-43EE-9DA6-0ECBFF35EEFB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{1642EB8F-26E0-4B57-A9B4-FEC88A0B1E6B}"
 	ProjectSection(SolutionItems) = preProject
 		BuildHelper\BK-LAP-widgets-employees-debug.bat = BuildHelper\BK-LAP-widgets-employees-debug.bat
 		BuildHelper\BK-LAP-widgets-employees-release.bat = BuildHelper\BK-LAP-widgets-employees-release.bat

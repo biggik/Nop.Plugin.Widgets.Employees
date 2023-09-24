@@ -18,6 +18,7 @@ using Nop.Plugin.Widgets.Employees.Controllers;
 using nopLocalizationHelper;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Nop.Plugin.Widgets.Employees.Components;
 
 namespace Nop.Plugin.Widgets.Employees
 {
@@ -226,8 +227,12 @@ namespace Nop.Plugin.Widgets.Employees
             base.Uninstall();
 #endif
         }
+#if NOP_46
+        public Type GetWidgetViewComponent(string widgetZone) => typeof(WidgetsEmployeesViewComponent);
+#else
 
         public string GetWidgetViewComponentName(string widgetZone) => "WidgetsEmployees";
+#endif
 
 #if NOP_ASYNC
         public async Task ManageSiteMapAsync(SiteMapNode rootNode)

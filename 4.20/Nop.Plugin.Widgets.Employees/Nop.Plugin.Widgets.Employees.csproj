@@ -228,7 +228,7 @@
   </Target>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if exist ..\BuildHelpers\%25computername%25-widgets-employees-$(ConfigurationName).bat (&#xD;&#xA;  ..\BuildHelpers\%25computername%25-widgets-employees-$(ConfigurationName).bat&#xD;&#xA;)" />
+    <Exec Command="if exist ..\BuildHelper\%25computername%25-widgets-employees-$(ConfigurationName).bat (&#xD;&#xA;  ..\BuildHelpers\%25computername%25-widgets-employees-$(ConfigurationName).bat&#xD;&#xA;)" />
   </Target>
 
 </Project>

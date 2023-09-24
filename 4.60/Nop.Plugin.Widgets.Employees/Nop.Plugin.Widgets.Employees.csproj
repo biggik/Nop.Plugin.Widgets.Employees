@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)../../Common/Common.Build.props" />
@@ -14,7 +14,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\_build\release</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
-    <DefineConstants>TRACE;NOP_ASYNC</DefineConstants>
+    <DefineConstants>TRACE;NOP_ASYNC;NOP_45;NOP_46</DefineConstants>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -22,7 +22,7 @@
     <OutputPath>..\_build\debug</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DefineConstants>NOP_ASYNC</DefineConstants>
+    <DefineConstants>NOP_ASYNC;NOP_45;NOP_46</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -60,7 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\Common\Infrastructure\DependencyRegistrar.cs" Link="Infrastructure\DependencyRegistrar.cs" />
+    <Compile Include="..\..\Common\Infrastructure\NopStartup.cs" Link="Infrastructure\NopStartup.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -153,8 +153,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="n:\nopCommerce 4.40\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
-    <ProjectReference Include="n:\nopCommerce 4.40\Presentation\Nop.Web\Nop.Web.csproj" />
+    <ProjectReference Include="n:\nopCommerce 4.60\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+    <ProjectReference Include="n:\nopCommerce 4.60\Presentation\Nop.Web\Nop.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -167,7 +167,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="nopLocalizationHelper" Version="0.6.2" />
+    <PackageReference Include="nopLocalizationHelper" Version="0.7.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -227,7 +227,7 @@
   <!-- This target execute after "Build" target -->
   <Target Name="NopTarget" AfterTargets="Build">
     <!-- Delete unnecessary libraries from plugins path -->
-    <MSBuild Projects="n:\nopCommerce 4.40\Build\ClearPluginAssemblies.proj" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+    <MSBuild Projects="n:\nopCommerce 4.60\Build\ClearPluginAssemblies.proj" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
   </Target>
   <Target Name="FilterCopyLocalItems" AfterTargets="ResolveLockFileCopyLocalProjectDeps">
     <ItemGroup>
