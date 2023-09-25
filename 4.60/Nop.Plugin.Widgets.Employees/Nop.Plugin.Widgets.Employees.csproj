@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+	<MvcBuildViews>true</MvcBuildViews>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)../../Common/Common.Build.props" />

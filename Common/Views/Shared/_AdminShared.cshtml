@@ -1,8 +1,8 @@
-﻿@using Nop.Web.Framework.UI
+﻿@addTagHelper *, Nop.Web.Framework
+
+@using Nop.Web.Framework.UI
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-@{
-    Html.AddCssFileParts("~/Plugins/Widgets.Employees/Content/Employees.css", excludeFromBundle: true);
-}
+<link rel="stylesheet" href="~/Plugins/Widgets.Employees/Content/Employees.css" />
 @RenderBody()

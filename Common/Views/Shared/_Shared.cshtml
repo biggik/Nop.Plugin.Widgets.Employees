@@ -2,7 +2,5 @@
 @{
     Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
 }
-@{
-    Html.AddCssFileParts("~/Plugins/Widgets.Employees/Content/Employees.css", excludeFromBundle: true);
-}
+<link rel="stylesheet" href="~/Plugins/Widgets.Employees/Content/Employees.css" />
 @RenderBody()

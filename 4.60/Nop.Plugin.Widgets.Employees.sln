@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Plugin.Widgets.Employees", "Nop.Plugin.Widgets.Employees\Nop.Plugin.Widgets.Employees.csproj", "{83FC2D39-1955-4779-9887-5B0461224C79}"
 EndProject
@@ -16,6 +16,18 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Web.Framework", "n:\nopCommerce 4.60\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj", "{3F8E68F5-04AF-4CF3-AF5F-CAA49FE423A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nop.Web", "n:\nopCommerce 4.60\Presentation\Nop.Web\Nop.Web.csproj", "{AB55C4C4-C662-4008-8A5A-8974588BED35}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{AFFCAC74-76BC-483F-8FF2-5DB281615088}"
+	ProjectSection(SolutionItems) = preProject
+		BuildHelper\BK-LAP-widgets-employees-debug.bat = BuildHelper\BK-LAP-widgets-employees-debug.bat
+		BuildHelper\BK-LAP-widgets-employees-release.bat = BuildHelper\BK-LAP-widgets-employees-release.bat
+		..\build-all.cmd = ..\build-all.cmd
+		..\build-version.cmd = ..\build-version.cmd
+		BuildHelper\BuildHelper.bat = BuildHelper\BuildHelper.bat
+		..\Common\Common.Build.props = ..\Common\Common.Build.props
+		..\README.md = ..\README.md
+		..\skip-folders-in-build.txt = ..\skip-folders-in-build.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,7 +61,7 @@ Global
 		{AB55C4C4-C662-4008-8A5A-8974588BED35} = {5C73F01E-0888-4CFD-840E-65757E623050}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {EC22C118-6015-4F38-9598-325DC8B6E2C6}
 		LessCompiler = 83fc2d39-1955-4779-9887-5b0461224c79
+		SolutionGuid = {EC22C118-6015-4F38-9598-325DC8B6E2C6}
 	EndGlobalSection
 EndGlobal
