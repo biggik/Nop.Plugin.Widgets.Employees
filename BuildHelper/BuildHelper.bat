@@ -34,7 +34,7 @@ if not exist %nopOut%\Views (
     mkdir %nopOut%\Views
     echo Created %nopOut%\Views
 )
-if not exist %nopOut%\Views (
+if not exist %nopOut%\Views\Content (
     mkdir %nopOut%\Content
     echo Created %nopOut%\Content
 )
