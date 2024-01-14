@@ -158,7 +158,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
 #if NOP_ASYNC
-        private async Task<IList<SelectListItem>> GetAllAvailableDepartments(int selectedDepartmentId = -1)
+        private async Task<IList<SelectListItem>> GetAllAvailableDepartmentsAsync(int selectedDepartmentId = -1)
         {
             return (from d in (await _employeeService.GetOrderedDepartmentsAsync(showUnpublished: true))
 #else
@@ -177,11 +177,11 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
 #if NOP_ASYNC
-        private async Task<EmployeeModel> GetEmployeeWithAllAvailableDepartments(int selectedDepartmentId = -1)
+        private async Task<EmployeeModel> GetEmployeeWithAllAvailableDepartmentsAsync(int selectedDepartmentId = -1)
         {
             return new EmployeeModel
             {
-                AvailableDepartments = await GetAllAvailableDepartments(selectedDepartmentId)
+                AvailableDepartments = await GetAllAvailableDepartmentsAsync(selectedDepartmentId)
             };
         }
 #else
@@ -237,7 +237,11 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 #endif
                 return AccessDeniedView();
 
+#if NOP_ASYNC
+            var model = await GetEmployeeWithAllAvailableDepartmentsAsync();
+#else
             var model = GetEmployeeWithAllAvailableDepartments();
+#endif
             return View($"{Route}{nameof(Create)}.cshtml", model);
         }
 
@@ -273,7 +277,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             //If we got this far, something failed, redisplay form
 #if NOP_ASYNC
-            model.AvailableDepartments = await GetAllAvailableDepartments(model.DepartmentId);
+            model.AvailableDepartments = await GetAllAvailableDepartmentsAsync(model.DepartmentId);
 #else
             model.AvailableDepartments = GetAllAvailableDepartments(model.DepartmentId);
 #endif
@@ -307,7 +311,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             var model = employee.ToModel();
 #if NOP_ASYNC
-            model.AvailableDepartments = await GetAllAvailableDepartments(employee.DepartmentId);
+            model.AvailableDepartments = await GetAllAvailableDepartmentsAsync(employee.DepartmentId);
 #else
             model.AvailableDepartments = GetAllAvailableDepartments(employee.DepartmentId);
 #endif
@@ -354,7 +358,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             //If we got this far, something failed, redisplay form
 #if NOP_ASYNC
-            model.AvailableDepartments = await GetAllAvailableDepartments(model.DepartmentId);
+            model.AvailableDepartments = await GetAllAvailableDepartmentsAsync(model.DepartmentId);
 #else
             model.AvailableDepartments = GetAllAvailableDepartments(model.DepartmentId);
 #endif

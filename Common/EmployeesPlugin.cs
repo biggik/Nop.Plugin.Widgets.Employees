@@ -73,7 +73,8 @@ namespace Nop.Plugin.Widgets.Employees
             _debugInitialized = true;
 #if NOP_ASYNC
             ResourceHelper().CreateLocaleStringsAsync();
-            _permissionService.InstallPermissionsAsync(new EmployeePermissionProvider());
+            var t = _permissionService.InstallPermissionsAsync(new EmployeePermissionProvider());
+            t.Wait();
 #else
             ResourceHelper().CreateLocaleStrings();
             _permissionService.InstallPermissions(new EmployeePermissionProvider());

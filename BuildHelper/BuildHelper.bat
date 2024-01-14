@@ -32,13 +32,18 @@ if not exist %nopOut% (
 )
 if not exist %nopOut%\Views (
     mkdir %nopOut%\Views
-    echo Created %nopOut%Views
+    echo Created %nopOut%\Views
+)
+if not exist %nopOut%\Views (
+    mkdir %nopOut%\Content
+    echo Created %nopOut%\Content
 )
 xcopy /d /y /Q "..\_build\%configuration%\logo.jpg" %nopOut%\. > nul
 xcopy /d /y /Q "..\_build\%configuration%\plugin.json" %nopOut%\. > nul
 xcopy /d /y /Q "..\_build\%configuration%\Nop.Plugin.%plugin%*.*" %nopOut%\. > nul
 xcopy /d /y /Q "..\_build\%configuration%\nopLocalizationHelper.dll" %nopOut%\. > nul
 xcopy /d /y /Q /S "..\_build\%configuration%\Views\." %nopOut%\Views\. > nul
+xcopy /d /y /Q /S "..\_build\%configuration%\Content\." %nopOut%\Content\. > nul
 echo %nopOut% was updated
 goto AllDone
 :MissingParam
