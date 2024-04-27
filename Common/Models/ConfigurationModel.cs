@@ -6,12 +6,7 @@ using System.Collections.Generic;
 
 namespace Nop.Plugin.Widgets.Employees.Models
 {
-#if NOP_ASYNC
-    public record
-#else
-    public class 
-#endif
-        ConfigurationModel : BaseNopModel
+    public record ConfigurationModel : BaseNopModel
     {
         public ConfigurationModel()
         {

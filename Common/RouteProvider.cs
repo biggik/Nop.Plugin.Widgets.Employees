@@ -2,34 +2,20 @@
 using Nop.Plugin.Widgets.Employees.Controllers;
 using Nop.Web.Framework.Localization;
 using Nop.Web.Framework.Mvc.Routing;
-#if !NOP_PRE_4_3
 using Microsoft.AspNetCore.Builder;
-#endif
 
 namespace Nop.Plugin.Widgets.Employees
 {
     public partial class RouteProvider : IRouteProvider
     {
-        public void RegisterRoutes(
-#if NOP_PRE_4_3
-            IRouteBuilder builder
-#else
-            IEndpointRouteBuilder builder
-#endif
-            )
+        public void RegisterRoutes(IEndpointRouteBuilder builder)
         {
             RegisterPublicRoutes(builder);
             RegisterDepartmentAdminRoutes(builder);
             RegisterEmployeeAdminRoutes(builder);
         }
 
-        private void RegisterPublicRoutes(
-#if NOP_PRE_4_3
-            IRouteBuilder builder
-#else
-            IEndpointRouteBuilder builder
-#endif
-            )
+        private void RegisterPublicRoutes(IEndpointRouteBuilder builder)
         {
             string controller = EmployeesController.ControllerName;
             string namePrefix = $"Plugins.{controller}.";
@@ -39,17 +25,10 @@ namespace Nop.Plugin.Widgets.Employees
             string actionSanitized = "";
 
             void Build(string routeAction = null) =>
-#if NOP_PRE_4_3
-                builder.MapLocalizedRoute(
-                        name:$"{namePrefix}{action}",
-                        template:routeAction ?? $"{routePrefix}/{actionSanitized}",
-                        defaults:new { controller = controller, action = action });
-#else
                 builder.MapControllerRoute(
                         name: $"{namePrefix}{action}",
                         pattern: routeAction ?? $"{routePrefix}/{actionSanitized}",
                         defaults: new { controller = controller, action = action });
-#endif
 
             // Index
             action = nameof(EmployeesController.Index);
@@ -62,13 +41,7 @@ namespace Nop.Plugin.Widgets.Employees
             Build();
         }
 
-        private void RegisterDepartmentAdminRoutes(
-#if NOP_PRE_4_3
-            IRouteBuilder builder
-#else
-            IEndpointRouteBuilder builder
-#endif
-            )
+        private void RegisterDepartmentAdminRoutes(IEndpointRouteBuilder builder)
         {
             string controller = DepartmentsController.ControllerName;
             string namePrefix = $"Plugins.{controller}.";
@@ -78,18 +51,11 @@ namespace Nop.Plugin.Widgets.Employees
             string actionSanitized = "";
 
             void Build() =>
-#if NOP_PRE_4_3
-                builder.MapLocalizedRoute(
-                                name:$"{namePrefix}{action}",
-                                template:$"{routePrefix}/{actionSanitized}",
-                                defaults:new { controller = controller, action = action, area = "Admin" });
-#else
                 builder.MapAreaControllerRoute(
                                 name: $"{namePrefix}{action}",
                                 areaName: "Admin",
                                 pattern: $"{routePrefix}/{actionSanitized}",
                                 defaults: new { controller = controller, action = action, area = "Admin" });
-#endif
 
             // Create department
             action = nameof(DepartmentsController.Create);
@@ -112,13 +78,7 @@ namespace Nop.Plugin.Widgets.Employees
             Build();
         }
 
-        private void RegisterEmployeeAdminRoutes(
-#if NOP_PRE_4_3
-            IRouteBuilder builder
-#else
-            IEndpointRouteBuilder builder
-#endif
-            )
+        private void RegisterEmployeeAdminRoutes(IEndpointRouteBuilder builder)
         {
             string controller = EmployeesController.ControllerName;
             string namePrefix = $"Plugins.{controller}.";
@@ -128,18 +88,11 @@ namespace Nop.Plugin.Widgets.Employees
             string actionSanitized = "";
 
             void Build() =>
-#if NOP_PRE_4_3
-                builder.MapLocalizedRoute(
-                                name:$"{namePrefix}{action}",
-                                template:$"{routePrefix}/{actionSanitized}",
-                                defaults:new { controller = controller, action = action, area = "Admin" });
-#else
                 builder.MapAreaControllerRoute(
                                 name: $"{namePrefix}{action}",
                                 areaName: "Admin",
                                 pattern: $"{routePrefix}/{actionSanitized}",
                                 defaults: new { controller = controller, action = action, area = "Admin" });
-#endif
 
             // Configure
             action = nameof(EmployeesController.Configure);

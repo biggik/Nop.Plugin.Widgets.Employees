@@ -8,12 +8,7 @@ using Nop.Plugin.Widgets.Employees.Resources;
 
 namespace Nop.Plugin.Widgets.Employees.Models
 {
-#if NOP_ASYNC
-    public record
-#else
-    public class
-#endif
-    EmployeeModel : BaseNopEntityModel
+    public record EmployeeModel : BaseNopEntityModel
     {
         public EmployeeModel()
         {

@@ -15,7 +15,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\_build\release</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
-    <DefineConstants>TRACE;NOP_ASYNC;NOP_45;NOP_46</DefineConstants>
+    <DefineConstants>TRACE;NOP_46</DefineConstants>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -23,7 +23,7 @@
     <OutputPath>..\_build\debug</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DefineConstants>NOP_ASYNC;NOP_45;NOP_46</DefineConstants>
+    <DefineConstants>NOP_46</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

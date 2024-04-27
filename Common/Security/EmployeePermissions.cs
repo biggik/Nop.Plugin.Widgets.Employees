@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using Nop.Services.Security;
 using Nop.Core.Domain.Security;
-using System.Linq;
-using System.Runtime.CompilerServices;
+using Nop.Services.Security;
+using System.Collections.Generic;
 
 namespace Nop.Plugin.Widgets.Employees.Services
 {
@@ -18,13 +16,8 @@ namespace Nop.Plugin.Widgets.Employees.Services
                 ManageDepartments
             };
 
-#if NOP_PRE_4_3
-        private static readonly DefaultPermissionRecord defaultPermission = new DefaultPermissionRecord { CustomerRoleSystemName = "Administrators", PermissionRecords = new[] { ManageEmployees, ManageDepartments } };
-        public virtual IEnumerable<DefaultPermissionRecord> GetDefaultPermissions() =>
-            new [] { defaultPermission };
-#else
         public virtual HashSet<(string systemRoleName, PermissionRecord[] permissions)> GetDefaultPermissions() =>
-            new HashSet<(string, PermissionRecord[])> { ("Administrators", new[] { ManageEmployees, ManageDepartments }) };
-#endif
+            new()
+            { ("Administrators", new[] { ManageEmployees, ManageDepartments }) };
     }
 }
