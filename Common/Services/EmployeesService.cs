@@ -6,7 +6,6 @@ using Nop.Core.Caching;
 using Nop.Plugin.Widgets.Employees.Domain;
 using System.Threading.Tasks;
 using Nop.Data;
-using Nop.Services.Caching;
 
 namespace Nop.Plugin.Widgets.Employees.Services
 {
@@ -45,10 +44,10 @@ namespace Nop.Plugin.Widgets.Employees.Services
 
         private CacheKey CreateKey(CacheKey cacheKey, params object[] arguments)
         {
-            return CacheImpl.PrepareKeyForShortTermCache(cacheKey, arguments);
+            return CacheImpl.PrepareKeyForDefaultCache(cacheKey, arguments);
         }
 
-#region Methods
+        #region Methods
         public virtual async Task DeleteEmployeeAsync(Employee employee)
         {
             if (employee == null)

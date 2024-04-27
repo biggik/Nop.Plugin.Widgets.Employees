@@ -11,13 +11,14 @@ using Nop.Web.Framework.Controllers;
 using Nop.Plugin.Widgets.Employees.Services;
 using Nop.Web.Framework.Models.Extensions;
 using System.Threading.Tasks;
+using Nop.Plugin.Widgets.Employees.Constants;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
     public partial class EmployeesController 
     {
         [AuthorizeAdmin]
-        [Area(AreaNames.Admin)]
+        [Area(Areas.Admin)]
         public async Task<IActionResult> Configure()
         {
             if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
@@ -51,7 +52,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
         [AuthorizeAdmin]
-        [Area(AreaNames.Admin)]
+        [Area(Areas.Admin)]
         [HttpPost, ActionName("Configure")]
         [FormValueRequired("save")]
         public async Task<IActionResult> Configure(ConfigurationModel model)
@@ -87,7 +88,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
         [AuthorizeAdmin]
-        [Area(AreaNames.Admin)]
+        [Area(Areas.Admin)]
         public async Task<IActionResult> List()
         {
             if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
@@ -130,7 +131,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
         [AuthorizeAdmin]
-        [Area(AreaNames.Admin)]
+        [Area(Areas.Admin)]
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
@@ -145,7 +146,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
         [AuthorizeAdmin]
-        [Area(AreaNames.Admin)]
+        [Area(Areas.Admin)]
         public async Task<IActionResult> Create()
         {
             if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
@@ -156,7 +157,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
         [AuthorizeAdmin]
-        [Area(AreaNames.Admin)]
+        [Area(Areas.Admin)]
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public async Task<IActionResult> Create(EmployeeModel model, bool continueEditing)
         {
@@ -179,7 +180,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
         [AuthorizeAdmin]
-        [Area(AreaNames.Admin)]
+        [Area(Areas.Admin)]
         public async Task<IActionResult> Edit(int id)
         {
             if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
@@ -197,7 +198,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
         [AuthorizeAdmin]
-        [Area(AreaNames.Admin)]
+        [Area(Areas.Admin)]
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public async Task<IActionResult> Edit(EmployeeModel model, bool continueEditing)
         {
@@ -224,7 +225,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
         [AuthorizeAdmin]
-        [Area(AreaNames.Admin)]
+        [Area(Areas.Admin)]
         public async Task<IActionResult> GetFullSizeEmployeePicture(int id)
         {
             if (id > 0)
@@ -237,7 +238,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         }
 
         [AuthorizeAdmin]
-        [Area(AreaNames.Admin)]
+        [Area(Areas.Admin)]
         public async Task<IActionResult> ListData(DepartmentSearchModel searchModel)
         {
             if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
