@@ -64,7 +64,7 @@ namespace Nop.Plugin.Widgets.Employees.Models
         public string DepartmentName { get; set; }
         public bool HasUniqueEmail { get; set; }
         public string EmailPrefixOrId => (Email?.Contains('@') ?? false) && HasUniqueEmail ? Email.Split('@')[0] : Id.ToString();
-     
+
         public IList<SelectListItem> AvailableDepartments { get; set; }
 
         public bool IsActive => Published

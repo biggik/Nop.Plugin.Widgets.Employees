@@ -31,12 +31,12 @@ namespace Nop.Plugin.Widgets.Employees
                         defaults: new { controller = controller, action = action });
 
             // Index
-            action = nameof(EmployeesController.Index);
+            action = nameof(EmployeesController.IndexAsync);
             actionSanitized = action + "/{groupByDepartment}";
             Build(routePrefix); // Skip action - to get only /Employees
 
             // Employee info
-            action = nameof(EmployeesController.Info);
+            action = nameof(EmployeesController.InfoAsync);
             actionSanitized = action + "/{id}";
             Build();
         }
@@ -58,22 +58,22 @@ namespace Nop.Plugin.Widgets.Employees
                                 defaults: new { controller = controller, action = action, area = "Admin" });
 
             // Create department
-            action = nameof(DepartmentsController.Create);
+            action = nameof(DepartmentsController.CreateAsync);
             actionSanitized = action;
             Build();
 
             // Edit department
-            action = nameof(DepartmentsController.Edit);
+            action = nameof(DepartmentsController.EditAsync);
             actionSanitized = action + "/{id}";
             Build();
 
             // List departments
-            action = nameof(DepartmentsController.List);
+            action = nameof(DepartmentsController.ListAsync);
             actionSanitized = action;
             Build();
 
             // List department data
-            action = nameof(DepartmentsController.ListData);
+            action = nameof(DepartmentsController.ListDataAsync);
             actionSanitized = action;
             Build();
         }
@@ -95,32 +95,32 @@ namespace Nop.Plugin.Widgets.Employees
                                 defaults: new { controller = controller, action = action, area = "Admin" });
 
             // Configure
-            action = nameof(EmployeesController.Configure);
+            action = nameof(EmployeesController.ConfigureAsync);
             actionSanitized = action;
             Build();
 
             // Edit employee
-            action = nameof(EmployeesController.Edit);
+            action = nameof(EmployeesController.EditAsync);
             actionSanitized = action + "/{id}";
             Build();
 
             // Create employee
-            action = nameof(EmployeesController.Create);
+            action = nameof(EmployeesController.CreateAsync);
             actionSanitized = action;
             Build();
 
             // List Employees
-            action = nameof(EmployeesController.List);
+            action = nameof(EmployeesController.ListAsync);
             actionSanitized = action;
             Build();
 
             // List employee data
-            action = nameof(EmployeesController.ListData);
+            action = nameof(EmployeesController.ListDataAsync);
             actionSanitized = action;
             Build();
 
             // Full size employee picture
-            action = nameof(EmployeesController.GetFullSizeEmployeePicture);
+            action = nameof(EmployeesController.GetFullSizeEmployeePictureAsync);
             actionSanitized = "{id}/Picture";
             Build();
         }

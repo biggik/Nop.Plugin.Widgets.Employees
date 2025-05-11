@@ -34,7 +34,7 @@ namespace Nop.Plugin.Widgets.Employees.Models
             CreateMap<Department, DepartmentModel>()
                .ForMember(dest => dest.PictureUrl, mo => mo.Ignore())
                .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
-            
+
         }
 
         /// <summary>

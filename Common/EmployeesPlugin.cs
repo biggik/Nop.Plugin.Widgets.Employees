@@ -87,7 +87,7 @@ namespace Nop.Plugin.Widgets.Employees
                 areResourcesEqual: (lsr, resourceValue) => lsr.ResourceValue == resourceValue
             );
         }
-        
+
         /// <summary>
         /// Gets widget zones where this widget should be rendered
         /// </summary>
@@ -101,7 +101,7 @@ namespace Nop.Plugin.Widgets.Employees
 
                 _widgetZones = string.IsNullOrWhiteSpace(settings.WidgetZones)
                         ? []
-                        : settings.WidgetZones.Split(';').ToList();
+                        : await settings.WidgetZones.Split(';').ToListAsync();
             }
             return _widgetZones;
         }

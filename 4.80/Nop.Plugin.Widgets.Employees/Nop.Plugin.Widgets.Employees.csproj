@@ -177,6 +177,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="nopLocalizationHelper" Version="0.7.2" />
+		<PackageReference Include="Status.CodeFormatting" Version="1.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>

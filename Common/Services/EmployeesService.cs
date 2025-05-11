@@ -66,10 +66,10 @@ namespace Nop.Plugin.Widgets.Employees.Services
             await _cacheManager.RemoveByPrefixAsync(_prefix);
         }
 
-        public virtual async Task<IPagedList<Employee>> GetOrderedEmployeesAsync(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue)
+        public virtual Task<IPagedList<Employee>> GetOrderedEmployeesAsync(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue)
         {
             var key = CreateKey(EmployeesAllKey, showUnpublished, pageIndex, pageSize);
-            return await _cacheManager.GetAsync(key, () =>
+            return _cacheManager.GetAsync(key, () =>
             {
                 return _employeeRepository.GetAllPagedAsync(query =>
                 {
@@ -127,10 +127,10 @@ namespace Nop.Plugin.Widgets.Employees.Services
             await _cacheManager.RemoveByPrefixAsync(_prefix);
         }
 
-        public virtual async Task<IPagedList<Department>> GetOrderedDepartmentsAsync(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue)
+        public virtual Task<IPagedList<Department>> GetOrderedDepartmentsAsync(bool showUnpublished, int pageIndex = 0, int pageSize = int.MaxValue)
         {
             var key = CreateKey(DepartmentsKey, showUnpublished, pageIndex, pageSize);
-            return await _cacheManager.GetAsync(key, () =>
+            return _cacheManager.GetAsync(key, () =>
             {
                 return _departmentRepository.GetAllPagedAsync(query =>
                 {
@@ -174,10 +174,10 @@ namespace Nop.Plugin.Widgets.Employees.Services
             await _cacheManager.RemoveByPrefixAsync(_prefix);
         }
 
-        public virtual async Task<IList<Employee>> GetEmployeesByDepartmentIdAsync(int departmentId, bool showUnpublished = false)
+        public virtual Task<IList<Employee>> GetEmployeesByDepartmentIdAsync(int departmentId, bool showUnpublished = false)
         {
             var key = CreateKey(EmployeesDepartmentKey, departmentId, showUnpublished);
-            return await _cacheManager.GetAsync(key, () =>
+            return _cacheManager.GetAsync(key, () =>
             {
                 return _employeeRepository.GetAllAsync(query =>
                 {
@@ -198,9 +198,9 @@ namespace Nop.Plugin.Widgets.Employees.Services
             });
         }
 
-        public virtual async Task<Department> GetDepartmentByIdAsync(int departmentId)
+        public virtual Task<Department> GetDepartmentByIdAsync(int departmentId)
         {
-            return await _departmentRepository.GetByIdAsync(departmentId, cache => default);
+            return _departmentRepository.GetByIdAsync(departmentId, cache => default);
         }
         #endregion
     }

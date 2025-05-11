@@ -48,7 +48,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             _pictureService = pictureService;
         }
 
-        public async Task<IActionResult> Index(bool groupByDepartment = true)
+        public async Task<IActionResult> IndexAsync(bool groupByDepartment = true)
         {
 #if DEBUG
             await EmployeesPlugin.Instance.VerifyLocaleResourcesAsync();
@@ -85,7 +85,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                         emailCount[e.Email] = 1;
                     }
 
-                    e.PhotoUrl = await GetPictureUrl(e.PictureId);
+                    e.PhotoUrl = await GetPictureUrlAsync(e.PictureId);
                     e.DepartmentPublished = d.Published;
                     e.DepartmentName = d.Name;
 
@@ -118,20 +118,20 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 EmployeePermissionConfigs.MANAGE_EMPLOYEES))
 #endif
             {
-                DisplayEditLink(Url.Action(nameof(List), ControllerName, new { area = "Admin" }));
+                DisplayEditLink(Url.Action(nameof(ListAsync), ControllerName, new { area = "Admin" }));
             }
 
-            return View($"{Route}{nameof(Index)}.cshtml", model);
+            return View($"{Route}{nameof(IndexAsync)}.cshtml", model);
         }
 
-        private async Task<string> GetPictureUrl(int pictureId, int targetSize = 200)
+        private async Task<string> GetPictureUrlAsync(int pictureId, int targetSize = 200)
         {
             return (pictureId > 0)
                 ? await _pictureService.GetPictureUrlAsync(pictureId, targetSize)
                 : await _pictureService.GetDefaultPictureUrlAsync(targetSize, Core.Domain.Media.PictureType.Avatar);
         }
 
-        public async Task<IActionResult> Info(string id)
+        public async Task<IActionResult> InfoAsync(string id)
         {
             var isAdmin = await _permissionService.AuthorizeAsync(
 #if NOP_47
@@ -144,15 +144,15 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 IsAdmin = isAdmin
             };
 
-            var e = await GetEmployeeByIdOrEmailPrefix(id);
+            var e = await GetEmployeeByIdOrEmailPrefixAsync(id);
             if (e == null)
             {
-                return RedirectToAction(nameof(Index), new { area = "" });
+                return RedirectToAction(nameof(IndexAsync), new { area = "" });
             }
 
             if (model.IsAdmin)
             {
-                DisplayEditLink(Url.Action(nameof(Edit), ControllerName, new { id = e.Id.ToString(), area = "Admin" }));
+                DisplayEditLink(Url.Action(nameof(EditAsync), ControllerName, new { id = e.Id.ToString(), area = "Admin" }));
             }
 
             model.Employee = e.ToModel();
@@ -163,16 +163,16 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 model.Employee.DepartmentPublished = department.Published;
                 model.Employee.DepartmentName = department.Name;
             }
-            return View($"{Route}{nameof(Info)}.cshtml", model);
+            return View($"{Route}{nameof(InfoAsync)}.cshtml", model);
         }
 
-        private async Task<Domain.Employee> GetEmployeeByIdOrEmailPrefix(string id)
+        private Task<Domain.Employee> GetEmployeeByIdOrEmailPrefixAsync(string id)
         {
             if (int.TryParse(id, out int employeeId))
             {
-                return await _employeeService.GetByIdAsync(employeeId);
+                return _employeeService.GetByIdAsync(employeeId);
             }
-            return await _employeeService.GetByEmailPrefixAsync(id);
+            return _employeeService.GetByEmailPrefixAsync(id);
         }
     }
 }

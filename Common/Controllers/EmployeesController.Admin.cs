@@ -13,11 +13,11 @@ using Nop.Web.Framework.Mvc.Filters;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
-    public partial class EmployeesController 
+    public partial class EmployeesController
     {
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
-        public async Task<IActionResult> Configure()
+        public async Task<IActionResult> ConfigureAsync()
         {
             if (!await _permissionService.AuthorizeAsync(
 #if NOP_47
@@ -34,31 +34,31 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             var widgetZonesData = GetWidgetZoneData();
             var lookup = widgetZonesData.ToDictionary(x => x.value, y => y.id);
 
-            var currentWidgetZones = (from i in (settings.WidgetZones ?? "").Split(';')
-                                      where lookup.ContainsKey(i)
-                                      select lookup[i]).ToList();
+            var currentWidgetZones = await (from i in (settings.WidgetZones ?? "").Split(';')
+                                            where lookup.ContainsKey(i)
+                                            select lookup[i]).ToListAsync();
 
             var model = new ConfigurationModel
             {
                 WidgetZones = currentWidgetZones,
-                AvailableWidgetZones = (from wzd in widgetZonesData
-                                        select new SelectListItem
-                                        {
-                                            Text = wzd.name,
-                                            Value = wzd.id.ToString(),
-                                            Selected = currentWidgetZones.Contains(wzd.id)
-                                        }
-                                       ).ToList()
+                AvailableWidgetZones = await (from wzd in widgetZonesData
+                                              select new SelectListItem
+                                              {
+                                                  Text = wzd.name,
+                                                  Value = wzd.id.ToString(),
+                                                  Selected = currentWidgetZones.Contains(wzd.id)
+                                              }
+                                       ).ToListAsync()
             };
 
-            return View($"{Route}{nameof(Configure)}.cshtml", model);
+            return View($"{Route}{nameof(ConfigureAsync)}.cshtml", model);
         }
 
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
         [HttpPost, ActionName("Configure")]
         [FormValueRequired("save")]
-        public async Task<IActionResult> Configure(ConfigurationModel model)
+        public async Task<IActionResult> ConfigureAsync(ConfigurationModel model)
         {
             if (!await _permissionService.AuthorizeAsync(
 #if NOP_47
@@ -71,7 +71,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             }
 
             if (!ModelState.IsValid)
-                return await Configure();
+                return await ConfigureAsync();
 
             var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
             var settings = await _settingService.LoadSettingAsync<EmployeeWidgetSettings>(storeScope);
@@ -92,12 +92,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             _notificationService.SuccessNotification(await _localizationService.GetResourceAsync("Admin.Plugins.Saved"));
 
-            return await Configure();
+            return await ConfigureAsync();
         }
 
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> ListAsync()
         {
             if (!await _permissionService.AuthorizeAsync(
 #if NOP_47
@@ -109,7 +109,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             var model = new EmployeeSearchModel();
             model.SetGridPageSize();
-            return View($"{Route}{nameof(List)}.cshtml", model);
+            return View($"{Route}{nameof(ListAsync)}.cshtml", model);
         }
 
         private List<(string name, string value, int id)> GetWidgetZoneData()
@@ -124,15 +124,15 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         private async Task<IList<SelectListItem>> GetAllAvailableDepartmentsAsync(int selectedDepartmentId = -1)
         {
-            return (from d in (await _employeeService.GetOrderedDepartmentsAsync(showUnpublished: true))
+            return await (from d in (await _employeeService.GetOrderedDepartmentsAsync(showUnpublished: true))
                     .Where(dep => dep.Id == selectedDepartmentId || dep.Published)
-                    select new SelectListItem
-                    {
-                        Text = d.Name,
-                        Value = d.Id.ToString(),
-                        Selected = d.Id == selectedDepartmentId
-                    })
-                    .ToList();
+                          select new SelectListItem
+                          {
+                              Text = d.Name,
+                              Value = d.Id.ToString(),
+                              Selected = d.Id == selectedDepartmentId
+                          })
+                    .ToListAsync();
         }
 
         private async Task<EmployeeModel> GetEmployeeWithAllAvailableDepartmentsAsync(int selectedDepartmentId = -1)
@@ -146,7 +146,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             if (!await _permissionService.AuthorizeAsync(
 #if NOP_47
@@ -160,12 +160,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (employee != null)
                 await _employeeService.DeleteEmployeeAsync(employee);
 
-            return RedirectToAction(nameof(Index), new { area = "" });
+            return RedirectToAction(nameof(IndexAsync), new { area = "" });
         }
 
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> CreateAsync()
         {
             if (!await _permissionService.AuthorizeAsync(
 #if NOP_47
@@ -176,13 +176,13 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 return AccessDeniedView();
 
             var model = await GetEmployeeWithAllAvailableDepartmentsAsync();
-            return View($"{Route}{nameof(Create)}.cshtml", model);
+            return View($"{Route}{nameof(CreateAsync)}.cshtml", model);
         }
 
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
-        public async Task<IActionResult> Create(EmployeeModel model, bool continueEditing)
+        public async Task<IActionResult> CreateAsync(EmployeeModel model, bool continueEditing)
         {
             if (!await _permissionService.AuthorizeAsync(
 #if NOP_47
@@ -198,18 +198,18 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
                 await _employeeService.InsertEmployeeAsync(employee);
                 return continueEditing
-                    ? RedirectToAction(nameof(Edit), new { id = employee.Id })
-                    : RedirectToAction(nameof(List));
+                    ? RedirectToAction(nameof(EditAsync), new { id = employee.Id })
+                    : RedirectToAction(nameof(ListAsync));
             }
 
             //If we got this far, something failed, redisplay form
             model.AvailableDepartments = await GetAllAvailableDepartmentsAsync(model.DepartmentId);
-            return View($"{Route}{nameof(Create)}.cshtml", model);
+            return View($"{Route}{nameof(CreateAsync)}.cshtml", model);
         }
 
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> EditAsync(int id)
         {
             if (!await _permissionService.AuthorizeAsync(
 #if NOP_47
@@ -222,18 +222,18 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             var employee = await _employeeService.GetByIdAsync(id);
             if (employee == null)
             {
-                return RedirectToAction(nameof(Index), new { area = "" });
+                return RedirectToAction(nameof(IndexAsync), new { area = "" });
             }
 
             var model = employee.ToModel();
             model.AvailableDepartments = await GetAllAvailableDepartmentsAsync(employee.DepartmentId);
-            return View($"{Route}{nameof(Edit)}.cshtml", model);
+            return View($"{Route}{nameof(EditAsync)}.cshtml", model);
         }
 
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
-        public async Task<IActionResult> Edit(EmployeeModel model, bool continueEditing)
+        public async Task<IActionResult> EditAsync(EmployeeModel model, bool continueEditing)
         {
             if (!await _permissionService.AuthorizeAsync(
 #if NOP_47
@@ -253,18 +253,18 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
                 await _employeeService.UpdateEmployeeAsync(employee);
                 return continueEditing
-                    ? RedirectToAction(nameof(Edit), new { id = employee.Id })
-                    : RedirectToAction(nameof(List));
+                    ? RedirectToAction(nameof(EditAsync), new { id = employee.Id })
+                    : RedirectToAction(nameof(ListAsync));
             }
 
             //If we got this far, something failed, redisplay form
             model.AvailableDepartments = await GetAllAvailableDepartmentsAsync(model.DepartmentId);
-            return View($"{Route}{nameof(Edit)}.cshtml", model);
+            return View($"{Route}{nameof(EditAsync)}.cshtml", model);
         }
 
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
-        public async Task<IActionResult> GetFullSizeEmployeePicture(int id)
+        public async Task<IActionResult> GetFullSizeEmployeePictureAsync(int id)
         {
             if (id > 0)
             {
@@ -277,7 +277,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
-        public async Task<IActionResult> ListData(DepartmentSearchModel searchModel)
+        public async Task<IActionResult> ListDataAsync(DepartmentSearchModel searchModel)
         {
             if (!await _permissionService.AuthorizeAsync(
 #if NOP_47
