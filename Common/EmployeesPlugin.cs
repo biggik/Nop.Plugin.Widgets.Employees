@@ -22,7 +22,10 @@ using Nop.Plugin.Widgets.Employees.Components;
 
 namespace Nop.Plugin.Widgets.Employees
 {
-    public class EmployeesPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
+    public class EmployeesPlugin : BasePlugin, IWidgetPlugin
+#if NOP_47
+        , IAdminMenuPlugin
+#endif
     {
         private readonly ISettingService _settingService;
         private readonly IWebHelper _webHelper;
@@ -47,38 +50,40 @@ namespace Nop.Plugin.Widgets.Employees
             _permissionService = permissionService;
             _storeContext = storeContext;
             _settingService = settingService;
-
 #if DEBUG
-            DebugInitialize();
+            Instance = this;
 #endif
         }
 
 #if DEBUG
+        internal static EmployeesPlugin Instance { get; private set; }
         private static bool _debugInitialized = false;
 
-        private void DebugInitialize()
+        internal async Task VerifyLocaleResourcesAsync()
         {
             if (_debugInitialized)
                 return;
 
             _debugInitialized = true;
-            ResourceHelper().CreateLocaleStringsAsync();
+            await (await ResourceHelperAsync()).CreateLocaleStringsAsync();
+#if NOP_47
             var t = _permissionService.InstallPermissionsAsync(new EmployeePermissionProvider());
             t.Wait();
+#endif
         }
 #endif
 
-        private LocaleStringHelper<LocaleStringResource> ResourceHelper()
+        private async Task<LocaleStringHelper<LocaleStringResource>> ResourceHelperAsync()
         {
             return new LocaleStringHelper<LocaleStringResource>
             (
                 pluginAssembly: GetType().Assembly,
-                languageCultures: from lang in _languageService.GetAllLanguagesAsync().Result select (lang.Id, lang.LanguageCulture),
+                languageCultures: from lang in await _languageService.GetAllLanguagesAsync() select (lang.Id, lang.LanguageCulture),
                 getResource: (resourceName, languageId) => _localizationService.GetLocaleStringResourceByNameAsync(resourceName, languageId, false),
                 createResource: (languageId, resourceName, resourceValue) => new LocaleStringResource { LanguageId = languageId, ResourceName = resourceName, ResourceValue = resourceValue },
-                insertResource: (lsr) => _localizationService.InsertLocaleStringResourceAsync(lsr),
+                insertResource: _localizationService.InsertLocaleStringResourceAsync,
                 updateResource: (lsr, resourceValue) => { lsr.ResourceValue = resourceValue; return _localizationService.UpdateLocaleStringResourceAsync(lsr); },
-                deleteResource: (lsr) => _localizationService.DeleteLocaleStringResourceAsync(lsr),
+                deleteResource: _localizationService.DeleteLocaleStringResourceAsync,
                 areResourcesEqual: (lsr, resourceValue) => lsr.ResourceValue == resourceValue
             );
         }
@@ -95,7 +100,7 @@ namespace Nop.Plugin.Widgets.Employees
                 var settings = await _settingService.LoadSettingAsync<EmployeeWidgetSettings>(storeScope);
 
                 _widgetZones = string.IsNullOrWhiteSpace(settings.WidgetZones)
-                        ? new List<string>()
+                        ? []
                         : settings.WidgetZones.Split(';').ToList();
             }
             return _widgetZones;
@@ -117,8 +122,10 @@ namespace Nop.Plugin.Widgets.Employees
                 WidgetZones = "header_menu_after",
             });
 
-            await ResourceHelper().CreateLocaleStringsAsync();
+            await (await ResourceHelperAsync()).CreateLocaleStringsAsync();
+#if NOP_47
             await _permissionService.InstallPermissionsAsync(new EmployeePermissionProvider());
+#endif
 
             await base.InstallAsync();
         }
@@ -131,7 +138,17 @@ namespace Nop.Plugin.Widgets.Employees
             //settings
             await _settingService.DeleteSettingAsync<EmployeeWidgetSettings>();
 
-            await ResourceHelper().DeleteLocaleStringsAsync();
+            await (await ResourceHelperAsync()).DeleteLocaleStringsAsync();
+
+#if NOP_48
+            //delete permissions
+            foreach (var name in new string[] { EmployeePermissionConfigs.MANAGE_EMPLOYEES, EmployeePermissionConfigs.MANAGE_DEPARTMENTS })
+            {
+                var permissionRecord = (await _permissionService.GetAllPermissionRecordsAsync())
+                    .FirstOrDefault(x => x.SystemName == name);
+                await _permissionService.DeletePermissionRecordAsync(permissionRecord);
+            }
+#endif
 
             // TODO: uninstall permissions
             await base.UninstallAsync();
@@ -139,6 +156,7 @@ namespace Nop.Plugin.Widgets.Employees
 
         public Type GetWidgetViewComponent(string widgetZone) => typeof(WidgetsEmployeesViewComponent);
 
+#if NOP_47
         public async Task ManageSiteMapAsync(SiteMapNode rootNode)
         {
             var contentMenu = rootNode.ChildNodes.FirstOrDefault(x => x.SystemName == "Content Management");
@@ -177,5 +195,6 @@ namespace Nop.Plugin.Widgets.Employees
                 });
             }
         }
+#endif
     }
 }

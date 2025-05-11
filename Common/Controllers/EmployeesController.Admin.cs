@@ -1,17 +1,15 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using Nop.Plugin.Widgets.Employees.Models;
-using Nop.Web.Framework.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc;
-using Nop.Services.Security;
-using Nop.Web.Framework;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Nop.Web.Framework.Controllers;
-using Nop.Plugin.Widgets.Employees.Services;
-using Nop.Web.Framework.Models.Extensions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Plugin.Widgets.Employees.Constants;
+using Nop.Plugin.Widgets.Employees.Models;
+using Nop.Plugin.Widgets.Employees.Services;
+using Nop.Web.Framework.Controllers;
+using Nop.Web.Framework.Models.Extensions;
+using Nop.Web.Framework.Mvc.Filters;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
@@ -21,7 +19,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(Areas.Admin)]
         public async Task<IActionResult> Configure()
         {
-            if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
+            if (!await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees))
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES))
+#endif
             {
                 return AccessDeniedView();
             }
@@ -57,7 +60,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [FormValueRequired("save")]
         public async Task<IActionResult> Configure(ConfigurationModel model)
         {
-            if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
+            if (!await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees))
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES))
+#endif
             {
                 return AccessDeniedView();
             }
@@ -91,7 +99,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(Areas.Admin)]
         public async Task<IActionResult> List()
         {
-            if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
+            if (!await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees))
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES))
+#endif
                 return AccessDeniedView();
 
             var model = new EmployeeSearchModel();
@@ -135,7 +148,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
+            if (!await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees))
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES))
+#endif
                 return AccessDeniedView();
 
             var employee = await _employeeService.GetByIdAsync(id);
@@ -149,7 +167,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(Areas.Admin)]
         public async Task<IActionResult> Create()
         {
-            if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
+            if (!await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees))
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES))
+#endif
                 return AccessDeniedView();
 
             var model = await GetEmployeeWithAllAvailableDepartmentsAsync();
@@ -161,7 +184,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public async Task<IActionResult> Create(EmployeeModel model, bool continueEditing)
         {
-            if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
+            if (!await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees))
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES))
+#endif
                 return AccessDeniedView();
 
             if (ModelState.IsValid)
@@ -183,7 +211,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(Areas.Admin)]
         public async Task<IActionResult> Edit(int id)
         {
-            if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
+            if (!await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees))
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES))
+#endif
                 return AccessDeniedView();
 
             var employee = await _employeeService.GetByIdAsync(id);
@@ -202,7 +235,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
         public async Task<IActionResult> Edit(EmployeeModel model, bool continueEditing)
         {
-            if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
+            if (!await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees))
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES))
+#endif
                 return AccessDeniedView();
 
             if (ModelState.IsValid)
@@ -241,7 +279,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         [Area(Areas.Admin)]
         public async Task<IActionResult> ListData(DepartmentSearchModel searchModel)
         {
-            if (!await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
+            if (!await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees))
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES))
+#endif
                 return AccessDeniedView();
 
             var departmentDict = (await _employeeService.GetOrderedDepartmentsAsync(showUnpublished: true)).ToDictionary(x => x.Id, x => x);

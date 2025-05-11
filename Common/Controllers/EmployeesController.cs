@@ -1,16 +1,16 @@
-﻿using Nop.Plugin.Widgets.Employees.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Nop.Core;
+using Nop.Plugin.Widgets.Employees.Models;
 using Nop.Plugin.Widgets.Employees.Services;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
-using Nop.Web.Framework.Controllers;
-using Microsoft.AspNetCore.Mvc;
-using Nop.Services.Security;
-using Nop.Core;
 using Nop.Services.Media;
 using Nop.Services.Messages;
-using System.Collections.Generic;
-using System;
-using System.Threading.Tasks;
+using Nop.Services.Security;
+using Nop.Web.Framework.Controllers;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
@@ -50,6 +50,10 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         public async Task<IActionResult> Index(bool groupByDepartment = true)
         {
+#if DEBUG
+            await EmployeesPlugin.Instance.VerifyLocaleResourcesAsync();
+#endif
+
             var model = new DepartmentEmployeeModel
             {
                 GroupByDepartment = groupByDepartment
@@ -107,7 +111,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 }
             }
 
-            if (await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees))
+            if (await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees))
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES))
+#endif
             {
                 DisplayEditLink(Url.Action(nameof(List), ControllerName, new { area = "Admin" }));
             }
@@ -124,9 +133,15 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         public async Task<IActionResult> Info(string id)
         {
+            var isAdmin = await _permissionService.AuthorizeAsync(
+#if NOP_47
+                EmployeePermissionProvider.ManageEmployees)
+#else
+                EmployeePermissionConfigs.MANAGE_EMPLOYEES);
+#endif
             var model = new EmployeeInfoModel
             {
-                IsAdmin = await _permissionService.AuthorizeAsync(EmployeePermissionProvider.ManageEmployees)
+                IsAdmin = isAdmin
             };
 
             var e = await GetEmployeeByIdOrEmailPrefix(id);
