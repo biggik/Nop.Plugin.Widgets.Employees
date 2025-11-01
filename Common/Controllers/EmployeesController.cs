@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
+using Nop.Plugin.Widgets.Employees.Extensions;
 using Nop.Plugin.Widgets.Employees.Models;
 using Nop.Plugin.Widgets.Employees.Services;
 using Nop.Services.Configuration;
@@ -14,7 +15,8 @@ using Nop.Web.Framework.Controllers;
 
 namespace Nop.Plugin.Widgets.Employees.Controllers
 {
-    public partial class EmployeesController : BasePluginController
+    public partial class 
+        EmployeesController : BasePluginController
     {
         public static string ControllerName = nameof(EmployeesController).Replace("Controller", "");
         const string Route = "~/Plugins/Widgets.Employees/Views/Employees/";
@@ -121,7 +123,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 DisplayEditLink(Url.Action(nameof(ListAsync), ControllerName, new { area = "Admin" }));
             }
 
-            return View($"{Route}{nameof(IndexAsync)}.cshtml", model);
+            return View($"{Route}{nameof(IndexAsync).NoAsync()}.cshtml", model);
         }
 
         private async Task<string> GetPictureUrlAsync(int pictureId, int targetSize = 200)
@@ -135,7 +137,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
         {
             var isAdmin = await _permissionService.AuthorizeAsync(
 #if NOP_47
-                EmployeePermissionProvider.ManageEmployees)
+                EmployeePermissionProvider.ManageEmployees);
 #else
                 EmployeePermissionConfigs.MANAGE_EMPLOYEES);
 #endif
@@ -163,7 +165,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 model.Employee.DepartmentPublished = department.Published;
                 model.Employee.DepartmentName = department.Name;
             }
-            return View($"{Route}{nameof(InfoAsync)}.cshtml", model);
+            return View($"{Route}{nameof(InfoAsync).NoAsync()}.cshtml", model);
         }
 
         private Task<Domain.Employee> GetEmployeeByIdOrEmailPrefixAsync(string id)

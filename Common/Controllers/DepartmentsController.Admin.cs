@@ -52,9 +52,6 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
         [AuthorizeAdmin]
         [Area(Areas.Admin)]
-#if NOP_48
-        [CheckPermission(EmployeePermissionConfigs.MANAGE_DEPARTMENTS)]
-#endif
         public async Task<IActionResult> CreateAsync()
         {
             if (!await _permissionService.AuthorizeAsync(

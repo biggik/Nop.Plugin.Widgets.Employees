@@ -6,6 +6,7 @@
 @using Nop.Plugin.Widgets.Employees.Controllers;
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Web.Framework.Models.DataTables;
+@using Nop.Plugin.Widgets.Employees.Extensions;
 @{
     ViewBag.PageTitle = T(AdminResources.DepartmentListCaption).Text;
 }
@@ -15,12 +16,12 @@
     </h1>
     <div class="pull-right">
         @Html.ActionLink(T(AdminResources.AddDepartmentButton).Text,
-            nameof(DepartmentsController.Create),
+            nameof(DepartmentsController.CreateAsync).NoAsync(),
             DepartmentsController.ControllerName,
             new { area = "Admin" },
             new { @class = "btn bg-blue" })
         @Html.ActionLink(T(EmployeeActionResources.EmployeeListButton).Text,
-            nameof(EmployeesController.List),
+            nameof(EmployeesController.ListAsync).NoAsync(),
             EmployeesController.ControllerName,
             new { area = "admin" },
             new { @class = "btn btn-primary" })
@@ -34,7 +35,7 @@
                    @await Html.PartialAsync("Table", new DataTablesModel
                    {
                        Name = "departments-grid",
-                       UrlRead = new DataUrl(nameof(DepartmentsController.ListData), DepartmentsController.ControllerName,
+                       UrlRead = new DataUrl(nameof(DepartmentsController.ListDataAsync).NoAsync(), DepartmentsController.ControllerName,
                             new Microsoft.AspNetCore.Routing.RouteValueDictionary{["area"] = "Admin" }),
                        Length = Model.PageSize,
                        LengthMenu = Model.AvailablePageSizes,
@@ -63,7 +64,7 @@
                                 Width = "100",
                                 ClassName =  NopColumnClassDefaults.Button,
                                 Render = new RenderButtonEdit(
-                                    new DataUrl(@Url.Action(nameof(DepartmentsController.Edit), 
+                                    new DataUrl(@Url.Action(nameof(DepartmentsController.EditAsync).NoAsync(), 
                                                             DepartmentsController.ControllerName,
                                                             new { area = "Admin"})))
                             }

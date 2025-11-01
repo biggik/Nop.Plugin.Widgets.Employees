@@ -3,7 +3,7 @@
   "FriendlyName": "Employees",
   "SystemName": "Widgets.Employees",
   "Version": "2.3.4",
-  "SupportedVersions": [ "4.80" ],
+  "SupportedVersions": [ "4.90" ],
   "Author": "Status ehf",
   "DisplayOrder": 1,
   "FileName": "Nop.Plugin.Widgets.Employees.dll",

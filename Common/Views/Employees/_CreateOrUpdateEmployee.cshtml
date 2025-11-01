@@ -2,6 +2,7 @@
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
 @using Nop.Plugin.Widgets.Employees.Controllers;
+@using Nop.Plugin.Widgets.Employees.Extensions;
 
 @Html.ValidationSummary(false)
 @Html.HiddenFor(model => model.Id)
@@ -45,7 +46,7 @@
                         <div class="col-md-9">
                             <nop-select asp-for="@Model.DepartmentId" asp-items="@Model.AvailableDepartments" />
                             @Html.ActionLink(T(AdminResources.AddDepartmentCaption).Text,
-                                nameof(DepartmentsController.Create),
+                                nameof(DepartmentsController.CreateAsync).NoAsync(),
                                 DepartmentsController.ControllerName,
                                 null,
                                 null)
@@ -63,7 +64,7 @@
                             @if (Model.PictureId >= 0)
                             {
                                 Html.ActionLink(T(EmployeeActionResources.ViewPicture).Text,
-                                                       nameof(EmployeesController.GetFullSizeEmployeePicture),
+                                                       nameof(EmployeesController.GetFullSizeEmployeePictureAsync).NoAsync(),
                                                        EmployeesController.ControllerName,
                                                        new { id = Model.PictureId, area = "Admin" },
                                                        null);

@@ -5,6 +5,7 @@
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
 @using Nop.Plugin.Widgets.Employees.Controllers;
+@using Nop.Plugin.Widgets.Employees.Extensions;
 @{
     ViewBag.PageTitle = T(AdminResources.AddEmployeeCaption).Text;
 }
@@ -16,7 +17,7 @@
             <small>
                 <i class="fa fa-arrow-circle-left"></i>
                 @Html.ActionLink(T(EmployeeActionResources.BackToList).Text,
-                    nameof(EmployeesController.Index),
+                    nameof(EmployeesController.IndexAsync).NoAsync(),
                     EmployeesController.ControllerName,
                     new { area = "" },
                     null)

@@ -2,7 +2,14 @@
 set sln_file=Nop.Plugin.Widgets.Employees
 
 cd %1
-dotnet build %sln_file% --configuration=Debug -- no-dependencies
-dotnet build %sln_file% --configuration=Release --no-dependencies
 
+dotnet restore
+
+cd "%sln_file%"
+dotnet build "%sln_file%.csproj" --configuration=Debug --no-restore
+
+echo Starting Release build...
+dotnet build "%sln_file%.csproj" --configuration=Release --no-restore
+
+cd ..
 cd ..

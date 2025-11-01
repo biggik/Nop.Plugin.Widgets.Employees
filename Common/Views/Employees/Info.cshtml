@@ -5,6 +5,7 @@
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
 @using Nop.Plugin.Widgets.Employees.Controllers;
+@using Nop.Plugin.Widgets.Employees.Extensions;
 
 <div class="master-wrapper-cph">
     <div class="Employees">
@@ -12,7 +13,7 @@
             <div class="title">
                 <div class="EmployeeInfoBack">
                     @Html.ActionLink(T(EmployeeActionResources.BackToList).Text,
-                        nameof(EmployeesController.Index),
+                        nameof(EmployeesController.IndexAsync).NoAsync(),
                         EmployeesController.ControllerName,
                         new { area = "" },
                         null)

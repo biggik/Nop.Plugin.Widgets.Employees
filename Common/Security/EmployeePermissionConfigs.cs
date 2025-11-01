@@ -11,12 +11,12 @@ internal static class EmployeePermissionConfigs
     internal static readonly PermissionConfig ManageEmployees = new(
         "Admin area. Manage Employees",
         MANAGE_EMPLOYEES,
-        nameof(StandardPermission.System),
+        "Employees",
         NopCustomerDefaults.AdministratorsRoleName);
 
     internal static readonly PermissionConfig ManageDepartments = new(
         "Admin area. Manage Departments",
         MANAGE_DEPARTMENTS,
-        nameof(StandardPermission.System),
+        "Employees",
         NopCustomerDefaults.AdministratorsRoleName);
 }

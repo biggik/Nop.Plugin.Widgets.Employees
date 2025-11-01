@@ -17,9 +17,9 @@ namespace Nop.Plugin.Widgets.Employees.Services
         private readonly static string _departmentKey = _prefix + "department.all-{0}-{1}";
         private readonly static string _departmentsKey = _prefix + "departments.all-{0}-{1}-{2}";
 
-        private readonly CacheKey EmployeesAllKey = new CacheKey(_allKey, _prefix);
-        private readonly CacheKey EmployeesDepartmentKey = new CacheKey(_departmentKey, _prefix);
-        private readonly CacheKey DepartmentsKey = new CacheKey(_departmentsKey, _prefix);
+        private readonly CacheKey EmployeesAllKey = new(_allKey);
+        private readonly CacheKey EmployeesDepartmentKey = new(_departmentKey);
+        private readonly CacheKey DepartmentsKey = new(_departmentsKey);
         #endregion
 
         #region Fields

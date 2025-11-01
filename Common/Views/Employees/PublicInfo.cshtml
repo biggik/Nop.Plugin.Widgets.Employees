@@ -1,8 +1,9 @@
 ﻿@using Nop.Plugin.Widgets.Employees.Controllers;
 @using Nop.Plugin.Widgets.Employees.Resources;
+@using Nop.Plugin.Widgets.Employees.Extensions;
 <li>
     @Html.ActionLink(T(EmployeeResources.ListCaption).Text,
-    nameof(EmployeesController.Index),
+    nameof(EmployeesController.IndexAsync).NoAsync(),
     EmployeesController.ControllerName,
     null,
     null)

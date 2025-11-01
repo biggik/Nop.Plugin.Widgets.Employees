@@ -5,6 +5,7 @@
 @using Nop.Plugin.Widgets.Employees.Models;
 @using Nop.Plugin.Widgets.Employees.Resources;
 @using Nop.Plugin.Widgets.Employees.Controllers;
+@using Nop.Plugin.Widgets.Employees.Extensions;
 
 <div class="Employees">
     <div class="section">
@@ -53,7 +54,7 @@
                         </div>
                         <footer>
                             @Html.ActionLink(T(EmployeeResources.Details).Text,
-                                                nameof(EmployeesController.Info),
+                                                nameof(EmployeesController.InfoAsync).NoAsync(),
                                                 EmployeesController.ControllerName,
                                                 new { id = employee.EmailPrefixOrId },
                                                 new { @class = "employee-zoom" })

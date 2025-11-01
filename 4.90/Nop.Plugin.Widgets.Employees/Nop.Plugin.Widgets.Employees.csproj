@@ -3,9 +3,6 @@
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
 	</PropertyGroup>
-	<PropertyGroup>
-		<SolutionDir>$(MSBuildProjectDirectory)\..\</SolutionDir>
-	</PropertyGroup>
 
 	<ItemGroup>
 		<None Remove="logo.jpg" />
@@ -15,7 +12,7 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<OutputPath>..\_build\release</OutputPath>
 		<OutDir>$(OutputPath)</OutDir>
-		<DefineConstants>TRACE;NOP_48</DefineConstants>
+		<DefineConstants>TRACE;NOP_49</DefineConstants>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
@@ -23,7 +20,7 @@
 		<OutputPath>..\_build\debug</OutputPath>
 		<OutDir>$(OutputPath)</OutDir>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<DefineConstants>NOP_48</DefineConstants>
+		<DefineConstants>NOP_49</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -89,7 +86,7 @@
 	<ItemGroup>
 		<Compile Include="..\..\Common\Extensions\StringExtensions.cs" Link="Extensions\StringExtensions.cs" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<Compile Include="..\..\Common\Resources\ResourceNames.cs" Link="Resources\ResourceNames.cs" />
 	</ItemGroup>
@@ -163,8 +160,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="n:\nopCommerce 4.80\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
-		<ProjectReference Include="n:\nopCommerce 4.80\Presentation\Nop.Web\Nop.Web.csproj" />
+		<ProjectReference Include="n:\nopCommerce 4.90\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+		<ProjectReference Include="n:\nopCommerce 4.90\Presentation\Nop.Web\Nop.Web.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -177,10 +174,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="nopLocalizationHelper" Version="0.7.2" />
-		<PackageReference Include="Status.CodeFormatting" Version="1.0.5" />
+		<PackageReference Include="nopLocalizationHelper" Version="0.8.1" GeneratePathProperty="true"/>
 	</ItemGroup>
 
+	<Target Name="Copy reference" AfterTargets="CoreCompile">
+		<Copy
+			SourceFiles="$(PkgnopLocalizationHelper)\lib\net8.0\nopLocalizationHelper.dll"
+			DestinationFolder="$(OutDir)" />
+	</Target>
+
+	<PropertyGroup>
+		<!-- this in combination with GeneratePathProperty allows us to let the build helper copy the file for packaging -->
+		<nopLocRef Condition=" '$(nopLocRef)' == '' ">$(PkgnopLocalizationHelper)\lib\net8.0\nopLocalizationHelper.dll</nopLocRef>
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<None Update="Views\Employees\Configure.cshtml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -238,7 +245,7 @@
 	<!-- This target execute after "Build" target -->
 	<Target Name="NopTarget" AfterTargets="Build">
 		<!-- Delete unnecessary libraries from plugins path -->
-		<MSBuild Projects="n:\nopCommerce 4.80\Build\ClearPluginAssemblies.proj" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+		<MSBuild Projects="n:\nopCommerce 4.90\Build\ClearPluginAssemblies.proj" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
 	</Target>
 	<Target Name="FilterCopyLocalItems" AfterTargets="ResolveLockFileCopyLocalProjectDeps">
 		<ItemGroup>

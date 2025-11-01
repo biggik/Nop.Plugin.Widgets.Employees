@@ -1,24 +1,23 @@
-﻿using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Routing;
+using Nop.Core;
+using Nop.Core.Domain.Localization;
+using Nop.Plugin.Widgets.Employees.Components;
+using Nop.Plugin.Widgets.Employees.Controllers;
+using Nop.Plugin.Widgets.Employees.Resources;
+using Nop.Plugin.Widgets.Employees.Services;
 using Nop.Services.Cms;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
-using Nop.Plugin.Widgets.Employees.Data;
-using Nop.Plugin.Widgets.Employees.Services;
-using Nop.Core.Infrastructure;
-using Nop.Core.Domain.Localization;
-using Nop.Core;
 using Nop.Services.Plugins;
-using Nop.Plugin.Widgets.Employees.Resources;
-using Nop.Web.Framework.Menu;
-using System;
-using Microsoft.AspNetCore.Routing;
 using Nop.Services.Security;
-using Nop.Plugin.Widgets.Employees.Controllers;
+#if NOP_47
+using Nop.Web.Framework.Menu;
+#endif
 using nopLocalizationHelper;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using Nop.Plugin.Widgets.Employees.Components;
 
 namespace Nop.Plugin.Widgets.Employees
 {
@@ -140,7 +139,9 @@ namespace Nop.Plugin.Widgets.Employees
 
             await (await ResourceHelperAsync()).DeleteLocaleStringsAsync();
 
-#if NOP_48
+#if NOP_47
+            await _permissionService.UninstallPermissionsAsync(new EmployeePermissionProvider());
+#else
             //delete permissions
             foreach (var name in new string[] { EmployeePermissionConfigs.MANAGE_EMPLOYEES, EmployeePermissionConfigs.MANAGE_DEPARTMENTS })
             {
@@ -177,8 +178,8 @@ namespace Nop.Plugin.Widgets.Employees
 
             foreach (var item in new List<(string caption, string controller, string action)>
             {
-                (await T(EmployeeResources.ListCaption), EmployeesController.ControllerName, nameof(EmployeesController.List)),
-                (await T(AdminResources.DepartmentListCaption), DepartmentsController.ControllerName, nameof(DepartmentsController.List)),
+                (await T(EmployeeResources.ListCaption), EmployeesController.ControllerName, nameof(EmployeesController.ListAsync)),
+                (await T(AdminResources.DepartmentListCaption), DepartmentsController.ControllerName, nameof(DepartmentsController.ListAsync)),
             })
             {
                 contentMenu.ChildNodes.Add(new SiteMapNode

@@ -13,7 +13,7 @@ namespace Nop.Plugin.Widgets.Employees.Infrastructure
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IEmployeesService, EmployeesService>();
-#if NOP_48
+#if !NOP_47
             services.AddScoped<IConsumer<AdminMenuCreatedEvent>, AdminMenuEventHandler>();
 #endif
         }
