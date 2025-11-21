@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Plugin.Widgets.Employees.Constants;
+using Nop.Plugin.Widgets.Employees.Extensions;
 using Nop.Plugin.Widgets.Employees.Models;
 using Nop.Plugin.Widgets.Employees.Services;
 using Nop.Web.Framework.Controllers;
@@ -51,7 +52,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                                        ).ToListAsync()
             };
 
-            return View($"{Route}{nameof(ConfigureAsync)}.cshtml", model);
+            return View($"{Route}{nameof(ConfigureAsync).NoAsync()}.cshtml", model);
         }
 
         [AuthorizeAdmin]
@@ -109,7 +110,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             var model = new EmployeeSearchModel();
             model.SetGridPageSize();
-            return View($"{Route}{nameof(ListAsync)}.cshtml", model);
+            return View($"{Route}{nameof(ListAsync).NoAsync()}.cshtml", model);
         }
 
         private List<(string name, string value, int id)> GetWidgetZoneData()
@@ -160,7 +161,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (employee != null)
                 await _employeeService.DeleteEmployeeAsync(employee);
 
-            return RedirectToAction(nameof(IndexAsync), new { area = "" });
+            return RedirectToAction(nameof(IndexAsync).NoAsync(), new { area = "" });
         }
 
         [AuthorizeAdmin]
@@ -176,7 +177,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 return AccessDeniedView();
 
             var model = await GetEmployeeWithAllAvailableDepartmentsAsync();
-            return View($"{Route}{nameof(CreateAsync)}.cshtml", model);
+            return View($"{Route}{nameof(CreateAsync).NoAsync()}.cshtml", model);
         }
 
         [AuthorizeAdmin]
@@ -198,13 +199,13 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
                 await _employeeService.InsertEmployeeAsync(employee);
                 return continueEditing
-                    ? RedirectToAction(nameof(EditAsync), new { id = employee.Id })
-                    : RedirectToAction(nameof(ListAsync));
+                    ? RedirectToAction(nameof(EditAsync).NoAsync(), new { id = employee.Id })
+                    : RedirectToAction(nameof(ListAsync).NoAsync());
             }
 
             //If we got this far, something failed, redisplay form
             model.AvailableDepartments = await GetAllAvailableDepartmentsAsync(model.DepartmentId);
-            return View($"{Route}{nameof(CreateAsync)}.cshtml", model);
+            return View($"{Route}{nameof(CreateAsync).NoAsync()}.cshtml", model);
         }
 
         [AuthorizeAdmin]
@@ -222,12 +223,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             var employee = await _employeeService.GetByIdAsync(id);
             if (employee == null)
             {
-                return RedirectToAction(nameof(IndexAsync), new { area = "" });
+                return RedirectToAction(nameof(IndexAsync).NoAsync(), new { area = "" });
             }
 
             var model = employee.ToModel();
             model.AvailableDepartments = await GetAllAvailableDepartmentsAsync(employee.DepartmentId);
-            return View($"{Route}{nameof(EditAsync)}.cshtml", model);
+            return View($"{Route}{nameof(EditAsync).NoAsync()}.cshtml", model);
         }
 
         [AuthorizeAdmin]
@@ -253,13 +254,13 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
                 await _employeeService.UpdateEmployeeAsync(employee);
                 return continueEditing
-                    ? RedirectToAction(nameof(EditAsync), new { id = employee.Id })
-                    : RedirectToAction(nameof(ListAsync));
+                    ? RedirectToAction(nameof(EditAsync).NoAsync(), new { id = employee.Id })
+                    : RedirectToAction(nameof(ListAsync).NoAsync());
             }
 
             //If we got this far, something failed, redisplay form
             model.AvailableDepartments = await GetAllAvailableDepartmentsAsync(model.DepartmentId);
-            return View($"{Route}{nameof(EditAsync)}.cshtml", model);
+            return View($"{Route}{nameof(EditAsync).NoAsync()}.cshtml", model);
         }
 
         [AuthorizeAdmin]

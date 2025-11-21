@@ -24,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 		..\build-all.cmd = ..\build-all.cmd
 		..\build-version.cmd = ..\build-version.cmd
 		BuildHelper\BuildHelper.bat = BuildHelper\BuildHelper.bat
+		..\BuildHelper\BuildHelper.bat = ..\BuildHelper\BuildHelper.bat
 		..\Common\Common.Build.props = ..\Common\Common.Build.props
 		..\README.md = ..\README.md
 		..\skip-folders-in-build.txt = ..\skip-folders-in-build.txt
@@ -61,7 +62,7 @@ Global
 		{AB55C4C4-C662-4008-8A5A-8974588BED35} = {5C73F01E-0888-4CFD-840E-65757E623050}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		LessCompiler = 83fc2d39-1955-4779-9887-5b0461224c79
 		SolutionGuid = {EC22C118-6015-4F38-9598-325DC8B6E2C6}
+		LessCompiler = 83fc2d39-1955-4779-9887-5b0461224c79
 	EndGlobalSection
 EndGlobal

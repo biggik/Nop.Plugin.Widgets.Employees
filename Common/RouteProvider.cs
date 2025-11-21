@@ -3,6 +3,7 @@ using Nop.Plugin.Widgets.Employees.Controllers;
 using Nop.Web.Framework.Localization;
 using Nop.Web.Framework.Mvc.Routing;
 using Microsoft.AspNetCore.Builder;
+using Nop.Plugin.Widgets.Employees.Extensions;
 
 namespace Nop.Plugin.Widgets.Employees
 {
@@ -31,12 +32,12 @@ namespace Nop.Plugin.Widgets.Employees
                         defaults: new { controller = controller, action = action });
 
             // Index
-            action = nameof(EmployeesController.IndexAsync);
+            action = nameof(EmployeesController.IndexAsync).NoAsync();
             actionSanitized = action + "/{groupByDepartment}";
             Build(routePrefix); // Skip action - to get only /Employees
 
             // Employee info
-            action = nameof(EmployeesController.InfoAsync);
+            action = nameof(EmployeesController.InfoAsync).NoAsync();
             actionSanitized = action + "/{id}";
             Build();
         }
@@ -95,32 +96,32 @@ namespace Nop.Plugin.Widgets.Employees
                                 defaults: new { controller = controller, action = action, area = "Admin" });
 
             // Configure
-            action = nameof(EmployeesController.ConfigureAsync);
+            action = nameof(EmployeesController.ConfigureAsync).NoAsync();
             actionSanitized = action;
             Build();
 
             // Edit employee
-            action = nameof(EmployeesController.EditAsync);
+            action = nameof(EmployeesController.EditAsync).NoAsync();
             actionSanitized = action + "/{id}";
             Build();
 
             // Create employee
-            action = nameof(EmployeesController.CreateAsync);
+            action = nameof(EmployeesController.CreateAsync).NoAsync();
             actionSanitized = action;
             Build();
 
             // List Employees
-            action = nameof(EmployeesController.ListAsync);
+            action = nameof(EmployeesController.ListAsync).NoAsync();
             actionSanitized = action;
             Build();
 
             // List employee data
-            action = nameof(EmployeesController.ListDataAsync);
+            action = nameof(EmployeesController.ListDataAsync).NoAsync();
             actionSanitized = action;
             Build();
 
             // Full size employee picture
-            action = nameof(EmployeesController.GetFullSizeEmployeePictureAsync);
+            action = nameof(EmployeesController.GetFullSizeEmployeePictureAsync).NoAsync();
             actionSanitized = "{id}/Picture";
             Build();
         }

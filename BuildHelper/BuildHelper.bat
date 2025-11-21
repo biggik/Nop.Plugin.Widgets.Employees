@@ -25,7 +25,8 @@ if "%~7" NEQ "" copy %7 ..\_build\%configuration%\. /y
 rem Copy to nopCommerce src folder
 if "%configuration%" == "release" goto AllDone
 
-set nopOut="n:\nopCommerce %nopVersion%\Presentation\Nop.Web\Plugins\%plugin%"
+rem set nopOut="n:\nopCommerce %nopVersion%\Presentation\Nop.Web\Plugins\%plugin%"
+set nopOut="n:\nopCommerce %nopVersion%\Presentation\Nop.Web\bin\debug\net8.0\publish\Plugins\%plugin%"
 if not exist %nopOut% (
     mkdir %nopOut%
     echo Created %nopOut%
