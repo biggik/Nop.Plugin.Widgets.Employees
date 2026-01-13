@@ -59,22 +59,22 @@ namespace Nop.Plugin.Widgets.Employees
                                 defaults: new { controller = controller, action = action, area = "Admin" });
 
             // Create department
-            action = nameof(DepartmentsController.CreateAsync);
+            action = nameof(DepartmentsController.CreateAsync).NoAsync();
             actionSanitized = action;
             Build();
 
             // Edit department
-            action = nameof(DepartmentsController.EditAsync);
+            action = nameof(DepartmentsController.EditAsync).NoAsync();
             actionSanitized = action + "/{id}";
             Build();
 
             // List departments
-            action = nameof(DepartmentsController.ListAsync);
+            action = nameof(DepartmentsController.ListAsync).NoAsync();
             actionSanitized = action;
             Build();
 
             // List department data
-            action = nameof(DepartmentsController.ListDataAsync);
+            action = nameof(DepartmentsController.ListDataAsync).NoAsync();
             actionSanitized = action;
             Build();
         }

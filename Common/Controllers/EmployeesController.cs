@@ -120,7 +120,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 EmployeePermissionConfigs.MANAGE_EMPLOYEES))
 #endif
             {
-                DisplayEditLink(Url.Action(nameof(ListAsync), ControllerName, new { area = "Admin" }));
+                DisplayEditLink(Url.Action(nameof(ListAsync).NoAsync(), ControllerName, new { area = "Admin" }));
             }
 
             return View($"{Route}{nameof(IndexAsync).NoAsync()}.cshtml", model);
@@ -154,7 +154,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             if (model.IsAdmin)
             {
-                DisplayEditLink(Url.Action(nameof(EditAsync), ControllerName, new { id = e.Id.ToString(), area = "Admin" }));
+                DisplayEditLink(Url.Action(nameof(EditAsync).NoAsync(), ControllerName, new { id = e.Id.ToString(), area = "Admin" }));
             }
 
             model.Employee = e.ToModel();

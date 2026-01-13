@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Plugin.Widgets.Employees.Constants;
+using Nop.Plugin.Widgets.Employees.Extensions;
 using Nop.Plugin.Widgets.Employees.Models;
 using Nop.Plugin.Widgets.Employees.Services;
 using Nop.Services.Configuration;
@@ -63,7 +64,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 return AccessDeniedView();
 
             var model = new DepartmentModel();
-            return View($"{Route}{nameof(CreateAsync)}.cshtml", model);
+            return View($"{Route}{nameof(CreateAsync).NoAsync()}.cshtml", model);
         }
 
         [AuthorizeAdmin]
@@ -84,12 +85,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
                 var department = model.ToEntity();
                 await _employeeService.InsertDepartmentAsync(department);
                 return continueEditing
-                    ? RedirectToAction(nameof(EditAsync), new { id = department.Id })
-                    : RedirectToAction(nameof(ListAsync));
+                    ? RedirectToAction(nameof(EditAsync).NoAsync(), new { id = department.Id })
+                    : RedirectToAction(nameof(ListAsync).NoAsync());
             }
 
             //If we got this far, something failed, redisplay form
-            return View($"{Route}{nameof(CreateAsync)}.cshtml", model);
+            return View($"{Route}{nameof(CreateAsync).NoAsync()}.cshtml", model);
         }
 
         [AuthorizeAdmin]
@@ -106,7 +107,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             var department = await _employeeService.GetDepartmentByIdAsync(id);
             var model = department.ToModel();
-            return View($"{Route}{nameof(EditAsync)}.cshtml", model);
+            return View($"{Route}{nameof(EditAsync).NoAsync()}.cshtml", model);
         }
 
         [AuthorizeAdmin]
@@ -132,12 +133,12 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
                 await _employeeService.UpdateDepartmentAsync(department);
                 return continueEditing
-                    ? RedirectToAction(nameof(EditAsync), new { id = department.Id })
-                    : RedirectToAction(nameof(ListAsync));
+                    ? RedirectToAction(nameof(EditAsync).NoAsync(), new { id = department.Id })
+                    : RedirectToAction(nameof(ListAsync).NoAsync());
             }
 
             //If we got this far, something failed, redisplay form
-            return View($"{Route}{nameof(CreateAsync)}.cshtml", model);
+            return View($"{Route}{nameof(CreateAsync).NoAsync()}.cshtml", model);
         }
 
         [AuthorizeAdmin]
@@ -157,7 +158,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
             if (department != null)
                 await _employeeService.DeleteDepartmentAsync(department);
 
-            return RedirectToAction(nameof(ListAsync), new { area = "Admin" });
+            return RedirectToAction(nameof(ListAsync).NoAsync(), new { area = "Admin" });
         }
 
         [AuthorizeAdmin]
@@ -174,7 +175,7 @@ namespace Nop.Plugin.Widgets.Employees.Controllers
 
             var model = new DepartmentSearchModel();
             model.SetGridPageSize();
-            return View($"{Route}{nameof(ListAsync)}.cshtml", model);
+            return View($"{Route}{nameof(ListAsync).NoAsync()}.cshtml", model);
         }
 
         [AuthorizeAdmin]

@@ -7,6 +7,7 @@ using Nop.Core;
 using Nop.Core.Domain.Localization;
 using Nop.Plugin.Widgets.Employees.Components;
 using Nop.Plugin.Widgets.Employees.Controllers;
+using Nop.Plugin.Widgets.Employees.Extensions;
 using Nop.Plugin.Widgets.Employees.Resources;
 using Nop.Plugin.Widgets.Employees.Services;
 using Nop.Services.Cms;
@@ -178,8 +179,8 @@ namespace Nop.Plugin.Widgets.Employees
 
             foreach (var item in new List<(string caption, string controller, string action)>
             {
-                (await T(EmployeeResources.ListCaption), EmployeesController.ControllerName, nameof(EmployeesController.ListAsync)),
-                (await T(AdminResources.DepartmentListCaption), DepartmentsController.ControllerName, nameof(DepartmentsController.ListAsync)),
+                (await T(EmployeeResources.ListCaption), EmployeesController.ControllerName, nameof(EmployeesController.ListAsync).NoAsync()),
+                (await T(AdminResources.DepartmentListCaption), DepartmentsController.ControllerName, nameof(DepartmentsController.ListAsync).NoAsync()),
             })
             {
                 contentMenu.ChildNodes.Add(new SiteMapNode
