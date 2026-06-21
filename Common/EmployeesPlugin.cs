@@ -88,6 +88,11 @@ namespace Nop.Plugin.Widgets.Employees
             );
         }
 
+        private async Task InstallLocaleResourcesAsync()
+        {
+            await (await ResourceHelperAsync()).CreateLocaleStringsAsync();
+        }
+
         /// <summary>
         /// Gets widget zones where this widget should be rendered
         /// </summary>
@@ -122,12 +127,22 @@ namespace Nop.Plugin.Widgets.Employees
                 WidgetZones = "header_menu_after",
             });
 
-            await (await ResourceHelperAsync()).CreateLocaleStringsAsync();
+            await InstallLocaleResourcesAsync();
 #if NOP_47
             await _permissionService.InstallPermissionsAsync(new EmployeePermissionProvider());
 #endif
 
             await base.InstallAsync();
+        }
+
+        /// <summary>
+        /// Update plugin
+        /// </summary>
+        public override async Task UpdateAsync(string currentVersion, string targetVersion)
+        {
+            await InstallLocaleResourcesAsync();
+
+            await base.UpdateAsync(currentVersion, targetVersion);
         }
 
         /// <summary>

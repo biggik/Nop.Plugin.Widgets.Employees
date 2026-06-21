@@ -174,20 +174,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="nopLocalizationHelper" Version="0.8.1" GeneratePathProperty="true"/>
+		<PackageReference Include="nopLocalizationHelper" Version="0.8.3" />
 	</ItemGroup>
 
-	<Target Name="Copy reference" AfterTargets="CoreCompile">
-		<Copy
-			SourceFiles="$(PkgnopLocalizationHelper)\lib\net8.0\nopLocalizationHelper.dll"
-			DestinationFolder="$(OutDir)" />
-	</Target>
-
-	<PropertyGroup>
-		<!-- this in combination with GeneratePathProperty allows us to let the build helper copy the file for packaging -->
-		<nopLocRef Condition=" '$(nopLocRef)' == '' ">$(PkgnopLocalizationHelper)\lib\net8.0\nopLocalizationHelper.dll</nopLocRef>
-	</PropertyGroup>
-	
 	<ItemGroup>
 		<None Update="Views\Employees\Configure.cshtml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

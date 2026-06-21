@@ -2,7 +2,7 @@
   "Group": "Widgets",
   "FriendlyName": "Employees",
   "SystemName": "Widgets.Employees",
-  "Version": "2.3.4",
+  "Version": "2.3.6",
   "SupportedVersions": [ "4.80" ],
   "Author": "Status ehf",
   "DisplayOrder": 1,
