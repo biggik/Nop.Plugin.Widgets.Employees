@@ -1,5 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Nop.Plugin.Widgets.Employees.Controllers;
+using Nop.Plugin.Widgets.Employees.Extensions;
+using Nop.Plugin.Widgets.Employees.Resources;
 using Nop.Services.Events;
 using Nop.Services.Localization;
 using Nop.Web.Framework.Events;
@@ -27,7 +31,7 @@ public class AdminMenuEventHandler : IConsumer<AdminMenuCreatedEvent>
             contentMenu = new AdminMenuItem
             {
                 SystemName = "Employees",
-                Title = await _localizationService.GetResourceAsync("Admin.Employees.ListCaption") ?? "Employees",
+                Title = EmployeeResources.ListCaption,
                 Visible = true,
                 IconClass = "fa-cubes"
             };
@@ -35,22 +39,22 @@ public class AdminMenuEventHandler : IConsumer<AdminMenuCreatedEvent>
         }
 
         // Add child menu items
-        contentMenu.ChildNodes.Add(new AdminMenuItem
-        {
-            SystemName = "Employees.List",
-            Title = await _localizationService.GetResourceAsync("Admin.Employees.ListCaption") ?? "Employee List",
-            Url = "/Admin/Employees/List",
-            Visible = true,
-            IconClass = "fa-dot-circle-o"
-        });
+        async Task<string> TAsync(string format) => await _localizationService.GetResourceAsync(format) ?? format;
 
-        contentMenu.ChildNodes.Add(new AdminMenuItem
+        foreach (var item in new List<(string caption, string controller, string action)>
+            {
+                (await TAsync(EmployeeResources.ListCaption), EmployeesController.ControllerName, nameof(EmployeesController.ListAsync).NoAsync()),
+                (await TAsync(DepartmentResources.ListCaption), DepartmentsController.ControllerName, nameof(DepartmentsController.ListAsync).NoAsync())
+            })
         {
-            SystemName = "Departments.List",
-            Title = await _localizationService.GetResourceAsync("Admin.Departments.ListCaption") ?? "Department List",
-            Url = "/Admin/Departments/List",
-            Visible = true,
-            IconClass = "fa-dot-circle-o"
-        });
+            contentMenu.ChildNodes.Add(new AdminMenuItem
+            {
+                SystemName = $"{item.controller}.{item.action}",
+                Title = item.caption,
+                Url = $"/Admin/{item.controller}/{item.action}",
+                Visible = true,
+                IconClass = "far fa-dot-circle"
+            });
+        }
     }
 }

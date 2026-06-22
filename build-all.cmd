@@ -3,3 +3,4 @@ cls
 set sln_file=Nop.Plugin.Widgets.Employees
 
 ..\nopPackager\dist\nopPackager.exe c:\development\Status\nopCommerce-Plugins\%sln_file%
+xcopy nopPackage\*.* p:\nop-plugins\ /S /D /Y

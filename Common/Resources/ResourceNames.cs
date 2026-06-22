@@ -66,6 +66,10 @@ namespace Nop.Plugin.Widgets.Employees.Resources
         [LocaleString(Cultures.EN, "Employees")]
         [LocaleString(Cultures.IS, "Starfsmenn")]
         public const string ListCaption = "Status.EmployeeWidget.Employee.Caption.Employees";
+
+        [LocaleString(Cultures.EN, "Configure")]
+        [LocaleString(Cultures.IS, "Stillingar")]
+        public const string Configure = "Status.EmployeeWidget.Employee.Configure";
     }
 
     [LocaleStringProvider]
@@ -138,6 +142,15 @@ namespace Nop.Plugin.Widgets.Employees.Resources
         [LocaleString(Cultures.EN, "Picture", "A picture for the department")]
         [LocaleString(Cultures.IS, "Mynd", "Mynd fyrir deildina")]
         public const string PictureId = "Status.EmployeeWidget.Department.PictureId";
+
+        [LocaleString(Cultures.EN, "Configure")]
+        [LocaleString(Cultures.IS, "Stillingar")]
+        public const string Configure = "Status.EmployeeWidget.Department.Configure";
+
+
+        [LocaleString(Cultures.EN, "Departments")]
+        [LocaleString(Cultures.IS, "Deildir")]
+        public const string ListCaption = "Status.EmployeeWidget.Department.Caption.Departments";
     }
 
     [LocaleStringProvider]
